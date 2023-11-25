@@ -1,0 +1,55 @@
+
+
+
+***River*** have four built-in data types:
+
+- [String](#string)
+- [Number](#number)
+- [Bool](#bool)
+- [Null](#null)
+
+
+
+## String
+
+***(sketch)***
+
+
+*String* is a data type that represents a text value. *Strings* are enclosed by `"..."` or `'...'`:
+
+- `"Hello, world!"`
+- `'Hello, world!'`
+
+You can insert in *Strings* the following *escape characters*:
+
+- `\n` - New line
+- `\t` - Tab
+- `\"` - Escape for `"`
+- `\'` - Escape for `'`
+- `\\` - Escape for `\`
+
+## Number
+
+***(sketch)***
+
+
+*Number* is a data type that represents... well... a number. A *Number* can be both integer and decimal numbers:
+
+- `7`
+- `-9`
+- `3.14159`
+- `-0.4839`
+
+## Bool
+
+***(sketch)***
+
+
+*Bool* is a data type that represents two conditional values: `true` and `false`
+
+## Null
+
+***(sketch)***
+
+
+*Null* is a data type that represents the value `null`.
