@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 
 
 enum class InitMode
@@ -13,6 +15,11 @@ enum class InitMode
 // gets the initialization mode
 InitMode get_init_mode(const int argc, const char** argv) noexcept;
 
+
+
+
+// runs the languae
+void run(const std::string& source);
 
 
 // interative init

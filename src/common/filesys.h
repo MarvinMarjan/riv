@@ -7,11 +7,12 @@
 
 struct FileException
 {
-	FileException(const std::string& path, const std::string& msg)
-		: path(path), msg(msg) {}
-
 	const std::string path;
 	const std::string msg;
+
+
+	FileException(const std::string& path, const std::string& msg)
+		: path(path), msg(msg) {}
 };
 
 
