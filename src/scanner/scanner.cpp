@@ -13,8 +13,10 @@ Scanner::Scanner(const std::string& source)
 
 std::vector<Token> Scanner::scan()
 {
+	// clears previous tokens
 	tokens_.clear();
 	
+	// scan all tokens inside source
 	while (!at_end())
 	{
 		begin_ = current_;

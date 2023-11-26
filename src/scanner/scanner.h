@@ -6,6 +6,7 @@
 
 
 
+// a Scanner takes a source and scans it into tokens
 class Scanner
 {
 public:
@@ -16,14 +17,20 @@ public:
 
 
 private:
+	// resulting tokens
 	std::vector<Token> tokens_;
 
+	// source string
 	std::string source_;
+
+	// locality utils
 	size_t line_, begin_, end_;
+
 
 	size_t& current_ = end_;
 
 
+	// scans the token
 	void scan_token();
 
 

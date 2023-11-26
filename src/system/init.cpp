@@ -21,6 +21,7 @@ void run(const std::string& source)
 {
 	Scanner scanner(source);
 
+	// scan source into tokens
 	std::vector<Token> tokens = scanner.scan();
 
 	for (const Token& token : tokens)
@@ -31,6 +32,7 @@ void run(const std::string& source)
 
 void repl_init()
 {
+	// REPL instance
 	RivREPL repl;
 
 	std::string source;
