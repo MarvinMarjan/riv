@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <type/type.h>
 
 
 
@@ -28,10 +28,11 @@ enum class TokenType
 
 struct Token
 {
-	Token(const TokenType type, const std::string& lexeme, const size_t line, const size_t begin, const size_t end)
-	 : type(type), lexeme(lexeme), line(line), begin(begin), end(end) {}
+	Token(const TokenType type, const std::string& lexeme, const Type& value, const size_t line, const size_t begin, const size_t end)
+	 : type(type), lexeme(lexeme), value(value), line(line), begin(begin), end(end) {}
 
 	TokenType type;
 	std::string lexeme;
+	Type value;
 	size_t line, begin, end;
 };

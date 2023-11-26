@@ -42,8 +42,8 @@ private:
 	bool match(const char next) noexcept;
 
 
-	void add_token(const TokenType type) noexcept {
-		tokens_.push_back(Token(type, current_substring(), line_, begin_, end_));
+	void add_token(const TokenType type, const Type& value = Type()) noexcept {
+		tokens_.push_back(Token(type, current_substring(), value, line_, begin_, end_));
 	}
 
 
