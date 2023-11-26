@@ -1,0 +1,88 @@
+BUILD_PATH = build
+DEBUG_PATH = $(BUILD_PATH)/debug
+RELEASE_PATH = $(BUILD_PATH)/release
+
+
+
+# define RELEASE to build with release configuration, debug will be used otherwise
+
+ifdef RELEASE
+	LINKING_MODE = -static
+	OPTIMIZATION = -O3
+	OUT_PATH = $(RELEASE_PATH)
+else
+	OPTIMIZATION = -Og
+	OUT_PATH = $(DEBUG_PATH)
+endif
+
+
+
+CC = g++
+CPP_VERSION = --std=c++23
+
+OUT_NAME = riv
+OUT_APP = $(OUT_PATH)/$(OUT_NAME)
+
+DEP_PATH = dep
+
+# dependencies
+SPECTER_PATH = $(DEP_PATH)/specter
+
+SPECTER_INCLUDE = $(SPECTER_PATH)/include
+SPECTER_LIB_PATH = $(SPECTER_PATH)/lib
+SPECTER_LIB_NAME = specter
+
+
+INCLUDE_PATH = \
+	-I./src \
+	-I$(SPECTER_INCLUDE)
+
+
+LIBRARIES_PATH = \
+	-L$(SPECTER_LIB_PATH)
+
+
+LIBRARIES = \
+	-l$(SPECTER_LIB_NAME)
+
+
+
+SOURCES = $(shell find src -name "*.cpp")
+OBJECTS = $(SOURCES:.cpp=.o)
+
+FULL_OBJECTS = $(addprefix $(OUT_PATH)/, $(notdir $(OBJECTS)))
+
+
+
+runc: $(OUT_APP)
+	@ echo Running...
+	@ $(OUT_APP) $(SOURCE_FILE)
+
+
+run:
+	@ echo Running...
+	@ $(OUT_APP) $(SOURCE_FILE)
+
+
+# links object files into a executable
+.PHONY:
+$(OUT_APP) build: $(OBJECTS)
+	@ echo Linking objects: $(FULL_OBJECTS)
+	@ g++ $(FULL_OBJECTS) -o $(OUT_APP) $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
+	@ echo Application created at $(OUT_APP)
+
+
+
+
+# compiles source files into objects
+$(OBJECTS): %.o: %.cpp
+	@ echo Compiling $<
+	@ g++ -c $< -o $(addprefix $(OUT_PATH)/, $(notdir $@)) $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION)
+
+
+
+# cleans up build folder
+.PHONY:
+clean:
+	@ rm -r $(DEBUG_PATH)/*
+	@ rm -r $(RELEASE_PATH)/*
