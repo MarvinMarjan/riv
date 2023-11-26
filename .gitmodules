@@ -1,0 +1,3 @@
+[submodule "dep/specter"]
+	path = dep/specter
+	url = https://github.com/MarvinMarjan/specter
