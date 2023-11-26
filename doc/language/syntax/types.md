@@ -1,7 +1,7 @@
 
 
 
-***River*** have four built-in data types:
+***Riv*** have four built-in data types:
 
 - [String](#string)
 - [Number](#number)
@@ -12,7 +12,7 @@
 
 ## String
 
-***(sketch)***
+***(draft)***
 
 
 *String* is a data type that represents a text value. *Strings* are enclosed by `"..."` or `'...'`:
@@ -30,7 +30,7 @@ You can insert in *Strings* the following *escape characters*:
 
 ## Number
 
-***(sketch)***
+***(draft)***
 
 
 *Number* is a data type that represents... well... a number. A *Number* can be both integer and decimal numbers:
@@ -42,14 +42,14 @@ You can insert in *Strings* the following *escape characters*:
 
 ## Bool
 
-***(sketch)***
+***(draft)***
 
 
 *Bool* is a data type that represents two conditional values: `true` and `false`
 
 ## Null
 
-***(sketch)***
+***(draft)***
 
 
 *Null* is a data type that represents the value `null`.

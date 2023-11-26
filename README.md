@@ -1,3 +1,3 @@
-***River*** is a dynamic typed programming language.
+***Riv*** is a dynamic typed programming language.
 
-***River's syntax, interpreter, documentation and features are currently under development.***
+***Riv's syntax, interpreter, documentation and features are currently under development.***

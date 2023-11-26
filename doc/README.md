@@ -1,6 +1,6 @@
 ## Syntax Notation
 
-To improve the way how syntax is notated, it will be used a **Syntax Notation** rule to express ***River's*** syntax.
+To improve the way how syntax is notated, it will be used a **Syntax Notation** rule to express ***Riv's*** syntax.
 
 - `text` - Identifiers in general. It includes keywords, functions, variables, etc...
 - `< text >` - Location where an identifier is expected. Tipically used to indicate a place where you can name things, such as variables, functions, etc...
