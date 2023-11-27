@@ -30,6 +30,9 @@ private:
 	size_t& current_ = end_;
 
 
+	TokenPosition position() const noexcept { return TokenPosition(line_, begin_, end_); }
+
+
 	// scans the token
 	void scan_token();
 

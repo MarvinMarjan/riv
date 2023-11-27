@@ -3,6 +3,7 @@
 #include <specter/string.h>
 #include <specter/output/ostream.h>
 
+#include <system/exception.h>
 #include <common/string.h>
 #include <lang.h>
 
@@ -81,6 +82,9 @@ void Scanner::scan_token()
 		
 		else if (sp::is_alpha(ch))
 			identifier();
+
+		else
+			log_error(Exception("Invalid token.", position()));
 	}
 }
 

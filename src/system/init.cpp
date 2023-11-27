@@ -4,6 +4,8 @@
 #include <specter/output/ostream.h>
 #include <common/filesys.h>
 #include <repl/repl.h>
+#include <system/sysstate.h>
+
 
 
 InitMode get_init_mode(const int argc, const char** argv) noexcept
@@ -32,18 +34,26 @@ void run(const std::string& source)
 
 void repl_init()
 {
+	const SystemState& state = sys_state();
+
 	// REPL instance
 	RivREPL repl;
 
 	std::string source;
 
 	while ((source = repl.read()) != ".exit")
+	{
+		init_state_repl(source);
 		run(source);
+	}
 }
 
 
 
 void srcf_init(const int argc, const char** argv)
 {
-	run(read_file(argv[1]));
+	const SystemState& state = sys_state();
+
+	init_state_srcfile(argv[1]);
+	run(state.strsource);
 }

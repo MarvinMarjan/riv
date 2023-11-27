@@ -26,13 +26,25 @@ enum class TokenType
 
 
 
+struct TokenPosition
+{
+	size_t line, begin, end;
+
+	TokenPosition(const size_t line, const size_t begin, const size_t end)
+		: line(line), begin(begin), end(end) {}
+};
+
+
 struct Token
 {
-	Token(const TokenType type, const std::string& lexeme, const Type& value, const size_t line, const size_t begin, const size_t end)
-	 : type(type), lexeme(lexeme), value(value), line(line), begin(begin), end(end) {}
-
 	TokenType type;
 	std::string lexeme;
 	Type value;
-	size_t line, begin, end;
+	TokenPosition pos;
+
+	Token(const TokenType type, const std::string& lexeme, const Type& value, const TokenPosition& pos)
+		: type(type), lexeme(lexeme), value(value), pos(pos) {}
+
+	Token(const TokenType type, const std::string& lexeme, const Type& value, const size_t line, const size_t begin, const size_t end)
+		: Token(type, lexeme, value, { line, begin, end }) {}
 };

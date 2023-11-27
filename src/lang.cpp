@@ -3,7 +3,7 @@
 
 
 // all language operators
-static std::map<std::string, TokenType> l_operators =
+static std::map<std::string, TokenType> s_operators =
 {
 	{"+", TokenType::Plus},
 	{"-", TokenType::Minus},
@@ -26,12 +26,12 @@ static std::map<std::string, TokenType> l_operators =
 
 
 // all language keywords
-static std::map<std::string, TokenType> l_keywords =
+static std::map<std::string, TokenType> s_keywords =
 {
 	{"var", TokenType::Var}
 };
 
 
 
-const std::map<std::string, TokenType>& lang_operators()	noexcept { return l_operators; }
-const std::map<std::string, TokenType>& lang_keywords()		noexcept { return l_keywords; }
+const std::map<std::string, TokenType>& lang_operators()	noexcept { return s_operators; }
+const std::map<std::string, TokenType>& lang_keywords()		noexcept { return s_keywords; }
