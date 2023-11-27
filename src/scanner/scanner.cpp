@@ -1,5 +1,11 @@
 #include <scanner/scanner.h>
 
+#include <specter/string.h>
+#include <specter/output/ostream.h>
+
+#include <common/string.h>
+#include <lang.h>
+
 
 
 Scanner::Scanner(const std::string& source)
@@ -63,9 +69,139 @@ void Scanner::scan_token()
 	case '.': add_token(TokenType::Dot); break;
 	case ',': add_token(TokenType::Comma); break;
 
-	
+
+	case '\'':
+	case '\"':
+		string(ch);
+		break;
+
+	default:
+		if (sp::is_number(ch))
+			number();
+		
+		else if (sp::is_alpha(ch))
+			identifier();
 	}
 }
+
+
+
+
+void Scanner::string(const char encloser)
+{
+	add_token(TokenType::String, advance_string(encloser));
+}
+
+
+std::string Scanner::advance_string(const char encloser)
+{
+	std::string str_value = "";
+	char current;
+
+	// while not reached at the end of the string
+	while (!at_end() && (current = peek()) != encloser)
+	{
+		// is it a escape character?
+		if (current == '\\')
+		{
+			str_value += string_escape(peek_next()); // adds the escape character
+			advance(); // advance the escape character
+		}
+
+		else
+			str_value += current;
+
+		// next character
+		advance();
+	}
+
+	// advance the closing '"'
+	advance();
+
+	return str_value;
+}
+
+
+char Scanner::string_escape(const char escape)
+{
+	switch (escape)
+	{
+	case 'n':
+		return '\n';
+
+	case 't':
+		return '\t';
+
+	case '\"':
+		return '\"';
+
+	case '\'':
+		return '\'';
+
+	case '\\':
+		return '\\';
+	}
+
+	return '\0';
+}
+
+
+void Scanner::number() noexcept
+{
+	// advance the whole number
+	advance_number();
+
+	// number value
+	const std::string double_value = current_substring();
+
+	add_token(TokenType::Number, std::stod(double_value));
+}
+
+
+void Scanner::advance_number() noexcept
+{
+	char current;
+	bool has_decimal = false;
+
+	while (sp::is_number((current = peek())) || current == '.')
+	{
+		if (current == '.' && !has_decimal)
+			has_decimal = true;
+
+		// cannot have two '.' in a number
+		else if (current == '.' && has_decimal)
+			break;
+
+		advance();
+	}
+}
+
+
+void Scanner::identifier()
+{
+	while (sp::is_alphanum(peek()))
+		advance();
+
+	const std::string identifier = current_substring();
+
+	// is it a boolean value?
+	if (is_boolstr(identifier))
+	{
+		add_token(TokenType::Bool, string_to_bool(identifier));
+		return;
+	}
+
+	// is it a keyword?
+	if (lang_keywords().contains(identifier))
+	{
+		add_token(lang_keywords().at(identifier));
+		return;
+	}
+
+	// general identifier
+	add_token(TokenType::Identifier);
+}
+
 
 
 

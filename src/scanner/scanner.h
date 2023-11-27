@@ -33,6 +33,15 @@ private:
 	// scans the token
 	void scan_token();
 
+	void		string(const char encloser);		// processes a string token
+	std::string advance_string(const char encloser);
+	char		string_escape(const char escape);	// processes a string token escape characters
+
+	void number() noexcept;					// processes a number token
+	void advance_number() noexcept;			// advances to the end of a number token
+
+	void identifier();						// processes a identifier (booleans, keywords, identifiers...) token
+
 
 	bool at_end()		const	noexcept;
 	char advance()				noexcept;
