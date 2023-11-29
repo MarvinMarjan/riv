@@ -103,8 +103,15 @@ std::string Scanner::advance_string(const char encloser)
 	char current;
 
 	// while not reached at the end of the string
-	while (!at_end() && (current = peek()) != encloser)
+	while ((current = peek()) != encloser)
 	{
+		// end reached and string was not closed
+		if (at_end())
+		{
+			log_error(Exception("Unterminated string.", position()));
+			return std::string();
+		}
+
 		// is it a escape character?
 		if (current == '\\')
 		{
