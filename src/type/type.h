@@ -36,7 +36,7 @@ public:
 
 
 	// returns an enum that represents the current active type
-	TypeIndex type() const noexcept { return is_null() ? TypeIndex::Null : (TypeIndex)index(); }
+	TypeIndex type() const noexcept { return ((is_null()) ? TypeIndex::Null : (TypeIndex)index()); }
 
 
 	std::string to_string() const noexcept { return type_to_string(*this); }
@@ -49,5 +49,5 @@ public:
 	bool		as_bool()	const noexcept { return std::get<bool>(*this); }
 
 private:
-	bool is_null_;
+	bool is_null_ = false;
 };

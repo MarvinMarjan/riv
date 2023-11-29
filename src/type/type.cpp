@@ -20,6 +20,19 @@ static size_t get_doublestr_decimal_dot_index(const std::string& strdouble) noex
 }
 
 
+static size_t get_last_relevant_decimal_index(const std::string& strdouble, const size_t decimal_begin) noexcept
+{
+	size_t last_relevant_decimal = decimal_begin;
+
+	// search for the last relevant decimal index
+	for (size_t i = last_relevant_decimal; i < strdouble.size(); i++)
+		if (strdouble[i] != '0')
+			last_relevant_decimal = i;
+
+	return last_relevant_decimal;
+}
+
+
 // erase irrelevant zeros
 static void erase_doublestr_decimal(std::string& strdouble, const size_t decimal_begin, const size_t last_relevant_decimal) noexcept
 {
@@ -41,7 +54,7 @@ static std::string trim_irrelevant_doublestr_zeros(const std::string& strdouble)
 	size_t decimal_begin = get_doublestr_decimal_dot_index(strdouble);
 	
 	// last decimal number different from zero
-	size_t last_relevant_decimal = decimal_begin;
+	size_t last_relevant_decimal = get_last_relevant_decimal_index(strdouble, decimal_begin);
 
 	erase_doublestr_decimal(trimmed, decimal_begin, last_relevant_decimal);
 
