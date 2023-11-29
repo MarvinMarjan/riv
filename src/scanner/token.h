@@ -30,6 +30,7 @@ struct TokenPosition
 {
 	size_t line, begin, end;
 
+	TokenPosition() = default;
 	TokenPosition(const size_t line, const size_t begin, const size_t end)
 		: line(line), begin(begin), end(end) {}
 };
@@ -42,6 +43,7 @@ struct Token
 	Type value;
 	TokenPosition pos;
 
+	Token() = default;
 	Token(const TokenType type, const std::string& lexeme, const Type& value, const TokenPosition& pos)
 		: type(type), lexeme(lexeme), value(value), pos(pos) {}
 

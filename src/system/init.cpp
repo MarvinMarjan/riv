@@ -1,7 +1,9 @@
 #include <system/init.h>
 
-#include <scanner/scanner.h>
 #include <specter/output/ostream.h>
+
+#include <scanner/scanner.h>
+#include <expression/printer.h>
 #include <common/filesys.h>
 #include <repl/repl.h>
 #include <system/sysstate.h>
@@ -25,9 +27,6 @@ void run(const std::string& source)
 
 	// scan source into tokens
 	std::vector<Token> tokens = scanner.scan();
-
-	for (const Token& token : tokens)
-		sp::println((int)token.type, " - ", token.lexeme);
 }
 
 
