@@ -17,7 +17,7 @@ Type ExprPrinter::parenthesize(const std::initializer_list<Expression* const>& e
 	{
 		Expression* const* current = exprs.begin() + i;
 
-		stream << (*current)->process(*this).to_string() << (current + 1 == exprs.end() ? "" : ", ");
+		stream << (*current)->process(*this).to_string() << (current + 1 == exprs.end() ? "" : "  ");
 	}
 
 

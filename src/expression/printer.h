@@ -8,6 +8,7 @@ class ExprPrinter : public ExpressionProcessor
 {
 public:
 	std::string print(Expression* const expr) noexcept {
+		if (!expr) return std::string();
 		return expr->process(*this).as_str();
 	}
 

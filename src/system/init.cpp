@@ -3,6 +3,7 @@
 #include <specter/output/ostream.h>
 
 #include <scanner/scanner.h>
+#include <parser/parser.h>
 #include <expression/printer.h>
 #include <common/filesys.h>
 #include <repl/repl.h>
@@ -23,10 +24,24 @@ InitMode get_init_mode(const int argc, const char** argv) noexcept
 
 void run(const std::string& source)
 {
+	const SystemState& state = sys_state();
+
 	Scanner scanner(source);
 
 	// scan source into tokens
 	std::vector<Token> tokens = scanner.scan();
+
+	if (state.has_error)
+		return;
+
+	Parser parser(tokens);
+
+	// parse the tokens
+	Expression* expr = parser.parse();
+
+	std::string exprstr = ExprPrinter().print(expr);
+
+	sp::println(expr);
 }
 
 
