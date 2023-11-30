@@ -20,7 +20,7 @@ struct SystemState
 };
 
 
-void init_state_srcfile(const std::string& path) noexcept;
-void init_state_repl(const std::string& content) noexcept;
+void init_state_using_srcfile(const std::string& path) noexcept;
+void init_state_using_repl(const std::string& content) noexcept;
 
 const SystemState& sys_state() noexcept;

@@ -25,12 +25,13 @@ private:
 
 	// locality utils
 	size_t line_, begin_, end_;
-
-
 	size_t& current_ = end_;
 
+	size_t ln_begin_, ln_end_;
+	size_t& ln_current_ = ln_end_;
 
-	TokenPosition position() const noexcept { return TokenPosition(line_, begin_, end_); }
+
+	TokenPosition position() const noexcept { return TokenPosition(line_, ln_begin_, ln_end_); }
 
 
 	// scans the token

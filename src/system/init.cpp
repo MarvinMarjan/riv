@@ -42,7 +42,7 @@ void repl_init()
 
 	while ((source = repl.read()) != ".exit")
 	{
-		init_state_repl(source);
+		init_state_using_repl(source);
 		run(source);
 	}
 }
@@ -53,6 +53,6 @@ void srcf_init(const int argc, const char** argv)
 {
 	const SystemState& state = sys_state();
 
-	init_state_srcfile(argv[1]);
+	init_state_using_srcfile(argv[1]);
 	run(state.strsource);
 }

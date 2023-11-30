@@ -12,8 +12,10 @@
 Scanner::Scanner(const std::string& source)
 {
 	source_ = source;
+
 	line_ = 0;
 	begin_ = end_ = 0;
+	ln_begin_ = ln_end_ = 0;
 }
 
 
@@ -26,7 +28,9 @@ std::vector<Token> Scanner::scan()
 	// scan all tokens inside source
 	while (!at_end())
 	{
+		ln_begin_ = ln_current_;
 		begin_ = current_;
+
 		scan_token();
 	}
 
@@ -47,6 +51,7 @@ void Scanner::scan_token()
 
 	case '\n':
 		line_++;
+		ln_begin_ = ln_end_ = 0;
 		break;
 
 	case '+': add_token(TokenType::Plus); break;
@@ -109,6 +114,13 @@ std::string Scanner::advance_string(const char encloser)
 		if (at_end())
 		{
 			log_error(Exception("Unterminated string.", position()));
+			return std::string();
+		}
+
+		// newline (not the escape code) located inside a string
+		else if (current == '\n')
+		{
+			log_error(Exception("Multi-line string not supported.", position()));
 			return std::string();
 		}
 
@@ -227,6 +239,7 @@ char Scanner::advance() noexcept
 	if (at_end())
 		return '\0';
 
+	ln_end_++;
 	return source_[current_++];
 }
 

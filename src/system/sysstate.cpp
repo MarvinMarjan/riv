@@ -10,7 +10,7 @@
 static SystemState s_sys_state;
 
 
-void init_state_srcfile(const std::string& path) noexcept
+void init_state_using_srcfile(const std::string& path) noexcept
 {
 	std::filesystem::path fpath = path;
 	std::string content = read_file(path);
@@ -29,7 +29,7 @@ void init_state_srcfile(const std::string& path) noexcept
 }
 
 
-void init_state_repl(const std::string& content) noexcept
+void init_state_using_repl(const std::string& content) noexcept
 {
 	s_sys_state = SystemState();
 

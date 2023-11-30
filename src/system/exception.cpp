@@ -17,7 +17,7 @@ static std::string generate_error_indicator(const std::string& line, const Token
 	{
 		// before the begin of the token
 		if (i < pos.begin)
-			error_indicator += ' ';
+			error_indicator += line[i] == '\t' ? '\t' : ' ';
 
 		// at the begin of the token
 		else if (i == pos.begin)
@@ -45,21 +45,14 @@ static std::string format_token_position(const TokenPosition& pos) noexcept
 
 static std::string get_error_line(std::string& line, const TokenPosition& pos) noexcept
 {
-	// amount of tabs at the line begin
-	const std::string tabs = "\t";
-
 	std::stringstream stream;
-
-	// erases all blank charactes at the line begin
-	while (line.front() == ' ' || line.front() == '\t')
-		line.erase(line.begin());
 
 	// paints the error token with red
 	line.insert(pos.end, sp::RESET_ALL);
 	line.insert(pos.begin, sp::clr(sp::fg_bred));
 
-	stream << tabs << line << std::endl;
-	stream << tabs << generate_error_indicator(line, pos);
+	stream << line << std::endl;
+	stream << generate_error_indicator(line, pos);
 
 	return stream.str();
 }
