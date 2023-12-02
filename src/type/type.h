@@ -15,6 +15,7 @@ enum class TypeIndex
 };
 
 
+
 std::string type_index_to_string(const TypeIndex type) noexcept;
 
 

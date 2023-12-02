@@ -83,7 +83,7 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 
 	case TokenType::Bang:
 		throw_if_type_differs({ right }, TypeIndex::Bool, expr.op);
-		return !right.as_bool();
+		return !truthy(right);
 	}
 }
 
@@ -104,10 +104,29 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 
 bool Interpreter::equals(const Type& left, const Type& right) noexcept
 {
-	if (left.is_null() && right.is_null()) return true;
-	if (left.is_null()) return false;
+	if (left.is_null() && right.is_null())
+		return true;
+	
+	if (left.is_null())
+		return false;
 
 	return left == right;
+}
+
+
+
+bool Interpreter::truthy(const Type& value) noexcept
+{
+	if (value.is_null())
+		return false;
+
+	if (value.is_num())
+		return value.as_num();
+
+	if (value.is_bool())
+		return value.as_bool();
+
+	return true;
 }
 
 
