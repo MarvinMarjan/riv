@@ -4,6 +4,7 @@
 
 #include <scanner/scanner.h>
 #include <parser/parser.h>
+#include <interpreter/interpreter.h>
 #include <expression/printer.h>
 #include <common/filesys.h>
 #include <repl/repl.h>
@@ -39,9 +40,14 @@ void run(const std::string& source)
 	// parse the tokens
 	Expression* expr = parser.parse();
 
-	std::string exprstr = ExprPrinter().print(expr);
+	if (state.has_error)
+		return;
 
-	sp::println(exprstr);
+	Interpreter interpreter;
+
+	Type result = interpreter.interpret(expr);
+
+	sp::println(result.to_string());
 }
 
 
