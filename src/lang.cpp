@@ -32,6 +32,16 @@ static std::map<std::string, TokenType> s_keywords =
 };
 
 
+// all language type keywords
+static std::map<std::string, TokenType> s_type_keywords =
+{
+	{"true",	TokenType::Bool},
+	{"false",	TokenType::Bool},
+	{"null",	TokenType::Null}
+};
 
-const std::map<std::string, TokenType>& lang_operators()	noexcept { return s_operators; }
-const std::map<std::string, TokenType>& lang_keywords()		noexcept { return s_keywords; }
+
+
+const std::map<std::string, TokenType>& lang_operators()		noexcept { return s_operators; }
+const std::map<std::string, TokenType>& lang_keywords()			noexcept { return s_keywords; }
+const std::map<std::string, TokenType>& lang_type_keywords()	noexcept { return s_type_keywords; }
