@@ -28,7 +28,37 @@ Expression* Parser::parse()
 
 Expression* Parser::expression()
 {
-	return term();
+	return equality();
+}
+
+
+Expression* Parser::equality()
+{
+	Expression* expr = comparison();
+
+	while (match({ TokenType::EqualEqual, TokenType::BangEqual }))
+	{
+		const Token op = previous();
+		Expression* right = comparison();
+		expr = new BinaryExpression(expr, op, right);
+	}
+
+	return expr;
+}
+
+
+Expression* Parser::comparison()
+{
+	Expression* expr = term();
+
+	while (match({ TokenType::Greater, TokenType::Lesser, TokenType::GreaterEqual, TokenType::LesserEqual }))
+	{
+		const Token op = previous();
+		Expression* right = term();
+		expr = new BinaryExpression(expr, op, right);
+	}
+
+	return expr;
 }
 
 
@@ -49,12 +79,12 @@ Expression* Parser::term()
 
 Expression* Parser::factor()
 {
-	Expression* expr = primary();
+	Expression* expr = unary();
 
 	while (match({ TokenType::Star, TokenType::Slash }))
 	{
 		const Token op = previous();
-		Expression* right = primary();
+		Expression* right = unary();
 		expr = new BinaryExpression(expr, op, right);
 	}
 
@@ -62,9 +92,22 @@ Expression* Parser::factor()
 }
 
 
+Expression* Parser::unary()
+{
+	if (match({ TokenType::Minus, TokenType::Bang }))
+	{
+		const Token op = previous();
+		Expression* right = unary();
+		return new UnaryExpression(op, right);
+	}
+
+	return primary();
+}
+
+
 Expression* Parser::primary()
 {
-	if (match({ TokenType::String, TokenType::Number, TokenType::Bool })) return new LiteralExpression(previous().value);
+	if (match({ TokenType::String, TokenType::Number, TokenType::Bool, TokenType::Null })) return new LiteralExpression(previous().value);
 
 	if (match({ TokenType::LeftParen }))
 	{

@@ -41,7 +41,7 @@ void run(const std::string& source)
 
 	std::string exprstr = ExprPrinter().print(expr);
 
-	sp::println(expr);
+	sp::println(exprstr);
 }
 
 
