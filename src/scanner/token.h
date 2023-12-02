@@ -16,7 +16,7 @@ enum class TokenType
 
 	// literal
 
-	String, Number, Bool, Identifier,
+	Null, String, Number, Bool, Identifier,
 
 
 	// keywords

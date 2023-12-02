@@ -207,6 +207,13 @@ void Scanner::identifier()
 
 	const std::string identifier = current_substring();
 
+	// is it "null"?
+	if (identifier == "null")
+	{
+		add_token(TokenType::Null);
+		return;
+	}
+
 	// is it a boolean value?
 	if (is_boolstr(identifier))
 	{
