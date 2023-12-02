@@ -63,6 +63,26 @@ static std::string trim_irrelevant_doublestr_zeros(const std::string& strdouble)
 
 
 
+
+
+std::string type_index_to_string(const TypeIndex type) noexcept
+{
+	switch (type)
+	{
+	case TypeIndex::Null:	return "Null";
+	case TypeIndex::String:	return "String";
+	case TypeIndex::Number:	return "Number";
+	case TypeIndex::Bool:	return "Bool";
+
+	default:
+		return "NotDefinedType";
+	}
+}
+
+
+
+
+
 Type::Type()
 {
 	is_null_ = true;

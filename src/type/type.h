@@ -15,6 +15,9 @@ enum class TypeIndex
 };
 
 
+std::string type_index_to_string(const TypeIndex type) noexcept;
+
+
 
 using VariantType = std::variant<std::string, double, bool>;
 
@@ -42,7 +45,13 @@ public:
 	std::string to_string() const noexcept { return type_to_string(*this); }
 
 
+	bool is_typeof(const TypeIndex type) const noexcept { return this->type() == type; }
+
 	bool is_null() const noexcept { return is_null_; }
+
+	bool is_str()	const noexcept { return is_typeof(TypeIndex::String); }
+	bool is_num()	const noexcept { return is_typeof(TypeIndex::Number); }
+	bool is_bool()	const noexcept { return is_typeof(TypeIndex::Bool); }
 
 	std::string	as_str()	const noexcept { return std::get<std::string>(*this); }
 	double		as_num()	const noexcept { return std::get<double>(*this); }
