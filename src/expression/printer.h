@@ -36,6 +36,6 @@ private:
 
 
 	Type process_literal(LiteralExpression& expr) override {
-		return expr.value;
+		return expr.value.to_string();
 	}
 };
