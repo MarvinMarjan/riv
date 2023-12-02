@@ -11,7 +11,7 @@
 - [Unary](#unary)
 	- [Operator -](#operator---1)
 		- [Number Negation](#number-negation)
-	- [Operator not](#operator-not)
+	- [Operator !](#operator--3)
 		- [Condition Negation](#condition-negation)
 - [Grouping](#grouping)
 
@@ -92,7 +92,7 @@ If `value` is positive, then it will be negated to negative. It it's negative, t
 
 
 
-## Operator not
+## Operator !
 ### Condition Negation
 
 ***(draft)***
@@ -100,7 +100,7 @@ If `value` is positive, then it will be negated to negative. It it's negative, t
 
 Negates a *Bool* value:
 
-`"not" [ value:Bool ]`
+`"!" [ value:Bool ]`
 
 If `value` is `true`, it becomes `false`. If it's `false`, it becomes `true`.
 
@@ -111,4 +111,4 @@ If `value` is `true`, it becomes `false`. If it's `false`, it becomes `true`.
 ***(draft)***
 
 
-Use `"(" ... ")"` to group an expression. When grouped, it will have a higher precedence.not
+Use `"(" ... ")"` to group an expression. When grouped, it will have a higher precedence.
