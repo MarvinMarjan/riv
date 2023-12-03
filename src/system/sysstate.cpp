@@ -10,6 +10,13 @@
 static SystemState s_sys_state;
 
 
+
+void set_error_flag() noexcept {
+	s_sys_state.has_error = true;
+}
+
+
+
 void init_state_using_srcfile(const std::string& path) noexcept
 {
 	std::filesystem::path fpath = path;

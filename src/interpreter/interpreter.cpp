@@ -1,5 +1,6 @@
 #include <interpreter/interpreter.h>
 
+#include <language/error_codes.h>
 #include <system/exception.h>
 
 
@@ -27,38 +28,53 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 	switch (expr.op.type)
 	{
 	case TokenType::Plus:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
-		return left.as_num() + right.as_num();
+		if (are_values_of_type({ left, right }, TypeIndex::Number))
+			return left.as_num() + right.as_num();
+		
+		if (are_values_of_type({ left, right }, TypeIndex::String))
+			return left.as_str() + right.as_str();
 
 	case TokenType::Minus:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
+		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e201({ left, right }, expr.op));
 		return left.as_num() - right.as_num();
 
 	case TokenType::Star:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
+		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e201({ left, right }, expr.op));
 		return left.as_num() * right.as_num();
 
 	case TokenType::Slash:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
+		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e201({ left, right }, expr.op));
 		return left.as_num() / right.as_num();
 
 
 
 	case TokenType::Greater:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
-		return left.as_num() > right.as_num();
+		if (are_values_of_type({ left, right }, TypeIndex::Number))
+			return left.as_num() > right.as_num();
 	
+		if (are_values_of_type({ left, right }, TypeIndex::String))
+			return left.as_str().size() > right.as_str().size();
+
 	case TokenType::Lesser:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
-		return left.as_num() < right.as_num();
+		if (are_values_of_type({ left, right }, TypeIndex::Number))
+			return left.as_num() < right.as_num();
+	
+		if (are_values_of_type({ left, right }, TypeIndex::String))
+			return left.as_str().size() < right.as_str().size();
 
 	case TokenType::GreaterEqual:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
-		return left.as_num() >= right.as_num();
+		if (are_values_of_type({ left, right }, TypeIndex::Number))
+			return left.as_num() >= right.as_num();
+	
+		if (are_values_of_type({ left, right }, TypeIndex::String))
+			return left.as_str().size() >= right.as_str().size();
 
 	case TokenType::LesserEqual:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, expr.op);
-		return left.as_num() <= right.as_num();
+		if (are_values_of_type({ left, right }, TypeIndex::Number))
+			return left.as_num() <= right.as_num();
+	
+		if (are_values_of_type({ left, right }, TypeIndex::String))
+			return left.as_str().size() <= right.as_str().size();
 
 
 	
@@ -78,11 +94,11 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 	switch (expr.op.type)
 	{
 	case TokenType::Minus:
-		throw_if_type_differs({ right }, TypeIndex::Number, expr.op);
+		throw_if_type_differs({ right }, TypeIndex::Number, riv_e201({ right }, expr.op));
 		return !right.as_num();
 
 	case TokenType::Bang:
-		throw_if_type_differs({ right }, TypeIndex::Bool, expr.op);
+		throw_if_type_differs({ right }, TypeIndex::Bool, riv_e201({ right }, expr.op));
 		return !truthy(right);
 	}
 }
@@ -131,14 +147,19 @@ bool Interpreter::truthy(const Type& value) noexcept
 
 
 
-void Interpreter::throw_if_type_differs(const std::initializer_list<Type>& values, const TypeIndex type, const Token& op)
+bool Interpreter::are_values_of_type(const std::initializer_list<Type>& values, const TypeIndex type) noexcept
 {
 	for (const Type& value : values)
 		if (!value.is_typeof(type))
-			throw Exception("Expect " + type_index_to_string(type) + " value.", op.pos);
+			return false;
+
+	return true;
+}
 
 
-// improve exception throwing
-//	throw Exception("Operator '" + op.lexeme + "' doesn't support the following types: " + type_index_to_string(type) + " value.", op.pos);
 
+void Interpreter::throw_if_type_differs(const std::initializer_list<Type>& values, const TypeIndex type, const Exception& err)
+{
+	if (!are_values_of_type(values, type))
+		throw err;
 }

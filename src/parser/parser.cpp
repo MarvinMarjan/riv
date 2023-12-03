@@ -1,5 +1,6 @@
 #include <parser/parser.h>
 
+#include <language/error_codes.h>
 #include <system/exception.h>
 
 
@@ -112,11 +113,11 @@ Expression* Parser::primary()
 	if (match({ TokenType::LeftParen }))
 	{
 		Expression* expr = expression();
-		consume(TokenType::RightParen, "Expect ')' to close grouping expression.");
+		consume(TokenType::RightParen, riv_e152(peek().pos)); // expect ')' to close grouping expression
 		return new GroupingExpression(expr);
 	}
 
-	throw Exception("Expression expected.", peek().pos);
+	throw riv_e151(peek().pos); // expression expected
 }
 
 
@@ -173,10 +174,10 @@ bool Parser::at_end() const noexcept
 
 
 
-Token Parser::consume(const TokenType type, const std::string& errmsg)
+Token Parser::consume(const TokenType type, const Exception& err)
 {
 	if (check(type))
 		return advance();
 
-	throw Exception(errmsg, previous().pos);
+	throw err;
 }

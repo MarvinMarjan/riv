@@ -26,13 +26,21 @@ enum class TokenType
 
 
 
-struct TokenPosition
+class TokenPosition
 {
+public:
 	size_t line, begin, end;
 
 	TokenPosition() = default;
 	TokenPosition(const size_t line, const size_t begin, const size_t end)
-		: line(line), begin(begin), end(end) {}
+		: line(line), begin(begin), end(end), valid_(true) {}
+
+
+	bool valid() const noexcept { return valid_; }
+
+
+private:
+	bool valid_ = false;
 };
 
 

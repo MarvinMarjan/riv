@@ -20,6 +20,10 @@ struct SystemState
 };
 
 
+void set_error_flag() noexcept;
+
+
+
 void init_state_using_srcfile(const std::string& path) noexcept;
 void init_state_using_repl(const std::string& content) noexcept;
 

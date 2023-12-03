@@ -6,6 +6,9 @@
 
 
 
+struct Exception;
+
+
 // creates an AST based on a sequence of tokens
 class Parser
 {
@@ -31,7 +34,7 @@ private:
 	bool at_end() const noexcept;
 
 
-	Token consume(const TokenType type, const std::string& errmsg);
+	Token consume(const TokenType type, const Exception& err);
 
 
 	Expression* expression();

@@ -4,8 +4,9 @@
 #include <specter/output/ostream.h>
 
 #include <system/exception.h>
+#include <language/error_codes.h>
 #include <common/string.h>
-#include <lang.h>
+#include <language/riv.h>
 
 
 
@@ -89,7 +90,7 @@ void Scanner::scan_token()
 			identifier();
 
 		else
-			log_error(Exception("Invalid token.", position()));
+			log_error(riv_e101(position())); // invalid token
 	}
 }
 
@@ -113,14 +114,14 @@ std::string Scanner::advance_string(const char encloser)
 		// end reached and string was not closed
 		if (at_end())
 		{
-			log_error(Exception("Unterminated string.", position()));
+			log_error(riv_e102(position())); // unterminated string
 			return std::string();
 		}
 
 		// newline (not the escape code) located inside a string
 		else if (current == '\n')
 		{
-			log_error(Exception("Multi-line string not supported.", position()));
+			log_error(riv_e103(position())); // multi-line string not supported
 			return std::string();
 		}
 

@@ -4,6 +4,7 @@
 
 #include <specter/output/color/color.h>
 
+#include <common/string.h>
 #include <system/sysstate.h>
 
 
@@ -58,6 +59,37 @@ static std::string get_error_line(std::string& line, const TokenPosition& pos) n
 }
 
 
+static unsigned int count_decimal_numbers(const unsigned int number) noexcept
+{
+	unsigned int buff = 1;
+
+	for (size_t i = 1;; i++)
+	{
+		buff *= 10;
+
+		if (buff > number)
+			return i;
+	}
+
+	return 0;
+}
+
+
+static std::string format_code(const char ch, const unsigned int code) noexcept
+{
+	std::stringstream stream;
+
+	std::string zero_count = "000";
+	
+	for (size_t i = 0; i < count_decimal_numbers(code); i++)
+		zero_count.erase(zero_count.begin());
+
+	stream << ch << zero_count << std::to_string(code);
+
+	return stream.str();
+}
+
+
 
 std::string exception_to_string(const Exception& exception) noexcept
 {
@@ -67,20 +99,30 @@ std::string exception_to_string(const Exception& exception) noexcept
 	const TokenPosition& pos = exception.pos;
 
 	// line where the error occurred
-	std::string line = state.vecsource[pos.line];
+	std::string line;
+	
+	// only initialize when the position is valid
+	if (pos.valid())
+		line = state.vecsource[pos.line];
+	
 	std::stringstream stream;
 
+	const std::string code = format_code('E', exception.code);
+
 	// source where the error occurred
-	stream << std::endl << sp::bred("Error ") << state.source_name;
+	stream << std::endl << sp::clr(surround(code, "(", ")"), sp::fg_bred, sp::underline) << " " << sp::bred("Error ") << state.source_name;
+	stream << " ";
 
 	// error position
-	stream << sp::clr(sp::bold) << " (" << format_token_position(pos) << "): " << sp::RESET_ALL;
+	if (pos.valid())
+		stream << sp::clr(sp::bold) << "(" << format_token_position(pos) << "): " << sp::RESET_ALL;
 
 	// error message
 	stream << exception.msg;
 
 	// error view
-	stream << std::endl << std::endl << get_error_line(line, pos) << std::endl << std::endl;
+	if (pos.valid())
+		stream << std::endl << std::endl << get_error_line(line, pos) << std::endl << std::endl;
 
 	return stream.str();
 }
@@ -90,4 +132,5 @@ std::string exception_to_string(const Exception& exception) noexcept
 
 void log_error(const Exception& exception) noexcept {
 	sp::println(exception_to_string(exception));
+	set_error_flag();
 }

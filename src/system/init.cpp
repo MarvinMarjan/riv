@@ -9,6 +9,8 @@
 #include <common/filesys.h>
 #include <repl/repl.h>
 #include <system/sysstate.h>
+#include <language/error_codes.h>
+#include <system/exception.h>
 
 
 
@@ -72,6 +74,10 @@ void repl_init()
 
 void srcf_init(const int argc, const char** argv)
 {
+	// checks if file exists
+	if (!path_exists(argv[1]))
+		throw riv_e001(argv[1]);
+
 	const SystemState& state = sys_state();
 
 	init_state_using_srcfile(argv[1]);
