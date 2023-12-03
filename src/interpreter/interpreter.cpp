@@ -116,7 +116,6 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 		return !right.as_num();
 
 	case TokenType::Bang:
-		throw_if_type_differs({ right }, TypeIndex::Bool, riv_e201({ right }, expr.op));
 		return !truthy(right);
 	}
 }

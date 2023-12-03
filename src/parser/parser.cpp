@@ -40,9 +40,9 @@ Statement* Parser::statement()
 	catch (const Exception& e)
 	{
 		log_error(e);
+		synchronize();
+		return nullptr;
 	}
-
-	return nullptr;
 }
 
 
@@ -158,6 +158,30 @@ Expression* Parser::primary()
 
 	throw riv_e151(peek().pos); // expression expected
 }
+
+
+
+
+
+void Parser::synchronize() noexcept
+{
+	advance();
+
+	while (!at_end())
+	{
+		if (previous().type == TokenType::SemiColon)
+			return;
+
+		switch (peek().type)
+		{
+		case TokenType::Print:
+			return;
+		}
+
+		advance();
+	}
+}
+
 
 
 

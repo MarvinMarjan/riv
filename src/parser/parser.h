@@ -37,6 +37,7 @@ private:
 	Expression* primary();
 
 
+	void synchronize() noexcept;
 
 
 	Token peek()		const	noexcept;
