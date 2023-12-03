@@ -40,16 +40,14 @@ void run(const std::string& source)
 	Parser parser(tokens);
 
 	// parse the tokens
-	Expression* expr = parser.parse();
+	std::vector<Statement*> statements = parser.parse();
 
 	if (state.has_error)
 		return;
 
 	Interpreter interpreter;
 
-	Type result = interpreter.interpret(expr);
-
-	sp::println(result.to_string());
+	interpreter.interpret(statements);
 }
 
 

@@ -39,6 +39,10 @@ Exception riv_e152(const TokenPosition& pos) noexcept {
 	return Exception("Expect \")\" to close grouping expression.", pos, 152);
 }
 
+Exception riv_e153(const TokenPosition& pos) noexcept {
+	return Exception("Expect \";\" after statement.", pos, 153);
+}
+
 
 
 

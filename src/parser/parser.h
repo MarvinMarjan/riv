@@ -8,6 +8,8 @@
 
 struct Exception;
 
+class Statement;
+
 
 // creates an AST based on a sequence of tokens
 class Parser
@@ -16,13 +18,25 @@ public:
 	Parser(const std::vector<Token>& tokens);
 
 
-	Expression* parse();
+	std::vector<Statement*> parse();
 
 
 private:
-	std::vector<Token> tokens_;
+	Statement* statement();
+	Statement* print_statement();
+	Statement* expression_statement();
 
-	size_t current_;
+
+
+	Expression* expression();
+	Expression* equality();
+	Expression* comparison();
+	Expression* term();
+	Expression* factor();
+	Expression* unary();
+	Expression* primary();
+
+
 
 
 	Token peek()		const	noexcept;
@@ -37,11 +51,9 @@ private:
 	Token consume(const TokenType type, const Exception& err);
 
 
-	Expression* expression();
-	Expression* equality();
-	Expression* comparison();
-	Expression* term();
-	Expression* factor();
-	Expression* unary();
-	Expression* primary();
+
+
+	std::vector<Token> tokens_;
+
+	size_t current_;
 };

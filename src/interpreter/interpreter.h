@@ -1,6 +1,8 @@
 #pragma once
 
-#include <expression/expression.h>
+#include <vector>
+
+#include <statement/statement.h>
 
 
 
@@ -8,23 +10,33 @@ class Exception;
 
 
 // interpret statements
-class Interpreter : public ExpressionProcessor
+class Interpreter : public ExpressionProcessor, public StatementProcessor
 {
 public:
 	Interpreter() = default;
 
-	Type interpret(Expression* expr);
+	void interpret(const std::vector<Statement*>& statements);
 
 
 private:
+	void process_print		(PrintStatement&)		override;
+	void process_expression	(ExpressionStatement&)	override;
+
+	void execute(Statement* const statement) {
+		statement->process(*this);
+	}
+
+
+
+	Type process_binary		(BinaryExpression&)		override;
+	Type process_unary		(UnaryExpression&)		override;
+	Type process_grouping	(GroupingExpression&)	override;
+	Type process_literal	(LiteralExpression&)	override;
+
 	Type evaluate(Expression* expr) {
 		return expr->process(*this);
 	}
 
-	Type process_binary		(BinaryExpression&);
-	Type process_unary		(UnaryExpression&);
-	Type process_grouping	(GroupingExpression&);
-	Type process_literal	(LiteralExpression&);
 
 
 	static bool equals(const Type& left, const Type& right) noexcept;

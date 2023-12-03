@@ -21,7 +21,7 @@ enum class TokenType
 
 	// keywords
 
-	Var
+	Print
 };
 
 

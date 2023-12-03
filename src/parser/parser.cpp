@@ -2,6 +2,7 @@
 
 #include <language/error_codes.h>
 #include <system/exception.h>
+#include <statement/statement.h>
 
 
 
@@ -12,17 +13,55 @@ Parser::Parser(const std::vector<Token>& tokens)
 }
 
 
-Expression* Parser::parse()
+std::vector<Statement*> Parser::parse()
 {
-	try {
-		return expression();
+	std::vector<Statement*> statements;
+
+	while (!at_end())
+		statements.push_back(statement());
+
+	return statements;
+}
+
+
+
+
+
+
+Statement* Parser::statement()
+{
+	try
+	{
+		if (match({ TokenType::Print }))
+			return print_statement();
+
+		return expression_statement();
 	}
 	catch (const Exception& e)
 	{
 		log_error(e);
-		return nullptr;
 	}
+
+	return nullptr;
 }
+
+
+Statement* Parser::print_statement()
+{
+	Expression* value = expression();
+	consume(TokenType::SemiColon, riv_e153(peek().pos));
+	return new PrintStatement(value);
+}
+
+
+Statement* Parser::expression_statement()
+{
+	Expression* expression = this->expression();
+	consume(TokenType::SemiColon, riv_e153(peek().pos));
+	return new ExpressionStatement(expression);
+}
+
+
 
 
 

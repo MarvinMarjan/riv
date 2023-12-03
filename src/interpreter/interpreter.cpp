@@ -5,17 +5,35 @@
 
 
 
-Type Interpreter::interpret(Expression* expr)
+void Interpreter::interpret(const std::vector<Statement*>& statements)
 {
 	try {
-		return evaluate(expr);	
+		for (Statement* const statement : statements)
+			execute(statement);
 	}
 	catch (const Exception& e)
 	{
 		log_error(e);
-		return Type();
 	}
 }
+
+
+
+
+
+
+void Interpreter::process_print(PrintStatement& statement)
+{
+	sp::println(evaluate(statement.value).to_string());
+}
+
+
+void Interpreter::process_expression(ExpressionStatement& statement)
+{
+	evaluate(statement.expr);
+}
+
+
 
 
 
@@ -114,6 +132,8 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 {
 	return expr.value;
 }
+
+
 
 
 

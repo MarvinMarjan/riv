@@ -32,7 +32,8 @@ Exception riv_e103(const TokenPosition& pos) noexcept; // multi-line string not 
 // 151 - 200: parser errors
 
 Exception riv_e151(const TokenPosition& pos) noexcept; // expression expected
-Exception riv_e152(const TokenPosition& pos) noexcept; // expect ')' to close grouping expression
+Exception riv_e152(const TokenPosition& pos) noexcept; // expect ")" to close grouping expression
+Exception riv_e153(const TokenPosition& pos) noexcept; // expect ";" after statement
 
 
 
