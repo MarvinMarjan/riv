@@ -16,12 +16,15 @@
 - [Grouping](#grouping)
 
 
+**Expressions** are literal values (like `false` `"hello"` and `8`) or operations that returns a value.
+
+
 # Binary
 
 ## Operator +
 ### Addition
 
-***(draft)***
+***(stable)***
 
 
 Operates the sum of two *Number* values:
@@ -31,7 +34,7 @@ Operates the sum of two *Number* values:
 
 ### Concatenation
 
-***(draft)***
+***(stable)***
 
 
 Operates the merge of two *String* values:
@@ -43,7 +46,7 @@ Operates the merge of two *String* values:
 ## Operator -
 ### Subtraction
 
-***(draft)***
+***(stable)***
 
 
 Operates the subtraction of two *Number* values:
@@ -55,7 +58,7 @@ Operates the subtraction of two *Number* values:
 ## Operator *
 ### Multiplication
 
-***(draft)***
+***(stable)***
 
 
 Operates the multiplication of two *Number* values:
@@ -67,7 +70,7 @@ Operates the multiplication of two *Number* values:
 ## Operator /
 ### Division
 
-***(draft)***
+***(stable)***
 
 
 Operates the division of two *Number* values:
@@ -81,7 +84,7 @@ Operates the division of two *Number* values:
 ## Operator -
 ### Number Negation
 
-***(draft)***
+***(stable)***
 
 
 Negates a *Number* value:
@@ -95,7 +98,7 @@ If `value` is positive, then it will be negated to negative. It it's negative, t
 ## Operator !
 ### Condition Negation
 
-***(draft)***
+***(stable)***
 
 
 Negates a *Bool* value:
@@ -108,7 +111,7 @@ If `value` is `true`, it becomes `false`. If it's `false`, it becomes `true`.
 
 # Grouping
 
-***(draft)***
+***(stable)***
 
 
 Use `"(" ... ")"` to group an expression. When grouped, it will have a higher precedence.

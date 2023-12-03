@@ -15,7 +15,7 @@ class Type;
 
 
 
-// 001 - 99: interpreter errors
+// 001 - 099: interpreter errors
 
 Exception riv_e001(const std::string& path) noexcept; // invalid source file
 
