@@ -49,7 +49,7 @@ Statement* Parser::statement()
 Statement* Parser::print_statement()
 {
 	Expression* value = expression();
-	consume(TokenType::SemiColon, riv_e153(peek().pos));
+	consume(TokenType::SemiColon, riv_e202(peek().pos));
 	return new PrintStatement(value);
 }
 
@@ -57,7 +57,7 @@ Statement* Parser::print_statement()
 Statement* Parser::expression_statement()
 {
 	Expression* expression = this->expression();
-	consume(TokenType::SemiColon, riv_e153(peek().pos));
+	consume(TokenType::SemiColon, riv_e202(peek().pos));
 	return new ExpressionStatement(expression);
 }
 
@@ -152,11 +152,11 @@ Expression* Parser::primary()
 	if (match({ TokenType::LeftParen }))
 	{
 		Expression* expr = expression();
-		consume(TokenType::RightParen, riv_e152(peek().pos)); // expect ')' to close grouping expression
+		consume(TokenType::RightParen, riv_e201(peek().pos)); // expect ')' to close grouping expression
 		return new GroupingExpression(expr);
 	}
 
-	throw riv_e151(peek().pos); // expression expected
+	throw riv_e200(peek().pos); // expression expected
 }
 
 

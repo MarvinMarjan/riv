@@ -53,15 +53,15 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 			return left.as_str() + right.as_str();
 
 	case TokenType::Minus:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e201({ left, right }, expr.op));
+		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() - right.as_num();
 
 	case TokenType::Star:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e201({ left, right }, expr.op));
+		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() * right.as_num();
 
 	case TokenType::Slash:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e201({ left, right }, expr.op));
+		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() / right.as_num();
 
 
@@ -112,7 +112,7 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 	switch (expr.op.type)
 	{
 	case TokenType::Minus:
-		throw_if_type_differs({ right }, TypeIndex::Number, riv_e201({ right }, expr.op));
+		throw_if_type_differs({ right }, TypeIndex::Number, riv_e300({ right }, expr.op));
 		return !right.as_num();
 
 	case TokenType::Bang:

@@ -111,7 +111,9 @@ std::string exception_to_string(const Exception& exception) noexcept
 
 	// source where the error occurred
 	stream << std::endl << sp::clr(surround(code, "(", ")"), sp::fg_bred, sp::underline) << " " << sp::bred("Error ") << state.source_name;
-	stream << " ";
+	
+	if (!state.source_name.empty())
+		stream << " ";
 
 	// error position
 	if (pos.valid())

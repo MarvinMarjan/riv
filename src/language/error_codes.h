@@ -15,28 +15,28 @@ class Type;
 
 
 
-// 001 - 100: interpreter errors
+// 001 - 99: interpreter errors
 
-Exception riv_e001(const std::string& path) noexcept;
-
-
-
-// 101 - 150: scanner errors
-
-Exception riv_e101(const TokenPosition& pos) noexcept; // invalid token
-Exception riv_e102(const TokenPosition& pos) noexcept; // unterminated string
-Exception riv_e103(const TokenPosition& pos) noexcept; // multi-line string not supported
+Exception riv_e001(const std::string& path) noexcept; // invalid source file
 
 
 
-// 151 - 200: parser errors
+// 100 - 199: scanner errors
 
-Exception riv_e151(const TokenPosition& pos) noexcept; // expression expected
-Exception riv_e152(const TokenPosition& pos) noexcept; // expect ")" to close grouping expression
-Exception riv_e153(const TokenPosition& pos) noexcept; // expect ";" after statement
+Exception riv_e100(const TokenPosition& pos) noexcept; // invalid token
+Exception riv_e101(const TokenPosition& pos) noexcept; // unterminated string
+Exception riv_e102(const TokenPosition& pos) noexcept; // multi-line string not supported
 
 
 
-// 201 - 300: interpreter errors
+// 200 - 299: parser errors
 
-Exception riv_e201(const std::initializer_list<Type>& operands, const Token& op) noexcept; // Operator "..." doesn't support operands of type: type1, type2, ...
+Exception riv_e200(const TokenPosition& pos) noexcept; // expression expected
+Exception riv_e201(const TokenPosition& pos) noexcept; // expect ")" to close grouping expression
+Exception riv_e202(const TokenPosition& pos) noexcept; // expect ";" after statement
+
+
+
+// 300 - 399: runtime errors
+
+Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op) noexcept; // Operator "..." doesn't support operands of type: type1, type2, ...
