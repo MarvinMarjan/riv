@@ -22,15 +22,21 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 
 
 
+void Interpreter::process_expression(ExpressionStatement& statement)
+{
+	evaluate(statement.expr);
+}
+
+
 void Interpreter::process_print(PrintStatement& statement)
 {
 	sp::println(evaluate(statement.value).to_string());
 }
 
 
-void Interpreter::process_expression(ExpressionStatement& statement)
+void Interpreter::process_var(VarStatement& statement)
 {
-	evaluate(statement.expr);
+	environment.declare(statement.name.lexeme, evaluate(statement.value));
 }
 
 
@@ -130,6 +136,30 @@ Type Interpreter::process_grouping(GroupingExpression& expr)
 Type Interpreter::process_literal(LiteralExpression& expr)
 {
 	return expr.value;
+}
+
+
+Type Interpreter::process_call(CallExpression& expr)
+{
+	return environment.get(expr.identifier);
+}
+
+
+Type Interpreter::process_assignment(AssignmentExpression& expr)
+{
+	const Type value = evaluate(expr.value);
+	environment.assign(expr.identifier, value);
+	return value;
+}
+
+
+
+Type Interpreter::evaluate(Expression* const expr)
+{
+	if (!expr)
+		return Type();
+
+	return expr->process(*this);
 }
 
 

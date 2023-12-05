@@ -1,3 +1,18 @@
-print false;
-print true
-print "ha";
+var num1 = 5;
+var num2 = 10;
+
+print num1 + num2;
+
+num1 = 24;
+
+print num1 * num2;
+
+var x;
+var y;
+var z;
+
+x = y = z = 10;
+
+print x + y + z;
+
+

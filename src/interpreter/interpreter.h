@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <statement/statement.h>
+#include <environment/environment.h>
 
 
 
@@ -18,9 +19,13 @@ public:
 	void interpret(const std::vector<Statement*>& statements);
 
 
+	Environment environment;
+
+
 private:
-	void process_print		(PrintStatement&)		override;
 	void process_expression	(ExpressionStatement&)	override;
+	void process_print		(PrintStatement&)		override;
+	void process_var		(VarStatement&)			override;
 
 	void execute(Statement* const statement) {
 		statement->process(*this);
@@ -32,10 +37,10 @@ private:
 	Type process_unary		(UnaryExpression&)		override;
 	Type process_grouping	(GroupingExpression&)	override;
 	Type process_literal	(LiteralExpression&)	override;
+	Type process_call		(CallExpression&)		override;
+	Type process_assignment	(AssignmentExpression&)	override;
 
-	Type evaluate(Expression* expr) {
-		return expr->process(*this);
-	}
+	Type evaluate(Expression* const expr);
 
 
 

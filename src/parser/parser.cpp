@@ -18,7 +18,7 @@ std::vector<Statement*> Parser::parse()
 	std::vector<Statement*> statements;
 
 	while (!at_end())
-		statements.push_back(statement());
+		statements.push_back(declaration());
 
 	return statements;
 }
@@ -28,14 +28,14 @@ std::vector<Statement*> Parser::parse()
 
 
 
-Statement* Parser::statement()
+Statement* Parser::declaration()
 {
 	try
 	{
-		if (match({ TokenType::Print }))
-			return print_statement();
+		if (match({ TokenType::Var }))
+			return var_declaration();
 
-		return expression_statement();
+		return statement();
 	}
 	catch (const Exception& e)
 	{
@@ -46,19 +46,42 @@ Statement* Parser::statement()
 }
 
 
-Statement* Parser::print_statement()
+Statement* Parser::statement()
 {
-	Expression* value = expression();
-	consume(TokenType::SemiColon, riv_e202(previous().pos));
-	return new PrintStatement(value);
+	if (match({ TokenType::Print }))
+		return print_statement();
+
+	return expression_statement();	
 }
 
 
 Statement* Parser::expression_statement()
 {
 	Expression* expression = this->expression();
-	consume(TokenType::SemiColon, riv_e202(previous().pos));
+	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
 	return new ExpressionStatement(expression);
+}
+
+
+Statement* Parser::print_statement()
+{
+	Expression* value = expression();
+	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
+	return new PrintStatement(value);
+}
+
+
+Statement* Parser::var_declaration()
+{
+	Token name = consume(TokenType::Identifier, riv_e203(previous().pos)); // expect variable name after "var"
+	Expression* value = nullptr;
+
+	if (match({ TokenType::Equal }))
+		value = expression();
+
+	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
+
+	return new VarStatement(name, value);
 }
 
 
@@ -68,7 +91,29 @@ Statement* Parser::expression_statement()
 
 Expression* Parser::expression()
 {
-	return equality();
+	return assignment();
+}
+
+
+Expression* Parser::assignment()
+{
+	Expression* expr = equality();
+
+	if (match({ TokenType::Equal }))
+	{
+		Token equal = previous();
+		Expression* value = assignment();
+
+		CallExpression* call = dynamic_cast<CallExpression*>(expr);
+
+		// it's not a identifier
+		if (!call)
+			throw riv_e204(equal.pos); // only variables can be assigned
+
+		return new AssignmentExpression(call->identifier, value);
+	}
+
+	return expr;
 }
 
 
@@ -141,13 +186,25 @@ Expression* Parser::unary()
 		return new UnaryExpression(op, right);
 	}
 
-	return primary();
+	return call();
+}
+
+
+Expression* Parser::call()
+{
+	Expression* expression = primary();
+
+	return expression;
 }
 
 
 Expression* Parser::primary()
 {
-	if (match({ TokenType::String, TokenType::Number, TokenType::Bool, TokenType::Null })) return new LiteralExpression(previous().value);
+	if (match({ TokenType::String, TokenType::Number, TokenType::Bool, TokenType::Null }))
+		return new LiteralExpression(previous().value);
+
+	if (match({ TokenType::Identifier }))
+		return new CallExpression(previous());
 
 	if (match({ TokenType::LeftParen }))
 	{
@@ -210,7 +267,7 @@ Token Parser::previous() const noexcept
 
 bool Parser::match(const std::initializer_list<TokenType>& tokens) noexcept
 {
-	for (const TokenType token_type: tokens)
+	for (const TokenType token_type : tokens)
 		if (check(token_type))
 		{
 			advance();

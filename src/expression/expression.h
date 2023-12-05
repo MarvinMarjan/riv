@@ -8,6 +8,8 @@ class BinaryExpression;
 class UnaryExpression;
 class GroupingExpression;
 class LiteralExpression;
+class CallExpression;
+class AssignmentExpression;
 
 
 // visitor pattern
@@ -18,6 +20,8 @@ public:
 	virtual Type process_unary		(UnaryExpression&)		= 0;
 	virtual Type process_grouping	(GroupingExpression&)	= 0;
 	virtual Type process_literal	(LiteralExpression&)	= 0;
+	virtual Type process_call		(CallExpression&)		= 0;
+	virtual Type process_assignment	(AssignmentExpression&)	= 0;
 };
 
 
@@ -103,4 +107,39 @@ public:
 
 
 	Type value;
+};
+
+
+
+
+class CallExpression : public Expression
+{
+public:
+	CallExpression(const Token& identifier);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_call(*this);
+	}
+
+
+	Token identifier;
+};
+
+
+
+
+class AssignmentExpression : public Expression
+{
+public:
+	AssignmentExpression(const Token& identifier, Expression* const value);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_assignment(*this);
+	}
+
+
+	Token		identifier;
+	Expression* value = nullptr;
 };

@@ -6,6 +6,7 @@
 
 class ExpressionStatement;
 class PrintStatement;
+class VarStatement;
 
 
 class StatementProcessor
@@ -13,6 +14,7 @@ class StatementProcessor
 public:
 	virtual void process_expression	(ExpressionStatement&)	= 0;
 	virtual void process_print		(PrintStatement&)		= 0;
+	virtual void process_var		(VarStatement&)			= 0;
 };
 
 
@@ -57,4 +59,22 @@ public:
 
 
 	Expression* value = nullptr;
+};
+
+
+
+
+class VarStatement : public Statement
+{
+public:
+	VarStatement(const Token& name, Expression* const value);
+
+
+	void process(StatementProcessor& processor) override {
+		processor.process_var(*this);
+	}
+
+
+	Token		name;
+	Expression*	value = nullptr;
 };

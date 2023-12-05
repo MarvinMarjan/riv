@@ -43,6 +43,14 @@ Exception riv_e202(const TokenPosition& pos) noexcept {
 	return Exception("Expect \";\" after statement.", pos, 202);
 }
 
+Exception riv_e203(const TokenPosition& pos) noexcept {
+	return Exception("Expect variable name after \"var\" keyword.", pos, 203);
+}
+
+Exception riv_e204(const TokenPosition& pos) noexcept {
+	return Exception("Only variables can be assigned.", pos, 204);
+}
+
 
 
 
@@ -58,4 +66,9 @@ Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op)
 	}
 
 	return Exception("Operator \"" + op.lexeme + "\" doesn't support operands of type: " + operands_str.str(), op.pos, 300);
+}
+
+Exception riv_e301(const Token& identifier) noexcept
+{
+	return Exception("Undefined identifier \"" + identifier.lexeme + "\".", identifier.pos, 301);
 }

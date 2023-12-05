@@ -22,18 +22,22 @@ public:
 
 
 private:
+	Statement* declaration();
 	Statement* statement();
-	Statement* print_statement();
 	Statement* expression_statement();
+	Statement* print_statement();
+	Statement* var_declaration();
 
 
 
 	Expression* expression();
+	Expression* assignment();
 	Expression* equality();
 	Expression* comparison();
 	Expression* term();
 	Expression* factor();
 	Expression* unary();
+	Expression* call();
 	Expression* primary();
 
 

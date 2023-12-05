@@ -27,3 +27,16 @@ LiteralExpression::LiteralExpression(const Type& value)
 {
 	this->value = value;
 }
+
+
+CallExpression::CallExpression(const Token& identifier)
+{
+	this->identifier = identifier;
+}
+
+
+AssignmentExpression::AssignmentExpression(const Token& identifier, Expression* const value)
+{
+	this->identifier = identifier;
+	this->value = value;
+}
