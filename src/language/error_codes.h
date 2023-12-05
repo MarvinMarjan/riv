@@ -34,8 +34,9 @@ Exception riv_e102(const TokenPosition& pos) noexcept; // multi-line string not 
 Exception riv_e200(const TokenPosition& pos) noexcept; // expression expected
 Exception riv_e201(const TokenPosition& pos) noexcept; // expect ")" to close grouping expression
 Exception riv_e202(const TokenPosition& pos) noexcept; // expect ";" after statement
-Exception riv_e203(const TokenPosition& pos) noexcept; // expect variable name after "var" keyword.
+Exception riv_e203(const TokenPosition& pos) noexcept; // expect variable name after "var" keyword
 Exception riv_e204(const TokenPosition& pos) noexcept; // only variables can be assigned.
+Exception riv_e205(const TokenPosition& pos) noexcept; // expect "}" to close block statement
 
 
 

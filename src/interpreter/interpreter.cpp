@@ -28,6 +28,12 @@ void Interpreter::process_expression(ExpressionStatement& statement)
 }
 
 
+void Interpreter::process_block(BlockStatement& statement)
+{
+	execute_block(statement.statements, environment);
+}
+
+
 void Interpreter::process_print(PrintStatement& statement)
 {
 	sp::println(evaluate(statement.value).to_string());
@@ -39,6 +45,21 @@ void Interpreter::process_var(VarStatement& statement)
 	environment.declare(statement.name.lexeme, evaluate(statement.value));
 }
 
+
+
+
+void Interpreter::execute_block(const std::vector<Statement*>& statements, const Environment& environment)
+{
+	Environment old_env = this->environment;
+	Environment new_env = environment;
+
+	this->environment = new_env;
+	
+	for (Statement* const statement : statements)
+		execute(statement);
+
+	this->environment = old_env;
+}
 
 
 

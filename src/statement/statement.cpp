@@ -8,6 +8,12 @@ ExpressionStatement::ExpressionStatement(Expression* const expr)
 }
 
 
+BlockStatement::BlockStatement(const std::vector<Statement*>& statements)
+{
+	this->statements = statements;
+}
+
+
 PrintStatement::PrintStatement(Expression* const value)
 {
 	this->value = value;

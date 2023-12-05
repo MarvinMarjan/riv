@@ -48,6 +48,9 @@ Statement* Parser::declaration()
 
 Statement* Parser::statement()
 {
+	if (match({ TokenType::LeftCurlyBrace }))
+		return block_statement();
+
 	if (match({ TokenType::Print }))
 		return print_statement();
 
@@ -60,6 +63,12 @@ Statement* Parser::expression_statement()
 	Expression* expression = this->expression();
 	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
 	return new ExpressionStatement(expression);
+}
+
+
+Statement* Parser::block_statement()
+{
+	return new BlockStatement(block());
 }
 
 
@@ -217,6 +226,20 @@ Expression* Parser::primary()
 }
 
 
+
+
+
+std::vector<Statement*> Parser::block()
+{
+	std::vector<Statement*> statements;
+
+	while (!check(TokenType::RightCurlyBrace) && !at_end())
+		statements.push_back(declaration());
+
+	consume(TokenType::RightCurlyBrace, riv_e205(previous().pos));
+
+	return statements;
+}
 
 
 

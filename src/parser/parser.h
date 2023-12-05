@@ -25,6 +25,7 @@ private:
 	Statement* declaration();
 	Statement* statement();
 	Statement* expression_statement();
+	Statement* block_statement();
 	Statement* print_statement();
 	Statement* var_declaration();
 
@@ -41,6 +42,8 @@ private:
 	Expression* primary();
 
 
+	std::vector<Statement*> block();
+	
 	void synchronize() noexcept;
 
 

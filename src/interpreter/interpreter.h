@@ -24,8 +24,11 @@ public:
 
 private:
 	void process_expression	(ExpressionStatement&)	override;
+	void process_block		(BlockStatement&)		override;
 	void process_print		(PrintStatement&)		override;
 	void process_var		(VarStatement&)			override;
+
+	void execute_block(const std::vector<Statement*>& statements, const Environment& environment);
 
 	void execute(Statement* const statement) {
 		statement->process(*this);

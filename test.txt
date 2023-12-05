@@ -1,18 +1,17 @@
-var num1 = 5;
-var num2 = 10;
+var foo = 10;
+var foz = "foz var";
 
-print num1 + num2;
+{
+	var baz = "riv";
+	var bar = true;
 
-num1 = 24;
+	var foo = 15;
 
-print num1 * num2;
+	print baz;
+	print bar;
 
-var x;
-var y;
-var z;
+	print foo;
+}
 
-x = y = z = 10;
-
-print x + y + z;
-
-
+print foo;
+print foz;

@@ -1,10 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include <expression/expression.h>
 
 
 
 class ExpressionStatement;
+class BlockStatement;
 class PrintStatement;
 class VarStatement;
 
@@ -13,6 +16,7 @@ class StatementProcessor
 {
 public:
 	virtual void process_expression	(ExpressionStatement&)	= 0;
+	virtual void process_block		(BlockStatement&)		= 0;
 	virtual void process_print		(PrintStatement&)		= 0;
 	virtual void process_var		(VarStatement&)			= 0;
 };
@@ -42,6 +46,23 @@ public:
 
 
 	Expression* expr = nullptr;
+};
+
+
+
+
+class BlockStatement : public Statement
+{
+public:
+	BlockStatement(const std::vector<Statement*>& statements);
+
+
+	void process(StatementProcessor& processor) override {
+		processor.process_block(*this);
+	}
+
+
+	std::vector<Statement*> statements;
 };
 
 

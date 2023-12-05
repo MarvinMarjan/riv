@@ -51,6 +51,10 @@ Exception riv_e204(const TokenPosition& pos) noexcept {
 	return Exception("Only variables can be assigned.", pos, 204);
 }
 
+Exception riv_e205(const TokenPosition& pos) noexcept {
+	return Exception("Expect \"}\" to close block statement.", pos, 205);
+}
+
 
 
 
