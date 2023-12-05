@@ -56,7 +56,7 @@ private:
 
 
 	void add_token(const TokenType type, const Type& value = Type()) noexcept {
-		tokens_.push_back(Token(type, current_substring(), value, line_, begin_, end_));
+		tokens_.push_back(Token(type, current_substring(), value, line_, ln_begin_, ln_end_));
 	}
 
 

@@ -1,2 +1,3 @@
-2 * 4 ==
-10
+print false;
+print true
+print "ha";

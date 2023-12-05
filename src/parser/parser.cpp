@@ -49,7 +49,7 @@ Statement* Parser::statement()
 Statement* Parser::print_statement()
 {
 	Expression* value = expression();
-	consume(TokenType::SemiColon, riv_e202(peek().pos));
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
 	return new PrintStatement(value);
 }
 
@@ -57,7 +57,7 @@ Statement* Parser::print_statement()
 Statement* Parser::expression_statement()
 {
 	Expression* expression = this->expression();
-	consume(TokenType::SemiColon, riv_e202(peek().pos));
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
 	return new ExpressionStatement(expression);
 }
 
