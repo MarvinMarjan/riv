@@ -24,8 +24,7 @@ InitMode get_init_mode(const int argc, const char** argv) noexcept
 
 
 
-
-void run(const std::string& source)
+std::vector<Token> scan(const std::string& source)
 {
 	const SystemState& state = sys_state();
 
@@ -34,21 +33,47 @@ void run(const std::string& source)
 	// scan source into tokens
 	std::vector<Token> tokens = scanner.scan();
 
-	if (state.has_error)
-		return;
+	return tokens;
+}
 
-	Parser parser(tokens);
+
+
+std::vector<Statement*> parse(const std::vector<Token>& source)
+{
+	Parser parser(source);
 
 	// parse the tokens
 	std::vector<Statement*> statements = parser.parse();
 
+	return statements;
+}
+
+
+
+void run(const std::vector<Statement*>& statements)
+{
+	Interpreter().interpret(statements);
+}
+
+
+
+void run(const std::string& source)
+{
+	const SystemState& state = sys_state();
+
+	std::vector<Token> tokens = scan(source);
+
 	if (state.has_error)
 		return;
 
-	Interpreter interpreter;
+	std::vector<Statement*> statements = parse(tokens);
 
-	interpreter.interpret(statements);
+	if (state.has_error)
+		return;
+
+	run(statements);
 }
+
 
 
 
@@ -58,13 +83,36 @@ void repl_init()
 
 	// REPL instance
 	RivREPL repl;
+	Interpreter interpreter;
 
 	std::string source;
 
-	while ((source = repl.read()) != ".exit")
+	while (true)
 	{
+		sp::print("> ");
+
+		source = repl.read();
+
+		if (source == ".exit")
+			break;
+
+
 		init_state_using_repl(source);
-		run(source);
+
+
+		// processing
+
+		std::vector<Token> tokens = scan(source);
+
+		if (state.has_error)
+			continue;
+
+		std::vector<Statement*> statements = parse(tokens);
+		
+		if (state.has_error)
+			continue;
+
+		interpreter.interpret(statements);
 	}
 }
 
