@@ -2,6 +2,7 @@
 
 To improve the way how syntax is notated, it will be used a **Syntax Notation** rule to express ***Riv's*** syntax.
 
+- `statement` - Any statement.
 - `"text"` - Identifiers in general. It includes keywords, functions, variables, etc...
 - `< text >` - Location where an identifier is expected. Tipically used to indicate a place where you can name things, such as variables, functions, etc...
 - `[ value ]` - Location where a value (or expression) is expected.

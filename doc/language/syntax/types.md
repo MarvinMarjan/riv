@@ -1,6 +1,3 @@
-
-
-
 ***Riv*** have four built-in data types:
 
 - [String](#string)

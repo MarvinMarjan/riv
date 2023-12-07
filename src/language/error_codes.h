@@ -43,4 +43,4 @@ Exception riv_e205(const TokenPosition& pos) noexcept; // expect "}" to close bl
 // 300 - 399: runtime errors
 
 Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op) noexcept; // Operator "..." doesn't support operands of type: type1, type2, ...
-Exception riv_e301(const Token& identifier) noexcept;
+Exception riv_e301(const Token& identifier) noexcept; // undefined indentifier "..."

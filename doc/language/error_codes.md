@@ -8,8 +8,12 @@
 	- [*200*: Expression expected](#200-expression-expected)
 	- [*201*: Expect ")" to close grouping expression](#201-expect--to-close-grouping-expression)
 	- [*202*: Expect ";" after statement](#202-expect--after-statement)
+	- [*203*: Expect variable name after "var" keyword](#203-expect-variable-name-after-var-keyword)
+	- [*204*: Only variables can be assigned](#204-only-variables-can-be-assigned)
+	- [*205*: Expect "}" to close block statement](#205-expect--to-close-block-statement)
 - [Runtime errors](#runtime-errors)
 	- [*300*: Operator "..." doesn't support operands of type: type1, type2, ...](#300-operator--doesnt-support-operands-of-type-type1-type2-)
+	- [*301*: Undefined indentifier "..."](#301-undefined-indentifier-)
 
 
 
@@ -46,6 +50,8 @@ Error caused when inserting an invalid (not supported) token.
 
 Error caused when a string is not closed.
 
+`"hello, world`
+
 
 
 
@@ -55,6 +61,11 @@ Error caused when a string is not closed.
 Error caused when inserting a new line inside a string. **Riv** doesn't support multi-line strings.
 
 
+```
+"hello, 
+world"
+```
+
 
 
 
@@ -62,7 +73,9 @@ Error caused when inserting a new line inside a string. **Riv** doesn't support 
 
 ### *200*: Expression expected
 
-Error caused when a location expecting	 an expression doesn't receive it.
+Error caused when a location expecting an expression doesn't receive it.
+
+`print ;`
 
 
 
@@ -72,6 +85,8 @@ Error caused when a location expecting	 an expression doesn't receive it.
 
 Error caused when a group expression `( ... )` isn't closed.
 
+`(2 + (-8)`
+
 
 
 
@@ -80,6 +95,40 @@ Error caused when a group expression `( ... )` isn't closed.
 
 Error caused when `;` isn't added at a statement end.
 
+`print 10`
+
+
+
+
+
+### *203*: Expect variable name after "var" keyword
+
+Error caused when the variable name is missing at its declaration.
+
+`var = 90;`
+
+
+
+
+
+### *204*: Only variables can be assigned
+
+Error caused when trying to assign a non-variable value.
+
+`5 = 90;`
+
+
+
+
+
+### *205*: Expect "}" to close block statement
+
+Error caused when a [Block Statement](/doc/language/syntax/statements.md#block-statement) isn't closed.
+
+```
+{
+	print "a unclosed block";
+```
 
 
 
@@ -88,4 +137,20 @@ Error caused when `;` isn't added at a statement end.
 
 ### *300*: Operator "..." doesn't support operands of type: type1, type2, ...
 
-Error caused when an operator receive operands in which types are not supported. e.g. `2 + false`
+Error caused when an operator receive operands in which types are not supported.
+
+`2 + false`
+
+
+
+
+
+### *301*: Undefined indentifier "..."
+
+Error caused when trying to call an undefined indetifier.
+
+```
+var boolean = true;
+
+print number; // undefined indentifier "number"
+```

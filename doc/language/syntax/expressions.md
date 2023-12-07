@@ -14,6 +14,7 @@
 	- [Operator !](#operator--3)
 		- [Condition Negation](#condition-negation)
 - [Grouping](#grouping)
+- [Assignment](#assignment)
 
 
 **Expressions** are literal values (like `false` `"hello"` and `8`) or operations that returns a value.
@@ -27,9 +28,11 @@
 ***(stable)***
 
 
-Operates the sum of two *Number* values:
-
 `[ value1:Number ] "+" [ value2:Number ]`
+
+
+Operates the sum of two *Number* values.
+
 
 
 ### Concatenation
@@ -37,9 +40,10 @@ Operates the sum of two *Number* values:
 ***(stable)***
 
 
-Operates the merge of two *String* values:
-
 `[ value1:String ] "+" [ value2:String ]`
+
+
+Operates the merge of two *String* values.
 
 
 
@@ -49,9 +53,10 @@ Operates the merge of two *String* values:
 ***(stable)***
 
 
-Operates the subtraction of two *Number* values:
-
 `[ value1:Number ] "-" [ value2:Number ]`
+
+
+Operates the subtraction of two *Number* values.
 
 
 
@@ -61,9 +66,10 @@ Operates the subtraction of two *Number* values:
 ***(stable)***
 
 
-Operates the multiplication of two *Number* values:
-
 `[ value1:Number ] "*" [ value2:Number ]`
+
+
+Operates the multiplication of two *Number* values.
 
 
 
@@ -73,9 +79,10 @@ Operates the multiplication of two *Number* values:
 ***(stable)***
 
 
-Operates the division of two *Number* values:
-
 `[ value1:Number ] "/" [ value2:Number ]`
+
+
+Operates the division of two *Number* values.
 
 
 
@@ -87,10 +94,10 @@ Operates the division of two *Number* values:
 ***(stable)***
 
 
-Negates a *Number* value:
-
 `"-" [ value:Number ]`
 
+
+Negates a *Number* value.
 If `value` is positive, then it will be negated to negative. It it's negative, then it will be negated to positive.
 
 
@@ -101,10 +108,10 @@ If `value` is positive, then it will be negated to negative. It it's negative, t
 ***(stable)***
 
 
-Negates a *Bool* value:
-
 `"!" [ value:Bool ]`
 
+
+Negates a *Bool* value.
 If `value` is `true`, it becomes `false`. If it's `false`, it becomes `true`.
 
 
@@ -115,3 +122,15 @@ If `value` is `true`, it becomes `false`. If it's `false`, it becomes `true`.
 
 
 Use `"(" ... ")"` to group an expression. When grouped, it will have a higher precedence.
+
+
+
+# Assignment
+
+***(stable)***
+
+
+`< variable > "=" [ value ] ";"`
+
+
+After a variable is declared, you can change its value.
