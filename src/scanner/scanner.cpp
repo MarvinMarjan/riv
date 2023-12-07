@@ -246,14 +246,16 @@ void Scanner::line_comment() noexcept
 {
 	while (!at_end())
 	{
-		advance();
-
 		if (peek() == '\n')
 		{
 			next_line();
 			break;
 		}
+
+		advance();
 	}
+
+	advance();
 }
 
 
@@ -261,13 +263,13 @@ void Scanner::block_comment() noexcept
 {
 	while (!at_end())
 	{
-		advance();
-
 		if (peek() == '\n')
 			next_line();
 
 		if (match('*') && match('/'))
 			break;
+
+		advance();
 	}
 }
 

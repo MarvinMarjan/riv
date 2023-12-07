@@ -4,9 +4,6 @@ var y = 10;
 // x * y = 40
 
 /*
-	this block comment
-	will be ignored by
-	the interpreter :)
+*/
 
-
-print x  y;
+print;
