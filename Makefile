@@ -18,7 +18,7 @@ endif
 
 
 CC = g++
-CPP_VERSION = --std=c++23
+CPP_VERSION = --std=c++20
 
 OUT_NAME = riv
 OUT_APP = $(OUT_PATH)/$(OUT_NAME)
@@ -68,7 +68,7 @@ run:
 .PHONY:
 $(OUT_APP) build: $(OBJECTS)
 	@ echo Linking objects: $(FULL_OBJECTS)
-	@ g++ $(FULL_OBJECTS) -o $(OUT_APP) $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
+	@ $(CC) $(FULL_OBJECTS) -o $(OUT_APP) $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
 	@ echo Application created at $(OUT_APP)
 
 
@@ -77,8 +77,12 @@ $(OUT_APP) build: $(OBJECTS)
 # compiles source files into objects
 $(OBJECTS): %.o: %.cpp
 	@ echo Compiling $<
-	@ g++ -c $< -o $(addprefix $(OUT_PATH)/, $(notdir $@)) $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION)
+	@ $(CC) -c $< -o $(addprefix $(OUT_PATH)/, $(notdir $@)) $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION)
 
+
+.PHONY:
+analize:
+	@ make build -j 10 CC="include-what-you-use -Xiwyu --verbose=1"
 
 
 # cleans up build folder
