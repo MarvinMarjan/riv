@@ -31,7 +31,12 @@ static std::map<std::string, TokenType> s_operators =
 static std::map<std::string, TokenType> s_keywords =
 {
 	{"print",	TokenType::Print},
-	{"var",		TokenType::Var}
+	{"var",		TokenType::Var},
+	{"if",		TokenType::If},
+	{"else",	TokenType::Else},
+	{"while",	TokenType::While},
+	{"for",		TokenType::For},
+	{"loop",	TokenType::Loop}
 };
 
 

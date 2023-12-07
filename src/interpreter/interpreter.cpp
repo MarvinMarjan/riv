@@ -48,6 +48,23 @@ void Interpreter::process_var(VarStatement& statement)
 }
 
 
+void Interpreter::process_if(IfStatement& statement)
+{
+	if (truthy(evaluate(statement.condition)))
+		execute(statement.then_statement);
+
+	else if (statement.else_statement)
+		execute(statement.else_statement);
+}
+
+
+void Interpreter::process_while(WhileStatement& statement)
+{
+	while (truthy(evaluate(statement.condition)))
+		execute(statement.body);
+}
+
+
 
 
 void Interpreter::execute_block(const std::vector<Statement*>& statements, const Environment& environment)
@@ -55,12 +72,12 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 	Environment old_env = this->environment;
 	Environment new_env = environment;
 
-	this->environment = new_env;
+	this->environment = std::move(new_env);
 	
 	for (Statement* const statement : statements)
 		execute(statement);
 
-	this->environment = old_env;
+	this->environment = std::move(old_env);
 }
 
 

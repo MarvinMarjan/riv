@@ -13,6 +13,8 @@ class ExpressionStatement;
 class BlockStatement;
 class PrintStatement;
 class VarStatement;
+class IfStatement;
+class WhileStatement;
 
 
 class StatementProcessor
@@ -22,6 +24,8 @@ public:
 	virtual void process_block		(BlockStatement&)		= 0;
 	virtual void process_print		(PrintStatement&)		= 0;
 	virtual void process_var		(VarStatement&)			= 0;
+	virtual void process_if			(IfStatement&)			= 0;
+	virtual void process_while		(WhileStatement&)		= 0;
 };
 
 
@@ -101,4 +105,41 @@ public:
 
 	Token		name;
 	Expression*	value = nullptr;
+};
+
+
+
+
+class IfStatement : public Statement
+{
+public:
+	IfStatement(Expression* const condition, Statement* const then_statement, Statement* const else_statement);
+
+
+	void process(StatementProcessor& processor) {
+		processor.process_if(*this);
+	}
+
+
+	Expression*	condition = nullptr;
+	Statement*	then_statement = nullptr;
+	Statement*	else_statement = nullptr;
+};
+
+
+
+
+class WhileStatement : public Statement
+{
+public:
+	WhileStatement(Expression* const condition, Statement* const body);
+
+
+	void process(StatementProcessor& processor) {
+		processor.process_while(*this);
+	}
+
+
+	Expression*	condition = nullptr;
+	Statement*	body = nullptr;
 };

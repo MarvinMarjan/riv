@@ -55,6 +55,36 @@ Exception riv_e205(const TokenPosition& pos) noexcept {
 	return Exception("Expect \"}\" to close block statement.", pos, 205);
 }
 
+Exception riv_e206(const TokenPosition& pos) noexcept {
+	return Exception("Expect \"(\" after \"if\" statement.", pos, 206);
+}
+
+Exception riv_e207(const TokenPosition& pos) noexcept {
+	return Exception("Expect \")\" after \"if\" condition.", pos, 207);
+}
+
+Exception riv_e208(const TokenPosition& pos) noexcept {
+	return Exception("Expect \"(\" after \"while\" statement.", pos, 208);
+}
+
+Exception riv_e209(const TokenPosition& pos) noexcept {
+	return Exception("Expect \")\" after \"while\" condition.", pos, 209);
+}
+
+Exception riv_e210(const TokenPosition& pos) noexcept {
+	return Exception("Expect \"(\" after \"for\" statement.", pos, 210);
+}
+
+Exception riv_e211(const TokenPosition& pos) noexcept {
+	return Exception("Expect \";\" after \"for\" condition.", pos, 211);
+}
+
+Exception riv_e212(const TokenPosition& pos) noexcept {
+	return Exception("Expect \")\" after \"for\" increment.", pos, 212);
+}
+
+
+
 
 
 

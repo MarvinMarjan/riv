@@ -21,7 +21,7 @@ enum class TokenType
 
 	// keywords
 
-	Print, Var
+	Print, Var, If, Else, While, For, Loop
 };
 
 

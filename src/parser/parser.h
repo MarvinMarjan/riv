@@ -31,6 +31,9 @@ private:
 	Statement* block_statement();
 	Statement* print_statement();
 	Statement* var_declaration();
+	Statement* if_statement();
+	Statement* while_statement();
+	Statement* for_statement();
 
 
 

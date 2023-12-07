@@ -37,6 +37,14 @@ Exception riv_e202(const TokenPosition& pos) noexcept; // expect ";" after state
 Exception riv_e203(const TokenPosition& pos) noexcept; // expect variable name after "var" keyword
 Exception riv_e204(const TokenPosition& pos) noexcept; // only variables can be assigned.
 Exception riv_e205(const TokenPosition& pos) noexcept; // expect "}" to close block statement
+Exception riv_e206(const TokenPosition& pos) noexcept; // expect "(" after "if" statement
+Exception riv_e207(const TokenPosition& pos) noexcept; // expect ")" after "if" condition
+Exception riv_e208(const TokenPosition& pos) noexcept; // expect "(" after "while" statement
+Exception riv_e209(const TokenPosition& pos) noexcept; // expect ")" after "while" condition
+Exception riv_e210(const TokenPosition& pos) noexcept; // expect "(" after "for" statement
+Exception riv_e211(const TokenPosition& pos) noexcept; // expect ";" after "for" condition
+Exception riv_e212(const TokenPosition& pos) noexcept; // expect ")" after "for" increment
+
 
 
 

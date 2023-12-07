@@ -55,6 +55,15 @@ Statement* Parser::statement()
 	if (match({ TokenType::Print }))
 		return print_statement();
 
+	if (match({ TokenType::If }))
+		return if_statement();
+
+	if (match({ TokenType::While }))
+		return while_statement();
+
+	if (match({ TokenType::For }))
+		return for_statement();
+
 	return expression_statement();	
 }
 
@@ -92,6 +101,99 @@ Statement* Parser::var_declaration()
 	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
 
 	return new VarStatement(name, value);
+}
+
+
+Statement* Parser::if_statement()
+{
+	consume(TokenType::LeftParen, riv_e206(previous().pos)); // expect "(" after "if" statement
+	Expression* const condition = expression();
+	consume(TokenType::RightParen, riv_e207(previous().pos)); // expect ")" after "if" condition
+
+	Statement* then_statement = statement();
+	Statement* else_statement = nullptr;
+
+	if (match({ TokenType::Else }))
+		else_statement = statement();
+
+	return new IfStatement(condition, then_statement, else_statement);
+}
+
+
+Statement* Parser::while_statement()
+{
+	consume(TokenType::LeftParen, riv_e208(previous().pos)); // expect "(" after "while" statement
+	Expression* const condition = expression();
+	consume(TokenType::RightParen, riv_e209(previous().pos)); // expect ")" after "while" condition
+
+	Statement* statement = this->statement();
+
+	return new WhileStatement(condition, statement);
+}
+
+
+#include <specter/output/ostream.h>
+
+
+Statement* Parser::for_statement()
+{
+	consume(TokenType::LeftParen, riv_e210(previous().pos)); // expect "(" after "for" statement
+
+
+	// initializer
+
+	Statement* initializer;
+
+	if (match({ TokenType::SemiColon }))
+		initializer = nullptr;
+
+	else if (match({ TokenType::Var }))
+		initializer = var_declaration();
+
+	else
+		initializer = expression_statement();
+
+
+	// condition
+
+	Expression* condition = nullptr;
+
+	if (!check(TokenType::SemiColon))
+		condition = expression();
+
+	consume(TokenType::SemiColon, riv_e211(previous().pos)); // expect ";" after "for" condition
+
+
+	// increment
+	
+	Expression* increment = nullptr;
+
+	if (!check(TokenType::RightParen))
+		increment = expression();
+
+	consume(TokenType::RightParen, riv_e212(previous().pos)); // expect ")" after "for" increment
+
+
+	// statement
+
+	Statement* body = this->statement();
+
+
+	// desugarization
+
+	if (increment)
+		body = new BlockStatement({ body, new ExpressionStatement(increment) });
+
+	if (!condition)
+		condition = new LiteralExpression(true);
+
+	body = new WhileStatement(condition, body);
+
+	if (initializer)
+		body = new BlockStatement({ initializer, body });
+
+	// { initializer, While(condition, { ..., increment }) }
+	return body;
 }
 
 

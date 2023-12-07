@@ -28,6 +28,8 @@ private:
 	void process_block		(BlockStatement&)		override;
 	void process_print		(PrintStatement&)		override;
 	void process_var		(VarStatement&)			override;
+	void process_if			(IfStatement&)			override;
+	void process_while		(WhileStatement&)		override;
 
 	void execute_block(const std::vector<Statement*>& statements, const Environment& environment);
 

@@ -25,3 +25,18 @@ VarStatement::VarStatement(const Token& name, Expression* const value)
 	this->name = name;
 	this->value = value;
 }
+
+
+IfStatement::IfStatement(Expression* const condition, Statement* const then_statement, Statement* const else_statement)
+{
+	this->condition = condition;
+	this->then_statement = then_statement;
+	this->else_statement = else_statement;
+}
+
+
+WhileStatement::WhileStatement(Expression* const condition, Statement* const body)
+{
+	this->condition = condition;
+	this->body = body;
+}

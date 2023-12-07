@@ -1,14 +1,2 @@
-var x = 10;
-var y = 10;
-
-x = x * (5 + 2);
-y *= 5 + 2;
-
-var text = "hello";
-
-text += ", world";
-
-print x;
-print y;
-
-print text;
+for (var i = 0; i < 100; i = 1)
+	print i;
