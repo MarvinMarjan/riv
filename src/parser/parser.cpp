@@ -109,21 +109,53 @@ Expression* Parser::assignment()
 {
 	Expression* expr = equality();
 
-	if (match({ TokenType::Equal }))
+	if (match({ TokenType::Equal, TokenType::PlusEqual, TokenType::MinusEqual, TokenType::StarEqual, TokenType::SlashEqual }))
 	{
-		Token equal = previous();
-		Expression* value = assignment();
-
-		CallExpression* call = dynamic_cast<CallExpression*>(expr);
+		CallExpression* const call = dynamic_cast<CallExpression*>(expr);
+		const Token equal = previous();
 
 		// it's not a identifier
 		if (!call)
 			throw riv_e204(equal.pos); // only variables can be assigned
 
+		Expression* value = assignment();
+		
+		// +=, -=, *=, ...
+		if (equal.type != TokenType::Equal)
+			value = desugarize_assignment(call, equal, value);
+
 		return new AssignmentExpression(call->identifier, value);
 	}
 
 	return expr;
+}
+
+
+Expression* Parser::desugarize_assignment(CallExpression* const identifier, const Token& assignment_operator, Expression* const value)
+{
+	Token op = assignment_operator;
+
+	switch (op.type)
+	{
+	case TokenType::PlusEqual:
+		op.type = TokenType::Plus;
+		break;
+
+	case TokenType::MinusEqual:
+		op.type = TokenType::Minus;
+		break;
+
+	case TokenType::StarEqual:
+		op.type = TokenType::Star;
+		break;
+
+	case TokenType::SlashEqual:
+		op.type = TokenType::Slash;
+		break;
+	}
+
+	// right value must have higher precedence
+	return new BinaryExpression(identifier, op, new GroupingExpression(value));
 }
 
 
@@ -223,7 +255,7 @@ Expression* Parser::primary()
 		return new GroupingExpression(expr);
 	}
 
-	throw riv_e200(peek().pos); // expression expected
+	throw riv_e200(previous().pos); // expression expected
 }
 
 

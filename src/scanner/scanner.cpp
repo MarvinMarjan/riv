@@ -53,15 +53,18 @@ void Scanner::scan_token()
 		next_line();
 		break;
 
-	case '+': add_token(TokenType::Plus); break;
-	case '-': add_token(TokenType::Minus); break;
-	case '*': add_token(TokenType::Star); break;
+	case '+': match('=') ? add_token(TokenType::PlusEqual)	: add_token(TokenType::Plus); break;
+	case '-': match('=') ? add_token(TokenType::MinusEqual)	: add_token(TokenType::Minus); break;
+	case '*': match('=') ? add_token(TokenType::StarEqual)	: add_token(TokenType::Star); break;
 	case '/':
 		if (match('/'))
 			line_comment();
 
 		else if (match('*'))
 			block_comment();
+
+		else if (match('='))
+			add_token(TokenType::SlashEqual);
 
 		else
 			add_token(TokenType::Slash);
@@ -314,6 +317,7 @@ bool Scanner::match(const char next) noexcept
     if (peek() != next) return false;
 
     current_++;
+	ln_current_++;
     return true;
 }
 

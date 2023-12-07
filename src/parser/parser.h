@@ -11,6 +11,7 @@ struct Token;
 
 class Statement;
 class Expression;
+class CallExpression;
 
 
 // creates an AST based on a sequence of tokens
@@ -35,6 +36,7 @@ private:
 
 	Expression* expression();
 	Expression* assignment();
+	Expression* desugarize_assignment(CallExpression* const identifier, const Token& assignment_operator, Expression* const value);
 	Expression* equality();
 	Expression* comparison();
 	Expression* term();

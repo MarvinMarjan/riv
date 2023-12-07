@@ -1,9 +1,14 @@
-var x = 4;
+var x = 10;
 var y = 10;
 
-// x * y = 40
+x = x * (5 + 2);
+y *= 5 + 2;
 
-/*
-*/
+var text = "hello";
 
-print;
+text += ", world";
+
+print x;
+print y;
+
+print text;

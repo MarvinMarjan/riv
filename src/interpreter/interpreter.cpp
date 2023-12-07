@@ -144,7 +144,7 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 	{
 	case TokenType::Minus:
 		throw_if_type_differs({ right }, TypeIndex::Number, riv_e300({ right }, expr.op));
-		return !right.as_num();
+		return -right.as_num();
 
 	case TokenType::Bang:
 		return !truthy(right);
