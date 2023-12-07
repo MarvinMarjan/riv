@@ -70,7 +70,7 @@ void Interpreter::process_while(WhileStatement& statement)
 void Interpreter::execute_block(const std::vector<Statement*>& statements, const Environment& environment)
 {
 	Environment old_env = this->environment;
-	Environment new_env = environment;
+	Environment new_env(&old_env);
 
 	this->environment = std::move(new_env);
 	
