@@ -288,6 +288,7 @@ void Parser::synchronize() noexcept
 		switch (peek().type)
 		{
 		case TokenType::Print:
+		case TokenType::Var:
 			return;
 		}
 
