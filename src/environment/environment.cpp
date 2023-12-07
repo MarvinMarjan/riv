@@ -19,7 +19,7 @@ void Environment::declare(const std::string& name, const Type& value) noexcept
 }
 
 
-void Environment::assign(const Token& identifier, const Type& value) noexcept
+void Environment::assign(const Token& identifier, const Type& value)
 {
 	if (data_.contains(identifier.lexeme))
 	{

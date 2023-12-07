@@ -17,7 +17,7 @@ public:
 
 
 	void declare(const std::string& name, const Type& value) noexcept;
-	void assign(const Token& identifier, const Type& value) noexcept;
+	void assign(const Token& identifier, const Type& value);
 	Type get(const Token& identifier) const;
 
 

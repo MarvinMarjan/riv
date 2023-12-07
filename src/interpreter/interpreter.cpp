@@ -129,6 +129,8 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 	case TokenType::BangEqual:
 		return !equals(left, right);
 	}
+
+	return Type();
 }
 
 
@@ -145,6 +147,8 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 	case TokenType::Bang:
 		return !truthy(right);
 	}
+
+	return Type();
 }
 
 
