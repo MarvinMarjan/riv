@@ -50,14 +50,23 @@ void Scanner::scan_token()
 		break;
 
 	case '\n':
-		line_++;
-		ln_begin_ = ln_end_ = 0;
+		next_line();
 		break;
 
 	case '+': add_token(TokenType::Plus); break;
 	case '-': add_token(TokenType::Minus); break;
 	case '*': add_token(TokenType::Star); break;
-	case '/': add_token(TokenType::Slash); break;
+	case '/':
+		if (match('/'))
+			line_comment();
+
+		else if (match('*'))
+			block_comment();
+
+		else
+			add_token(TokenType::Slash);
+
+		break;
 
 	case '>': match('=') ? add_token(TokenType::GreaterEqual)	: add_token(TokenType::Greater); break;
 	case '<': match('=') ? add_token(TokenType::LesserEqual)	: add_token(TokenType::Lesser); break;
@@ -233,6 +242,36 @@ void Scanner::identifier()
 }
 
 
+void Scanner::line_comment() noexcept
+{
+	while (!at_end())
+	{
+		advance();
+
+		if (peek() == '\n')
+		{
+			next_line();
+			break;
+		}
+	}
+}
+
+
+void Scanner::block_comment() noexcept
+{
+	while (!at_end())
+	{
+		advance();
+
+		if (peek() == '\n')
+			next_line();
+
+		if (match('*') && match('/'))
+			break;
+	}
+}
+
+
 
 
 bool Scanner::at_end() const noexcept
@@ -274,4 +313,12 @@ bool Scanner::match(const char next) noexcept
 
     current_++;
     return true;
+}
+
+
+
+void Scanner::next_line() noexcept
+{
+	line_++;
+	ln_begin_ = ln_end_ = 0;
 }

@@ -47,12 +47,19 @@ private:
 	void identifier();						// processes a identifier (booleans, keywords, identifiers...) token
 
 
+	void line_comment() noexcept;
+	void block_comment() noexcept;
+
+
 	bool at_end()		const	noexcept;
 	char advance()				noexcept;
 	char peek()			const	noexcept;
 	char peek_next()	const	noexcept;
 
 	bool match(const char next) noexcept;
+
+
+	void next_line() noexcept;
 
 
 	void add_token(const TokenType type, const Type& value = Type()) noexcept {
