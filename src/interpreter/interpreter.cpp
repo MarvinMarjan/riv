@@ -166,9 +166,9 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 }
 
 
-Type Interpreter::process_call(CallExpression& expr)
+Type Interpreter::process_identifier(IdentifierExpression& expr)
 {
-	return environment.get(expr.identifier);
+	return environment.get(expr.token);
 }
 
 

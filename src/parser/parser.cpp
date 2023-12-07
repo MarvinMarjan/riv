@@ -111,27 +111,27 @@ Expression* Parser::assignment()
 
 	if (match({ TokenType::Equal, TokenType::PlusEqual, TokenType::MinusEqual, TokenType::StarEqual, TokenType::SlashEqual }))
 	{
-		CallExpression* const call = dynamic_cast<CallExpression*>(expr);
+		IdentifierExpression* const identifier = dynamic_cast<IdentifierExpression*>(expr);
 		const Token equal = previous();
 
 		// it's not a identifier
-		if (!call)
+		if (!identifier)
 			throw riv_e204(equal.pos); // only variables can be assigned
 
 		Expression* value = assignment();
 		
 		// +=, -=, *=, ...
 		if (equal.type != TokenType::Equal)
-			value = desugarize_assignment(call, equal, value);
+			value = desugarize_assignment(identifier, equal, value);
 
-		return new AssignmentExpression(call->identifier, value);
+		return new AssignmentExpression(identifier->token, value);
 	}
 
 	return expr;
 }
 
 
-Expression* Parser::desugarize_assignment(CallExpression* const identifier, const Token& assignment_operator, Expression* const value)
+Expression* Parser::desugarize_assignment(IdentifierExpression* const identifier, const Token& assignment_operator, Expression* const value)
 {
 	Token op = assignment_operator;
 
@@ -246,7 +246,7 @@ Expression* Parser::primary()
 		return new LiteralExpression(previous().value);
 
 	if (match({ TokenType::Identifier }))
-		return new CallExpression(previous());
+		return new IdentifierExpression(previous());
 
 	if (match({ TokenType::LeftParen }))
 	{

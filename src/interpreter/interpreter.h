@@ -41,7 +41,7 @@ private:
 	Type process_unary		(UnaryExpression&)		override;
 	Type process_grouping	(GroupingExpression&)	override;
 	Type process_literal	(LiteralExpression&)	override;
-	Type process_call		(CallExpression&)		override;
+	Type process_identifier		(IdentifierExpression&)		override;
 	Type process_assignment	(AssignmentExpression&)	override;
 
 	Type evaluate(Expression* const expr);

@@ -29,9 +29,9 @@ LiteralExpression::LiteralExpression(const Type& value)
 }
 
 
-CallExpression::CallExpression(const Token& identifier)
+IdentifierExpression::IdentifierExpression(const Token& token)
 {
-	this->identifier = identifier;
+	this->token = token;
 }
 
 

@@ -8,7 +8,7 @@ class BinaryExpression;
 class UnaryExpression;
 class GroupingExpression;
 class LiteralExpression;
-class CallExpression;
+class IdentifierExpression;
 class AssignmentExpression;
 
 
@@ -20,7 +20,7 @@ public:
 	virtual Type process_unary		(UnaryExpression&)		= 0;
 	virtual Type process_grouping	(GroupingExpression&)	= 0;
 	virtual Type process_literal	(LiteralExpression&)	= 0;
-	virtual Type process_call		(CallExpression&)		= 0;
+	virtual Type process_identifier		(IdentifierExpression&)		= 0;
 	virtual Type process_assignment	(AssignmentExpression&)	= 0;
 };
 
@@ -112,18 +112,18 @@ public:
 
 
 
-class CallExpression : public Expression
+class IdentifierExpression : public Expression
 {
 public:
-	CallExpression(const Token& identifier);
+	IdentifierExpression(const Token& token);
 
 
 	Type process(ExpressionProcessor& processor) override {
-		return processor.process_call(*this);
+		return processor.process_identifier(*this);
 	}
 
 
-	Token identifier;
+	Token token;
 };
 
 
