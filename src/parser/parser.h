@@ -2,13 +2,15 @@
 
 #include <vector>
 
-#include <expression/expression.h>
 
 
+enum class TokenType;
 
 struct Exception;
+struct Token;
 
 class Statement;
+class Expression;
 
 
 // creates an AST based on a sequence of tokens

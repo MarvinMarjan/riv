@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <statement/statement.h>
+#include <expression/expression.h>
 #include <environment/environment.h>
 
 

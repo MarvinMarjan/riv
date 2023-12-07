@@ -1,7 +1,6 @@
 #include <scanner/scanner.h>
 
 #include <specter/string.h>
-#include <specter/output/ostream.h>
 
 #include <system/exception.h>
 #include <language/error_codes.h>

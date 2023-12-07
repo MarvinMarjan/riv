@@ -1,12 +1,13 @@
 #pragma once
 
 #include <map>
-
-#include <type/type.h>
+#include <string>
 
 
 
 struct Token;
+
+class Type;
 
 
 class Environment

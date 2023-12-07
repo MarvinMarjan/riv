@@ -5,11 +5,10 @@
 #include <scanner/scanner.h>
 #include <parser/parser.h>
 #include <interpreter/interpreter.h>
-#include <expression/printer.h>
 #include <common/filesys.h>
 #include <repl/repl.h>
-#include <system/sysstate.h>
 #include <language/error_codes.h>
+#include <system/sysstate.h>
 #include <system/exception.h>
 
 

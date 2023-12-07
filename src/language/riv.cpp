@@ -1,5 +1,7 @@
 #include <language/riv.h>
 
+#include <scanner/token.h>
+
 
 
 // all language operators

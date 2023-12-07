@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include <system/init.h>
 #include <common/string.h>
 #include <common/filesys.h>
 

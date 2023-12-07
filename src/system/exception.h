@@ -1,6 +1,5 @@
 #pragma once
 
-#include <specter/output/ostream.h>
 #include <scanner/token.h>
 
 

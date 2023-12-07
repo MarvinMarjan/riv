@@ -2,7 +2,6 @@
 
 #include <system/exception.h>
 #include <language/error_codes.h>
-#include <scanner/token.h>
 
 
 

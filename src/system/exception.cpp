@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include <specter/output/color/color.h>
+#include <specter/output/ostream.h>
 
 #include <common/string.h>
 #include <system/sysstate.h>

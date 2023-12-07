@@ -1,5 +1,7 @@
 #include <interpreter/interpreter.h>
 
+#include <specter/output/ostream.h>
+
 #include <language/error_codes.h>
 #include <system/exception.h>
 

@@ -2,8 +2,6 @@
 
 #include <sstream>
 
-#include <specter/output/ostream.h>
-
 
 Type ExprPrinter::parenthesize(const std::initializer_list<Expression* const>& exprs, const std::string& op) noexcept
 {

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
 #include <map>
 
-#include <scanner/token.h>
 
+
+enum class TokenType;
 
 
 const std::map<std::string, TokenType>& lang_operators()		noexcept;	// return language operators

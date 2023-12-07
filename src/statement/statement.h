@@ -2,8 +2,11 @@
 
 #include <vector>
 
-#include <expression/expression.h>
+#include <scanner/token.h>
 
+
+
+class Expression;
 
 
 class ExpressionStatement;

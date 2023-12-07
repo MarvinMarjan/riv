@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
 #include <vector>
 
-#include <system/init.h>
 
+
+enum class InitMode;
 
 
 struct SystemState
