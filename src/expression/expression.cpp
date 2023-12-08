@@ -40,3 +40,11 @@ AssignmentExpression::AssignmentExpression(const Token& identifier, Expression* 
 	this->identifier = identifier;
 	this->value = value;
 }
+
+
+CallExpression::CallExpression(Expression* const callee, const Token& paren, const std::vector<Expression*>& arguments)
+{
+	this->callee = callee;
+	this->paren = paren;
+	this->arguments = arguments;
+}

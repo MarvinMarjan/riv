@@ -73,9 +73,16 @@ Statement* Parser::statement()
 	if (match({ TokenType::Continue }))
 		return continue_statement();
 
+	if (match({ TokenType::Function }))
+		return function_statement();
+
+	if (match({ TokenType::Return }))
+		return return_statement();
+
 	return expression_statement();
 }
 
+#include <specter/output/ostream.h>
 
 Statement* Parser::expression_statement()
 {
@@ -223,7 +230,7 @@ Statement* Parser::break_statement()
 	if (!loop_depth_)
 		throw riv_e213(previous().pos);
 
-	consume(TokenType::SemiColon, riv_e202(previous().pos));
+	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
 	return new BreakStatement;
 }
 
@@ -233,8 +240,58 @@ Statement* Parser::continue_statement()
 	if (!loop_depth_)
 		throw riv_e214(previous().pos);
 
-	consume(TokenType::SemiColon, riv_e202(previous().pos));
+	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
 	return new ContinueStatement;
+}
+
+
+Statement* Parser::function_statement()
+{
+	// name
+
+	const Token name = consume(TokenType::Identifier, riv_e215(previous().pos)); // expect function name after "function" statement
+
+
+	// parameter list
+
+	consume(TokenType::LeftParen, riv_e216(previous().pos)); // expect "(" after function name
+
+	std::vector<Token> params;
+
+	if (!check(TokenType::RightParen))
+		do {
+			params.push_back(consume(TokenType::Identifier, riv_e218(previous().pos)));
+		} while(match({ TokenType::Comma })); 
+	
+	consume(TokenType::RightParen, riv_e217(previous().pos)); // expect ")" after parameter list
+
+
+	// body
+
+	consume(TokenType::LeftCurlyBrace, riv_e219(previous().pos)); // expect function body
+
+
+	function_depth_++;
+	std::vector<Statement*> body = block();
+	function_depth_--;
+
+
+	return new FunctionStatement(name, params, body);
+}
+
+
+Statement* Parser::return_statement()
+{
+	if (!function_depth_)
+		throw riv_e221(previous().pos);
+
+	Expression* value = nullptr;
+
+	if (!check(TokenType::SemiColon))
+		value = expression();
+
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
+	return new ReturnStatement(value);
 }
 
 
@@ -377,9 +434,24 @@ Expression* Parser::unary()
 
 Expression* Parser::call()
 {
-	Expression* expression = primary();
+	Expression* expr = primary();
 
-	return expression;
+	while (match({ TokenType::LeftParen }))
+	{
+		const Token paren = previous();
+		std::vector<Expression*> arguments;
+
+		if (!check(TokenType::RightParen))
+			do {
+				arguments.push_back(expression());
+			} while (match({ TokenType::Comma }));
+
+		consume(TokenType::RightParen, riv_e220(previous().pos));
+
+		expr = new CallExpression(expr, paren, arguments);
+	}
+
+	return expr;
 }
 
 

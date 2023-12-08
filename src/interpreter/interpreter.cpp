@@ -4,6 +4,7 @@
 
 #include <language/error_codes.h>
 #include <system/exception.h>
+#include <type/function.h>
 
 
 
@@ -32,7 +33,7 @@ void Interpreter::process_expression(ExpressionStatement& statement)
 
 void Interpreter::process_block(BlockStatement& statement)
 {
-	execute_block(statement.statements, environment);
+	execute_block(statement.statements, ScopeConfig(environment, Environment(), true));
 }
 
 
@@ -89,12 +90,27 @@ void Interpreter::process_continue(ContinueStatement&)
 }
 
 
-
-
-void Interpreter::execute_block(const std::vector<Statement*>& statements, const Environment& environment)
+void Interpreter::process_function(FunctionStatement& statement)
 {
-	Environment old_env = this->environment;
-	Environment new_env(&old_env);
+	environment.declare(statement.name.lexeme, new RivFunction(statement));
+}
+
+
+void Interpreter::process_return(ReturnStatement& statement)
+{
+	throw RivFunction::ReturnSignal(evaluate(statement.value));
+}
+
+
+
+
+void Interpreter::execute_block(const std::vector<Statement*>& statements, const ScopeConfig& config)
+{
+	Environment old_env = std::move(config.old_env);
+	Environment new_env = std::move(config.new_env);
+
+	if (config.enclose_old)
+		new_env.set_enclosing(&old_env);
 
 	this->environment = std::move(new_env);
 	
@@ -231,6 +247,27 @@ Type Interpreter::process_assignment(AssignmentExpression& expr)
 	const Type value = evaluate(expr.value);
 	environment.assign(expr.identifier, value);
 	return value;
+}
+
+
+Type Interpreter::process_call(CallExpression& expr)
+{
+	Type callee = evaluate(expr.callee);
+
+	if (!callee.is_func())
+		throw riv_e302(expr.paren.pos); // only functions can be called
+
+	std::vector<Type> arguments;
+
+	for (Expression* const arg : expr.arguments)
+		arguments.push_back(evaluate(arg));
+
+	RivFunction* func = callee.as_func();
+
+	if (func->arity() != arguments.size())
+		throw riv_e303(func->arity(), arguments.size(), expr.paren.pos); // expect ... arguments, got ...
+
+	return func->call(*this, arguments);
 }
 
 

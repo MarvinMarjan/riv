@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <scanner/token.h>
 
 
@@ -10,6 +12,7 @@ class GroupingExpression;
 class LiteralExpression;
 class IdentifierExpression;
 class AssignmentExpression;
+class CallExpression;
 
 
 // visitor pattern
@@ -22,6 +25,7 @@ public:
 	virtual Type process_literal	(LiteralExpression&)	= 0;
 	virtual Type process_identifier	(IdentifierExpression&)	= 0;
 	virtual Type process_assignment	(AssignmentExpression&)	= 0;
+	virtual Type process_call		(CallExpression&)		= 0;
 };
 
 
@@ -125,6 +129,25 @@ public:
 
 
 	Token token;
+};
+
+
+
+
+class CallExpression : public Expression
+{
+public:
+	CallExpression(Expression* const callee, const Token& paren, const std::vector<Expression*>& arguments);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_call(*this);
+	}
+
+
+	Expression*					callee;
+	Token						paren;
+	std::vector<Expression*>	arguments;
 };
 
 

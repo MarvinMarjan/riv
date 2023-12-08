@@ -22,6 +22,13 @@ public:
 	Type get(const Token& identifier) const;
 
 
+	Environment* top() noexcept;
+	Environment* enclosing() noexcept { return enclosing_; }
+
+
+	void set_enclosing(Environment* const enclosing) noexcept { enclosing_ = enclosing; }
+
+
 private:
 	std::map<std::string, Type> data_;
 

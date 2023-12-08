@@ -1,11 +1,18 @@
-var i = 0;
-
-while (true)
+function repeat(func, times)
 {
-	print i;
-
-	if (i >= 1000)
-		break;
-
-	i += 1;
+	for (var i = 0; i < times; i += 1)
+	{
+		print "hllo";
+		func();
+	}
 }
+
+var buff = 0;
+
+function hello()
+{
+	print buff;
+	buff += 1;
+}
+
+repeat(hello, 5);

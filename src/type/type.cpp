@@ -1,6 +1,7 @@
 #include <type/type.h>
 
 #include <common/string.h>
+#include <type/function.h>
 
 
 
@@ -69,10 +70,11 @@ std::string type_index_to_string(const TypeIndex type) noexcept
 {
 	switch (type)
 	{
-	case TypeIndex::Null:	return "Null";
-	case TypeIndex::String:	return "String";
-	case TypeIndex::Number:	return "Number";
-	case TypeIndex::Bool:	return "Bool";
+	case TypeIndex::Null:		return "Null";
+	case TypeIndex::String:		return "String";
+	case TypeIndex::Number:		return "Number";
+	case TypeIndex::Bool:		return "Bool";
+	case TypeIndex::Function:	return "Function";
 
 	default:
 		return "undefined";
@@ -93,11 +95,12 @@ std::string type_to_string(const Type& type) noexcept
 {
 	switch (type.type())
 	{
-	case TypeIndex::Null: 	return "null";
+	case TypeIndex::Null: 		return "null";
 	
-	case TypeIndex::String: return type.as_str();
-	case TypeIndex::Number: return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
-	case TypeIndex::Bool:	return bool_to_string(type.as_bool());
+	case TypeIndex::String: 	return type.as_str();
+	case TypeIndex::Number: 	return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
+	case TypeIndex::Bool:		return bool_to_string(type.as_bool());
+	case TypeIndex::Function:	return "<Function " + type.as_func()->declaration.name.lexeme + ">";
 	}
 
 

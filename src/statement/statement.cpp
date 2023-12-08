@@ -40,3 +40,17 @@ WhileStatement::WhileStatement(Expression* const condition, Statement* const bod
 	this->condition = condition;
 	this->body = body;
 }
+
+
+FunctionStatement::FunctionStatement(const Token& name, const std::vector<Token>& params, const std::vector<Statement*>& body)
+{
+	this->name = name;
+	this->params = params;
+	this->body = body;
+}
+
+
+ReturnStatement::ReturnStatement(Expression* const value)
+{
+	this->value = value;
+}

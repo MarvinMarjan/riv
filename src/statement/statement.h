@@ -17,6 +17,8 @@ class IfStatement;
 class WhileStatement;
 class BreakStatement;
 class ContinueStatement;
+class FunctionStatement;
+class ReturnStatement;
 
 
 class StatementProcessor
@@ -30,6 +32,8 @@ public:
 	virtual void process_while		(WhileStatement&)		= 0;
 	virtual void process_break		(BreakStatement&)		= 0;
 	virtual void process_continue	(ContinueStatement&)	= 0;
+	virtual void process_function	(FunctionStatement&) 	= 0;
+	virtual void process_return		(ReturnStatement&) 		= 0;
 };
 
 
@@ -181,4 +185,40 @@ public:
 	void process(StatementProcessor& processor) {
 		processor.process_continue(*this);
 	}
+};
+
+
+
+
+class FunctionStatement : public Statement
+{
+public:
+	FunctionStatement(const Token& name, const std::vector<Token>& params, const std::vector<Statement*>& body);
+
+
+	void process(StatementProcessor& processor) override {
+		processor.process_function(*this);
+	}
+
+
+	Token					name;
+	std::vector<Token>		params;
+	std::vector<Statement*>	body;
+};
+
+
+
+
+class ReturnStatement : public Statement
+{
+public:
+	ReturnStatement(Expression* const value);
+
+
+	void process(StatementProcessor& processor) override {
+		processor.process_return(*this);
+	}
+
+
+	Expression* value = nullptr;
 };

@@ -37,6 +37,8 @@ private:
 	Statement* loop_statement();
 	Statement* break_statement();
 	Statement* continue_statement();
+	Statement* function_statement();
+	Statement* return_statement();
 
 
 
@@ -72,6 +74,7 @@ private:
 
 
 	int loop_depth_ = 0;
+	int function_depth_ = 0;
 
 
 	std::vector<Token> tokens_;

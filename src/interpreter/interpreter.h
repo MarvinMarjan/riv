@@ -24,6 +24,9 @@ public:
 
 
 private:
+	friend class RivFunction;
+
+
 	void process_expression	(ExpressionStatement&)	override;
 	void process_block		(BlockStatement&)		override;
 	void process_print		(PrintStatement&)		override;
@@ -32,8 +35,24 @@ private:
 	void process_while		(WhileStatement&)		override;
 	void process_break		(BreakStatement&)		override;
 	void process_continue	(ContinueStatement&)	override;
+	void process_function	(FunctionStatement&)	override;
+	void process_return		(ReturnStatement&)		override;
 
-	void execute_block(const std::vector<Statement*>& statements, const Environment& environment);
+
+	struct ScopeConfig
+	{
+		ScopeConfig() = default;
+		ScopeConfig(const Environment& old_env, const Environment& new_env, const bool enclose_old)
+			: old_env(old_env), new_env(new_env), enclose_old(enclose_old) {}
+
+		Environment old_env;
+		Environment new_env;
+		
+		bool enclose_old = true;
+	};
+
+
+	void execute_block(const std::vector<Statement*>& statements, const ScopeConfig& config);
 
 	void execute(Statement* const statement) {
 		statement->process(*this);
@@ -45,8 +64,9 @@ private:
 	Type process_unary		(UnaryExpression&)		override;
 	Type process_grouping	(GroupingExpression&)	override;
 	Type process_literal	(LiteralExpression&)	override;
-	Type process_identifier		(IdentifierExpression&)		override;
+	Type process_identifier	(IdentifierExpression&)	override;
 	Type process_assignment	(AssignmentExpression&)	override;
+	Type process_call		(CallExpression&)		override;
 
 	Type evaluate(Expression* const expr);
 

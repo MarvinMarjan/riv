@@ -11,16 +11,19 @@ enum class TypeIndex
 
 	String,
 	Number,
-	Bool
+	Bool,
+	Function
 };
 
+
+class RivFunction;
 
 
 std::string type_index_to_string(const TypeIndex type) noexcept;
 
 
 
-using VariantType = std::variant<std::string, double, bool>;
+using VariantType = std::variant<std::string, double, bool, RivFunction*>;
 
 
 class Type;
@@ -53,10 +56,12 @@ public:
 	bool is_str()	const noexcept { return is_typeof(TypeIndex::String); }
 	bool is_num()	const noexcept { return is_typeof(TypeIndex::Number); }
 	bool is_bool()	const noexcept { return is_typeof(TypeIndex::Bool); }
+	bool is_func()	const noexcept { return is_typeof(TypeIndex::Function); }
 
-	std::string	as_str()	const noexcept { return std::get<std::string>(*this); }
-	double		as_num()	const noexcept { return std::get<double>(*this); }
-	bool		as_bool()	const noexcept { return std::get<bool>(*this); }
+	std::string		as_str()	const noexcept { return std::get<std::string>(*this); }
+	double			as_num()	const noexcept { return std::get<double>(*this); }
+	bool			as_bool()	const noexcept { return std::get<bool>(*this); }
+	RivFunction* 	as_func()	const noexcept { return std::get<RivFunction*>(*this); }
 
 private:
 	bool is_null_ = false;

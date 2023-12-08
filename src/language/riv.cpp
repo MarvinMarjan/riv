@@ -30,15 +30,17 @@ static std::map<std::string, TokenType> s_operators =
 // all language keywords
 static std::map<std::string, TokenType> s_keywords =
 {
-	{"print",	TokenType::Print},
-	{"var",		TokenType::Var},
-	{"if",		TokenType::If},
-	{"else",	TokenType::Else},
-	{"while",	TokenType::While},
-	{"for",		TokenType::For},
-	{"loop",	TokenType::Loop},
-	{"break",	TokenType::Break},
-	{"continue",TokenType::Continue},
+	{"print",		TokenType::Print},
+	{"var",			TokenType::Var},
+	{"if",			TokenType::If},
+	{"else",		TokenType::Else},
+	{"while",		TokenType::While},
+	{"for",			TokenType::For},
+	{"loop",		TokenType::Loop},
+	{"break",		TokenType::Break},
+	{"continue",	TokenType::Continue},
+	{"function",	TokenType::Function},
+	{"return",		TokenType::Return},
 };
 
 

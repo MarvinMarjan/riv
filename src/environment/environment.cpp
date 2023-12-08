@@ -46,3 +46,24 @@ Type Environment::get(const Token& identifier) const
 
 	throw riv_e301(identifier); // undefined identifier
 }
+
+
+#include <specter/output/ostream.h>
+
+
+Environment* Environment::top() noexcept
+{
+	Environment* current = this;
+
+	sp::println("top begin");
+	
+	while (current->enclosing_)
+	{
+		sp::println(current->enclosing_);
+		current = current->enclosing_;
+	}
+
+	sp::println("top end");
+
+	return current;
+}
