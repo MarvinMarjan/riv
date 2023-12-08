@@ -64,6 +64,9 @@ Statement* Parser::statement()
 	if (match({ TokenType::For }))
 		return for_statement();
 
+	if (match({ TokenType::Loop }))
+		return loop_statement();
+
 	return expression_statement();	
 }
 
@@ -194,6 +197,12 @@ Statement* Parser::for_statement()
 
 	// { initializer, While(condition, { ..., increment }) }
 	return body;
+}
+
+
+Statement* Parser::loop_statement()
+{
+	return new WhileStatement(new LiteralExpression(true), statement());
 }
 
 

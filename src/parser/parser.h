@@ -34,6 +34,7 @@ private:
 	Statement* if_statement();
 	Statement* while_statement();
 	Statement* for_statement();
+	Statement* loop_statement();
 
 
 
