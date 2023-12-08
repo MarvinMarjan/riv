@@ -67,6 +67,12 @@ Statement* Parser::statement()
 	if (match({ TokenType::Loop }))
 		return loop_statement();
 
+	if (match({ TokenType::Break }))
+		return break_statement();
+
+	if (match({ TokenType::Continue }))
+		return continue_statement();
+
 	return expression_statement();
 }
 
@@ -129,7 +135,9 @@ Statement* Parser::while_statement()
 	Expression* const condition = expression();
 	consume(TokenType::RightParen, riv_e209(previous().pos)); // expect ")" after "while" condition
 
+	loop_depth_++;
 	Statement* statement = this->statement();
+	loop_depth_--;
 
 	return new WhileStatement(condition, statement);
 }
@@ -176,7 +184,9 @@ Statement* Parser::for_statement()
 
 	// statement
 
+	loop_depth_++;
 	Statement* body = this->statement();
+	loop_depth_--;
 
 
 	// desugarization
@@ -192,6 +202,7 @@ Statement* Parser::for_statement()
 	if (initializer)
 		body = new BlockStatement({ initializer, body });
 
+
 	// { initializer, While(condition, { ..., increment }) }
 	return body;
 }
@@ -199,7 +210,31 @@ Statement* Parser::for_statement()
 
 Statement* Parser::loop_statement()
 {
-	return new WhileStatement(new LiteralExpression(true), statement());
+	loop_depth_++;
+	Statement* const body = statement();
+	loop_depth_--;
+
+	return new WhileStatement(new LiteralExpression(true), body);
+}
+
+
+Statement* Parser::break_statement()
+{
+	if (!loop_depth_)
+		throw riv_e213(previous().pos);
+
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
+	return new BreakStatement;
+}
+
+
+Statement* Parser::continue_statement()
+{
+	if (!loop_depth_)
+		throw riv_e214(previous().pos);
+
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
+	return new ContinueStatement;
 }
 
 

@@ -15,6 +15,8 @@ class PrintStatement;
 class VarStatement;
 class IfStatement;
 class WhileStatement;
+class BreakStatement;
+class ContinueStatement;
 
 
 class StatementProcessor
@@ -26,6 +28,8 @@ public:
 	virtual void process_var		(VarStatement&)			= 0;
 	virtual void process_if			(IfStatement&)			= 0;
 	virtual void process_while		(WhileStatement&)		= 0;
+	virtual void process_break		(BreakStatement&)		= 0;
+	virtual void process_continue	(ContinueStatement&)	= 0;
 };
 
 
@@ -148,4 +152,33 @@ public:
 
 	Expression*	condition = nullptr;
 	Statement*	body = nullptr;
+};
+
+
+
+
+class BreakStatement : public Statement
+{
+public:
+	struct Signal {};
+
+
+	BreakStatement() = default;
+
+	void process(StatementProcessor& processor) {
+		processor.process_break(*this);
+	}
+};
+
+class ContinueStatement : public Statement
+{
+public:
+	struct Signal {};
+
+
+	ContinueStatement() = default;
+
+	void process(StatementProcessor& processor) {
+		processor.process_continue(*this);
+	}
 };

@@ -30,6 +30,8 @@ private:
 	void process_var		(VarStatement&)			override;
 	void process_if			(IfStatement&)			override;
 	void process_while		(WhileStatement&)		override;
+	void process_break		(BreakStatement&)		override;
+	void process_continue	(ContinueStatement&)	override;
 
 	void execute_block(const std::vector<Statement*>& statements, const Environment& environment);
 

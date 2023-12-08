@@ -35,6 +35,8 @@ private:
 	Statement* while_statement();
 	Statement* for_statement();
 	Statement* loop_statement();
+	Statement* break_statement();
+	Statement* continue_statement();
 
 
 
@@ -68,6 +70,8 @@ private:
 	Token consume(const TokenType type, const Exception& err);
 
 
+
+	int loop_depth_ = 0;
 
 
 	std::vector<Token> tokens_;

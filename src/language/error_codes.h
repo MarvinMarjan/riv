@@ -44,6 +44,8 @@ Exception riv_e209(const TokenPosition& pos) noexcept; // expect ")" after "whil
 Exception riv_e210(const TokenPosition& pos) noexcept; // expect "(" after "for" statement
 Exception riv_e211(const TokenPosition& pos) noexcept; // expect ";" after "for" condition
 Exception riv_e212(const TokenPosition& pos) noexcept; // expect ")" after "for" increment
+Exception riv_e213(const TokenPosition& pos) noexcept; // cannot use "break" statement outside a loop
+Exception riv_e214(const TokenPosition& pos) noexcept; // cannot use "continue" statement outside a loop
 
 
 

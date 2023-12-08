@@ -83,6 +83,15 @@ Exception riv_e212(const TokenPosition& pos) noexcept {
 	return Exception("Expect \")\" after \"for\" increment.", pos, 212);
 }
 
+Exception riv_e213(const TokenPosition& pos) noexcept {
+	return Exception("Cannot use \"break\" statement outside a loop.", pos, 213);
+}
+
+Exception riv_e214(const TokenPosition& pos) noexcept {
+	return Exception("Cannot use \"continue\" statement outside a loop.", pos, 214);
+}
+
+
 
 
 

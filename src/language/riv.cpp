@@ -36,7 +36,9 @@ static std::map<std::string, TokenType> s_keywords =
 	{"else",	TokenType::Else},
 	{"while",	TokenType::While},
 	{"for",		TokenType::For},
-	{"loop",	TokenType::Loop}
+	{"loop",	TokenType::Loop},
+	{"break",	TokenType::Break},
+	{"continue",TokenType::Continue},
 };
 
 

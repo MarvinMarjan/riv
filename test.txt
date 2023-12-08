@@ -1,1 +1,11 @@
-loop print "forever...";
+var i = 0;
+
+while (true)
+{
+	print i;
+
+	if (i >= 1000)
+		break;
+
+	i += 1;
+}

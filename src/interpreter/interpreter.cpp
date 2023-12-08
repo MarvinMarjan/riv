@@ -61,7 +61,31 @@ void Interpreter::process_if(IfStatement& statement)
 void Interpreter::process_while(WhileStatement& statement)
 {
 	while (truthy(evaluate(statement.condition)))
-		execute(statement.body);
+	{
+		try {
+			execute(statement.body);
+		}
+		catch (const BreakStatement::Signal&)
+		{
+			break;
+		}
+		catch (const ContinueStatement::Signal&)
+		{
+			continue;
+		}
+	}
+}
+
+
+void Interpreter::process_break(BreakStatement&)
+{
+	throw BreakStatement::Signal();
+}
+
+
+void Interpreter::process_continue(ContinueStatement&)
+{
+	throw ContinueStatement::Signal();
 }
 
 
