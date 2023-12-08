@@ -6,13 +6,13 @@
 
 struct Exception
 {
+	Exception(const std::string& msg, const TokenPosition& pos = TokenPosition(), const unsigned int code = 0)
+		: msg(msg), pos(pos), code(code) {}
+	
 	const std::string msg;
 	const TokenPosition pos;
 
 	const unsigned int code;
-
-	Exception(const std::string& msg, const TokenPosition& pos = TokenPosition(), const unsigned int code = 0)
-		: msg(msg), pos(pos), code(code) {}
 };
 
 

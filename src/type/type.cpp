@@ -75,7 +75,7 @@ std::string type_index_to_string(const TypeIndex type) noexcept
 	case TypeIndex::Bool:	return "Bool";
 
 	default:
-		return "NotDefinedType";
+		return "undefined";
 	}
 }
 

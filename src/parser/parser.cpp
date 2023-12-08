@@ -67,7 +67,7 @@ Statement* Parser::statement()
 	if (match({ TokenType::Loop }))
 		return loop_statement();
 
-	return expression_statement();	
+	return expression_statement();
 }
 
 
@@ -133,9 +133,6 @@ Statement* Parser::while_statement()
 
 	return new WhileStatement(condition, statement);
 }
-
-
-#include <specter/output/ostream.h>
 
 
 Statement* Parser::for_statement()
@@ -400,6 +397,11 @@ void Parser::synchronize() noexcept
 		{
 		case TokenType::Print:
 		case TokenType::Var:
+		case TokenType::If:
+		case TokenType::Else:
+		case TokenType::While:
+		case TokenType::For:
+		case TokenType::Loop:
 			return;
 		}
 

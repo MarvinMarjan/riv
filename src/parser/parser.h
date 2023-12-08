@@ -50,6 +50,7 @@ private:
 	Expression* primary();
 
 
+	// parses a block statement
 	std::vector<Statement*> block();
 	
 	void synchronize() noexcept;

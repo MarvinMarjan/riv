@@ -41,6 +41,7 @@ public:
 
 
 
+// expression ";"
 class ExpressionStatement : public Statement
 {
 public:
@@ -58,6 +59,7 @@ public:
 
 
 
+// "{" statements... "}"
 class BlockStatement : public Statement
 {
 public:
@@ -75,6 +77,7 @@ public:
 
 
 
+// "print" expression ";"
 class PrintStatement : public Statement
 {
 public:
@@ -92,6 +95,7 @@ public:
 
 
 
+// "var" <name> ("=" expression)? ";"
 class VarStatement : public Statement
 {
 public:
@@ -110,6 +114,7 @@ public:
 
 
 
+// "if" "(" expression ")" statement ("else" statement)?
 class IfStatement : public Statement
 {
 public:
@@ -129,6 +134,7 @@ public:
 
 
 
+// "while" "(" expression ")" statement
 class WhileStatement : public Statement
 {
 public:

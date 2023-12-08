@@ -29,8 +29,6 @@ enum class TokenType
 class TokenPosition
 {
 public:
-	size_t line, begin, end;
-
 	TokenPosition() = default;
 	TokenPosition(const size_t line, const size_t begin, const size_t end)
 		: line(line), begin(begin), end(end), valid_(true) {}
@@ -39,6 +37,8 @@ public:
 	bool valid() const noexcept { return valid_; }
 
 
+	size_t line, begin, end;
+
 private:
 	bool valid_ = false;
 };
@@ -46,15 +46,15 @@ private:
 
 struct Token
 {
-	TokenType type;
-	std::string lexeme;
-	Type value;
-	TokenPosition pos;
-
 	Token() = default;
 	Token(const TokenType type, const std::string& lexeme, const Type& value, const TokenPosition& pos)
 		: type(type), lexeme(lexeme), value(value), pos(pos) {}
 
 	Token(const TokenType type, const std::string& lexeme, const Type& value, const size_t line, const size_t begin, const size_t end)
 		: Token(type, lexeme, value, { line, begin, end }) {}
+
+	TokenType type;
+	std::string lexeme;
+	Type value;
+	TokenPosition pos;
 };

@@ -20,7 +20,7 @@ public:
 	virtual Type process_unary		(UnaryExpression&)		= 0;
 	virtual Type process_grouping	(GroupingExpression&)	= 0;
 	virtual Type process_literal	(LiteralExpression&)	= 0;
-	virtual Type process_identifier		(IdentifierExpression&)		= 0;
+	virtual Type process_identifier	(IdentifierExpression&)	= 0;
 	virtual Type process_assignment	(AssignmentExpression&)	= 0;
 };
 
@@ -112,6 +112,7 @@ public:
 
 
 
+// references the value of an identifier
 class IdentifierExpression : public Expression
 {
 public:
@@ -129,6 +130,7 @@ public:
 
 
 
+// assigns a value to identifier
 class AssignmentExpression : public Expression
 {
 public:

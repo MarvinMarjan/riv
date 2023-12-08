@@ -13,6 +13,7 @@ public:
 	Scanner(const std::string& source);
 
 
+	// scan tokens
 	std::vector<Token> scan();
 
 
@@ -31,6 +32,7 @@ private:
 	size_t& ln_current_ = ln_end_;
 
 
+	// current token position
 	TokenPosition position() const noexcept { return TokenPosition(line_, ln_begin_, ln_end_); }
 
 
@@ -47,8 +49,8 @@ private:
 	void identifier();						// processes a identifier (booleans, keywords, identifiers...) token
 
 
-	void line_comment() noexcept;
-	void block_comment() noexcept;
+	void line_comment() noexcept;	// like this
+	void block_comment() noexcept;	/* this one */
 
 
 	bool at_end()		const	noexcept;
@@ -59,6 +61,7 @@ private:
 	bool match(const char next) noexcept;
 
 
+	// advances the current token position to the next line
 	void next_line() noexcept;
 
 

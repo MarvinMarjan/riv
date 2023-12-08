@@ -60,7 +60,7 @@ static std::string get_error_line(std::string& line, const TokenPosition& pos) n
 }
 
 
-static unsigned int count_decimal_numbers(const unsigned int number) noexcept
+static unsigned int count_decimal_floors(const unsigned int number) noexcept
 {
 	unsigned int buff = 1;
 
@@ -82,7 +82,8 @@ static std::string format_code(const char ch, const unsigned int code) noexcept
 
 	std::string zero_count = "000";
 	
-	for (size_t i = 0; i < count_decimal_numbers(code); i++)
+	// erase the right number of zeros
+	for (size_t i = 0; i < count_decimal_floors(code); i++)
 		zero_count.erase(zero_count.begin());
 
 	stream << ch << zero_count << std::to_string(code);
@@ -133,7 +134,8 @@ std::string exception_to_string(const Exception& exception) noexcept
 
 
 
-void log_error(const Exception& exception) noexcept {
+void log_error(const Exception& exception) noexcept
+{
 	sp::println(exception_to_string(exception));
 	set_error_flag();
 }

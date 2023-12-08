@@ -60,16 +60,19 @@ void run(const std::string& source)
 {
 	const SystemState& state = sys_state();
 
+	// scanning
 	std::vector<Token> tokens = scan(source);
 
 	if (state.has_error)
 		return;
 
+	// parsing
 	std::vector<Statement*> statements = parse(tokens);
 
 	if (state.has_error)
 		return;
 
+	// interpreting
 	run(statements);
 }
 
@@ -82,6 +85,8 @@ void repl_init()
 
 	// REPL instance
 	RivREPL repl;
+
+	// interpreter should have program-time lifetime
 	Interpreter interpreter;
 
 	std::string source;
@@ -96,21 +101,25 @@ void repl_init()
 			break;
 
 
+		// reload system state on every iteration
 		init_state_using_repl(source);
 
 
 		// processing
 
+		// scanning
 		std::vector<Token> tokens = scan(source);
 
 		if (state.has_error)
 			continue;
 
+		// parsing
 		std::vector<Statement*> statements = parse(tokens);
 		
 		if (state.has_error)
 			continue;
 
+		// interpreting
 		interpreter.interpret(statements);
 	}
 }
@@ -126,5 +135,6 @@ void srcf_init(const int argc, const char** argv)
 	const SystemState& state = sys_state();
 
 	init_state_using_srcfile(argv[1]);
+	
 	run(state.strsource);
 }

@@ -25,12 +25,12 @@ std::vector<Token> scan(const std::string& source);
 std::vector<Statement*> parse(const std::vector<Token>& source);
 
 
-// runs the languae
+// runs the language
 void run(const std::vector<Statement*>& statements);
 void run(const std::string& source);
 
 
-// interative init
+// interactive init
 void repl_init();
 
 // source file init

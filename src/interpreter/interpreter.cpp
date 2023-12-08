@@ -91,6 +91,7 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 
 	switch (expr.op.type)
 	{
+	// x + y
 	case TokenType::Plus:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() + right.as_num();
@@ -98,20 +99,24 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str() + right.as_str();
 
+	// x - y
 	case TokenType::Minus:
 		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() - right.as_num();
 
+	// x * y
 	case TokenType::Star:
 		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() * right.as_num();
 
+	// x / y
 	case TokenType::Slash:
 		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() / right.as_num();
 
 
 
+	// x > y
 	case TokenType::Greater:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() > right.as_num();
@@ -119,6 +124,7 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() > right.as_str().size();
 
+	// x < y
 	case TokenType::Lesser:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() < right.as_num();
@@ -126,6 +132,7 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() < right.as_str().size();
 
+	// x >= y
 	case TokenType::GreaterEqual:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() >= right.as_num();
@@ -133,6 +140,7 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() >= right.as_str().size();
 
+	// x <= y
 	case TokenType::LesserEqual:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() <= right.as_num();
@@ -142,9 +150,11 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 
 
 	
+	// x == y
 	case TokenType::EqualEqual:
 		return equals(left, right);
 
+	// x != y
 	case TokenType::BangEqual:
 		return !equals(left, right);
 	}
@@ -159,10 +169,12 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 
 	switch (expr.op.type)
 	{
+	// -x
 	case TokenType::Minus:
 		throw_if_type_differs({ right }, TypeIndex::Number, riv_e300({ right }, expr.op));
 		return -right.as_num();
 
+	// !x
 	case TokenType::Bang:
 		return !truthy(right);
 	}
@@ -189,6 +201,7 @@ Type Interpreter::process_identifier(IdentifierExpression& expr)
 }
 
 
+// x = y
 Type Interpreter::process_assignment(AssignmentExpression& expr)
 {
 	const Type value = evaluate(expr.value);

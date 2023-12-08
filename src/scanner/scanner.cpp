@@ -258,6 +258,7 @@ void Scanner::line_comment() noexcept
 		advance();
 	}
 
+	// advance the newline character
 	advance();
 }
 

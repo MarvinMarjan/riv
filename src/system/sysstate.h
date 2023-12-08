@@ -13,8 +13,8 @@ struct SystemState
 	std::string source_path;
 	std::string source_name;
 
-	std::string strsource;
-	std::vector<std::string> vecsource;
+	std::string strsource;				// source as a whole string
+	std::vector<std::string> vecsource;	// source as a list of lines
 
 	InitMode init_mode;
 
