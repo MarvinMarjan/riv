@@ -67,7 +67,7 @@ public:
 
 
 
-// "{" statements... "}"
+// "{" statements* "}"
 class BlockStatement : public Statement
 {
 public:
@@ -122,7 +122,7 @@ public:
 
 
 
-// "if" "(" expression ")" statement ("else" statement)?
+// "if" "(" expression ")" then_statement ("else" else_statement)?
 class IfStatement : public Statement
 {
 public:
@@ -192,7 +192,7 @@ public:
 
 
 
-// "function" <name> "(" <params>... ")" "{" statement... "}"
+// "function" <name> "(" <params>* ")" "{" statement* "}"
 class FunctionStatement : public Statement
 {
 public:
