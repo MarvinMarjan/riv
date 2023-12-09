@@ -161,6 +161,7 @@ public:
 
 
 
+// "break" ";"
 class BreakStatement : public Statement
 {
 public:
@@ -174,6 +175,7 @@ public:
 	}
 };
 
+// "continue" ";"
 class ContinueStatement : public Statement
 {
 public:
@@ -190,6 +192,7 @@ public:
 
 
 
+// "function" <name> "(" <params>... ")" "{" statement... "}"
 class FunctionStatement : public Statement
 {
 public:
@@ -209,6 +212,7 @@ public:
 
 
 
+// "return" expression? ";"
 class ReturnStatement : public Statement
 {
 public:
