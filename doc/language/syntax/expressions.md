@@ -15,6 +15,10 @@
 		- [Condition Negation](#condition-negation)
 - [Grouping](#grouping)
 - [Assignment](#assignment)
+	- [Operator +=](#operator--4)
+	- [Operator -=](#operator---2)
+	- [Operator \*=](#operator--5)
+	- [Operator /=](#operator--6)
 
 
 **Expressions** are literal values (like `false` `"hello"` and `8`) or operations that returns a value.
@@ -28,7 +32,7 @@
 ***(stable)***
 
 
-`[ value1:Number ] "+" [ value2:Number ]`
+`[value1:Number] "+" [value2:Number]`
 
 
 Operates the sum of two *Number* values.
@@ -40,7 +44,7 @@ Operates the sum of two *Number* values.
 ***(stable)***
 
 
-`[ value1:String ] "+" [ value2:String ]`
+`[value1:String] "+" [value2:String]`
 
 
 Operates the merge of two *String* values.
@@ -53,7 +57,7 @@ Operates the merge of two *String* values.
 ***(stable)***
 
 
-`[ value1:Number ] "-" [ value2:Number ]`
+`[value1:Number] "-" [value2:Number]`
 
 
 Operates the subtraction of two *Number* values.
@@ -66,7 +70,7 @@ Operates the subtraction of two *Number* values.
 ***(stable)***
 
 
-`[ value1:Number ] "*" [ value2:Number ]`
+`[value1:Number] "*" [value2:Number]`
 
 
 Operates the multiplication of two *Number* values.
@@ -79,7 +83,7 @@ Operates the multiplication of two *Number* values.
 ***(stable)***
 
 
-`[ value1:Number ] "/" [ value2:Number ]`
+`[value1:Number] "/" [value2:Number]`
 
 
 Operates the division of two *Number* values.
@@ -94,7 +98,7 @@ Operates the division of two *Number* values.
 ***(stable)***
 
 
-`"-" [ value:Number ]`
+`"-" [value:Number]`
 
 
 Negates a *Number* value.
@@ -108,7 +112,7 @@ If `value` is positive, then it will be negated to negative. It it's negative, t
 ***(stable)***
 
 
-`"!" [ value:Bool ]`
+`"!" [value:Bool]`
 
 
 Negates a *Bool* value.
@@ -130,7 +134,43 @@ Use `"(" ... ")"` to group an expression. When grouped, it will have a higher pr
 ***(stable)***
 
 
-`< variable > "=" [ value ] ";"`
+`<variable> "=" [value]`
 
 
-After a variable is declared, you can change its value.
+After a variable is declared, you can change its value. This expression evaluates to the value assigned.
+
+
+
+## Operator +=
+
+`<variable> "+=" [value]`
+
+
+[Syntatic Sugar](/doc/language/syntax/syntatic_sugar.md) for `<variable> = <variable> + [value]`
+
+
+
+## Operator -=
+
+`<variable> "-=" [value]`
+
+
+[Syntatic Sugar](/doc/language/syntax/syntatic_sugar.md) for `<variable> = <variable> - [value]`
+
+
+
+## Operator *=
+
+`<variable> "*=" [value]`
+
+
+[Syntatic Sugar](/doc/language/syntax/syntatic_sugar.md) for `<variable> = <variable> * [value]`
+
+
+
+## Operator /=
+
+`<variable> "/=" [value]`
+
+
+[Syntatic Sugar](/doc/language/syntax/syntatic_sugar.md) for `<variable> = <variable> / [value]`
