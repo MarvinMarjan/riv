@@ -91,7 +91,7 @@ Type::Type()
 }
 
 
-std::string type_to_string(const Type& type) noexcept
+std::string type_obj_to_string(const Type& type) noexcept
 {
 	switch (type.type())
 	{

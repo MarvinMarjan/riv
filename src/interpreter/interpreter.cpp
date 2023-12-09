@@ -5,6 +5,7 @@
 #include <language/error_codes.h>
 #include <system/exception.h>
 #include <type/function.h>
+#include <system/debug.h>
 
 
 
@@ -12,7 +13,7 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 {
 	try {
 		for (Statement* const statement : statements)
-			execute(statement);
+			execute(statement);	
 	}
 	catch (const Exception& e)
 	{
@@ -112,12 +113,12 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 	if (config.enclose_old)
 		new_env.set_enclosing(&old_env);
 
-	this->environment = std::move(new_env);
-	
+	environment = std::move(new_env);
+
 	for (Statement* const statement : statements)
 		execute(statement);
 
-	this->environment = std::move(old_env);
+	environment = std::move(old_env);
 }
 
 

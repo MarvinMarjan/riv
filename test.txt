@@ -1,18 +1,17 @@
-function repeat(func, times)
+var name = "marvin";
+var age = 14;
+var gender = "male";
+
 {
-	for (var i = 0; i < times; i += 1)
+	var foo = "hello";
+	
+	function main()
 	{
-		print "hllo";
-		func();
+		print age;
 	}
+
+
+	main();
+
+	print name;
 }
-
-var buff = 0;
-
-function hello()
-{
-	print buff;
-	buff += 1;
-}
-
-repeat(hello, 5);

@@ -30,7 +30,7 @@ class Type;
 
 
 // returns a representation of a Type
-std::string type_to_string(const Type& type) noexcept;
+std::string type_obj_to_string(const Type& type) noexcept;
 
 
 // language types
@@ -46,7 +46,8 @@ public:
 	TypeIndex type() const noexcept { return ((is_null()) ? TypeIndex::Null : (TypeIndex)index()); }
 
 
-	std::string to_string() const noexcept { return type_to_string(*this); }
+	std::string to_string()			const noexcept { return type_obj_to_string(*this); }
+	std::string type_to_string()	const noexcept { return type_index_to_string(type()); }
 
 
 	bool is_typeof(const TypeIndex type) const noexcept { return this->type() == type; }

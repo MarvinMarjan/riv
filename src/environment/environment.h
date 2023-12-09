@@ -21,6 +21,8 @@ public:
 	void assign(const Token& identifier, const Type& value);
 	Type get(const Token& identifier) const;
 
+	const std::map<std::string, Type>& data() const noexcept { return data_; }
+
 
 	Environment* top() noexcept;
 	Environment* enclosing() noexcept { return enclosing_; }

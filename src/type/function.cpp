@@ -2,13 +2,15 @@
 
 #include <interpreter/interpreter.h>
 
-#include <specter/output/ostream.h>
+
 
 Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& arguments)
 {
-	sp::println("begin");
-	Environment new_env(interpreter.environment.top());
-	sp::println("end");
+	// creating a local instance of the global environment instead of using the pointer
+	// avoids some annoying bugs
+	Environment global = *interpreter.environment.top();
+
+	Environment new_env(&global);
 	Type return_value;
 
 	// assign the arguments
