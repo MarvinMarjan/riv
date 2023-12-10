@@ -30,9 +30,6 @@
 ## Operator +
 ### Addition
 
-***(stable)***
-
-
 `[value1:Number] "+" [value2:Number]`
 
 
@@ -41,9 +38,6 @@ Operates the sum of two *Number* values.
 
 
 ### Concatenation
-
-***(stable)***
-
 
 `[value1:String] "+" [value2:String]`
 
@@ -55,9 +49,6 @@ Operates the merge of two *String* values.
 ## Operator -
 ### Subtraction
 
-***(stable)***
-
-
 `[value1:Number] "-" [value2:Number]`
 
 
@@ -68,9 +59,6 @@ Operates the subtraction of two *Number* values.
 ## Operator *
 ### Multiplication
 
-***(stable)***
-
-
 `[value1:Number] "*" [value2:Number]`
 
 
@@ -80,9 +68,6 @@ Operates the multiplication of two *Number* values.
 
 ## Operator /
 ### Division
-
-***(stable)***
-
 
 `[value1:Number] "/" [value2:Number]`
 
@@ -96,9 +81,6 @@ Operates the division of two *Number* values.
 ## Operator -
 ### Number Negation
 
-***(stable)***
-
-
 `"-" [value:Number]`
 
 
@@ -110,9 +92,6 @@ If `value` is positive, then it will be negated to negative. It it's negative, t
 ## Operator !
 ### Condition Negation
 
-***(stable)***
-
-
 `"!" [value:Bool]`
 
 
@@ -123,17 +102,11 @@ If `value` is `true`, it becomes `false`. If it's `false`, it becomes `true`.
 
 # Grouping
 
-***(stable)***
-
-
 Use `"(" ... ")"` to group an expression. When grouped, it will have a higher precedence.
 
 
 
 # Assignment
-
-***(stable)***
-
 
 `<variable> "=" [value]`
 
@@ -179,9 +152,6 @@ After a variable is declared, you can change its value. This expression evaluate
 
 
 # Calling
-
-***(stable)***
-
 
 `<identifier> "(" <params>* ")"`
 

@@ -9,9 +9,6 @@
 
 ## String
 
-***(stable)***
-
-
 *String* is a data type that represents a text value. *Strings* are enclosed by `"..."` or `'...'`:
 
 - `"Hello, world!"`
@@ -27,9 +24,6 @@ You can insert in *Strings* the following *escape characters*:
 
 ## Number
 
-***(stable)***
-
-
 *Number* is a data type that represents... well... a number. A *Number* can be both integer and decimal numbers:
 
 - `7`
@@ -39,14 +33,8 @@ You can insert in *Strings* the following *escape characters*:
 
 ## Bool
 
-***(stable)***
-
-
 *Bool* is a data type that represents two conditional values: `true` and `false`
 
 ## Null
-
-***(stable)***
-
 
 *Null* is a data type that represents the value `null`.
