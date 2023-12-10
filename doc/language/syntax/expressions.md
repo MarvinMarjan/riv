@@ -19,6 +19,7 @@
 	- [Operator -=](#operator---2)
 	- [Operator \*=](#operator--5)
 	- [Operator /=](#operator--6)
+- [Calling](#calling)
 
 
 **Expressions** are literal values (like `false` `"hello"` and `8`) or operations that returns a value.
@@ -174,3 +175,16 @@ After a variable is declared, you can change its value. This expression evaluate
 
 
 [Syntatic Sugar](/doc/language/syntax/syntatic_sugar.md) for `<variable> = <variable> / [value]`
+
+
+
+# Calling
+
+***(stable)***
+
+
+`<identifier> "(" <params>* ")"`
+
+Calls anything that can be called.
+
+See [Function Calling](/doc/language/features/functions.md#calling).

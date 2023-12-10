@@ -1,4 +1,3 @@
-***(stable)***- [Expression Statement](#expression-statement)
 - [Expression Statement](#expression-statement)
 - [Block Statement](#block-statement)
 - [Print Statement](#print-statement)
@@ -7,8 +6,8 @@
 - [While Statement](#while-statement)
 - [Loop Statement](#loop-statement)
 - [For Statement](#for-statement)
-- [Break Statement;](#break-statement)
-- [Continue Statement;](#continue-statement)
+- [Break Statement](#break-statement)
+- [Continue Statement](#continue-statement)
 - [Function Statement](#function-statement)
 - [Return Statement](#return-statement)
 
@@ -151,7 +150,7 @@ while (condition)
 
 
 
-## Break Statement;
+## Break Statement
 
 `"break" ";"`
 
@@ -173,7 +172,7 @@ while (true)
 
 
 
-## Continue Statement;
+## Continue Statement
 
 `"continue" ";"`
 
