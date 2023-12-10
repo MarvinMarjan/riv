@@ -41,6 +41,8 @@ static std::map<std::string, TokenType> s_keywords =
 	{"continue",	TokenType::Continue},
 	{"function",	TokenType::Function},
 	{"return",		TokenType::Return},
+	{"import",		TokenType::Import},
+	{"export",		TokenType::Export},
 };
 
 

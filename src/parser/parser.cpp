@@ -79,6 +79,12 @@ Statement* Parser::statement()
 	if (match({ TokenType::Return }))
 		return return_statement();
 
+	if (match({ TokenType::Import }))
+		return import_statement();
+
+	if (match({ TokenType::Export }))
+		return export_statement();
+
 	return expression_statement();
 }
 
@@ -292,6 +298,41 @@ Statement* Parser::return_statement()
 
 	consume(TokenType::SemiColon, riv_e202(previous().pos));
 	return new ReturnStatement(value);
+}
+
+
+Statement* Parser::import_statement()
+{
+	Token path = consume(TokenType::String, riv_e222(previous().pos)); // path to import
+	return new ImportStatement(path);
+}
+
+
+Statement* Parser::export_statement()
+{
+	std::vector<Token> identifiers; // identifiers to be exported
+	bool export_all = false;
+
+
+	if (check(TokenType::Identifier))
+		do {
+			identifiers.push_back(consume(TokenType::Identifier, riv_e223(previous().pos)));
+		} while (match({ TokenType::Comma }));
+
+	else if (check(TokenType::SemiColon))
+		export_all = true;
+
+	else if (!at_end())
+		throw riv_e224(peek().pos);
+
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
+
+
+	if (export_all)
+		return new ExportStatement(export_all);
+
+	else
+		return new ExportStatement(identifiers);
 }
 
 

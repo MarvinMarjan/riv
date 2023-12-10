@@ -119,6 +119,18 @@ Exception riv_e221(const TokenPosition& pos) noexcept {
 	return Exception("Cannot use \"return\" statement outside a function.", pos, 221);
 }
 
+Exception riv_e222(const TokenPosition& pos) noexcept {
+	return Exception("Expect path string after \"import\" statement.", pos, 222);
+}
+
+Exception riv_e223(const TokenPosition& pos) noexcept {
+	return Exception("Expect identifier to export after \",\".", pos, 223);
+}
+
+Exception riv_e224(const TokenPosition& pos) noexcept {
+	return Exception("Unexpected token after \"export\" statement.", pos, 224);
+}
+
 
 
 
@@ -149,4 +161,8 @@ Exception riv_e302(const TokenPosition& pos) noexcept {
 
 Exception riv_e303(const int expect, const int got, const TokenPosition& pos) noexcept {
 	return Exception("Expect " + std::to_string(expect) + " arguments, got " + std::to_string(got) + ".", pos, 303);
+}
+
+Exception riv_e304(const TokenPosition& pos) noexcept {
+	return Exception("Invalid import path.", pos, 304);
 }

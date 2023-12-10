@@ -37,6 +37,8 @@ private:
 	void process_continue	(ContinueStatement&)	override;
 	void process_function	(FunctionStatement&)	override;
 	void process_return		(ReturnStatement&)		override;
+	void process_import		(ImportStatement&)		override;
+	void process_export		(ExportStatement&)		override;
 
 
 	struct ScopeConfig
@@ -78,4 +80,9 @@ private:
 	static bool are_values_of_type(const std::initializer_list<Type>& values, const TypeIndex type) noexcept;
 
 	static void throw_if_type_differs(const std::initializer_list<Type>& values, const TypeIndex type, const Exception& err);
+
+
+
+
+	std::vector<std::string> export_list_;
 };

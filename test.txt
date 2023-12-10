@@ -1,17 +1,6 @@
 var name = "marvin";
 var age = 14;
-var gender = "male";
-
-{
-	var foo = "hello";
-	
-	function main()
-	{
-		print age;
-	}
 
 
-	main();
 
-	print name;
-}
+export .;

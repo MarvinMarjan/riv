@@ -53,6 +53,9 @@ Exception riv_e218(const TokenPosition& pos) noexcept; // expect parameter after
 Exception riv_e219(const TokenPosition& pos) noexcept; // expect function body
 Exception riv_e220(const TokenPosition& pos) noexcept; // expect ")" after function arguments
 Exception riv_e221(const TokenPosition& pos) noexcept; // cannot use "return" statement outside a function
+Exception riv_e222(const TokenPosition& pos) noexcept; // expect path string after "import" statement
+Exception riv_e223(const TokenPosition& pos) noexcept; // expect identifier to export after ","
+Exception riv_e224(const TokenPosition& pos) noexcept; // unexpected token after "export" statement
 
 
 
@@ -63,3 +66,4 @@ Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op)
 Exception riv_e301(const Token& identifier) noexcept; // undefined indentifier "..."
 Exception riv_e302(const TokenPosition& pos) noexcept; // only functions can be called
 Exception riv_e303(const int expect, const int got, const TokenPosition& pos) noexcept; // expect ... arguments, got ...
+Exception riv_e304(const TokenPosition& pos) noexcept; // invalid import path

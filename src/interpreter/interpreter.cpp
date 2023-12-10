@@ -6,6 +6,7 @@
 #include <system/exception.h>
 #include <type/function.h>
 #include <system/debug.h>
+#include <common/vector.h>
 
 
 
@@ -100,6 +101,31 @@ void Interpreter::process_function(FunctionStatement& statement)
 void Interpreter::process_return(ReturnStatement& statement)
 {
 	throw RivFunction::ReturnSignal(evaluate(statement.value));
+}
+
+
+void Interpreter::process_import(ImportStatement& statement)
+{
+	// TODO: finish
+}
+
+
+void Interpreter::process_export(ExportStatement& statement)
+{
+	// TODO: verify if identifier exists in environment
+
+	if (statement.export_all)
+	{
+		for (const auto& [identifier, value] : environment.top()->data())
+			if (!exists(export_list_, identifier))
+				export_list_.push_back(identifier);
+
+		return;
+	}
+
+	for (const Token& identifier : statement.identifiers)
+		if (!exists(export_list_, identifier.lexeme))
+			export_list_.push_back(identifier.lexeme);
 }
 
 

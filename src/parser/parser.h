@@ -39,6 +39,8 @@ private:
 	Statement* continue_statement();
 	Statement* function_statement();
 	Statement* return_statement();
+	Statement* import_statement();
+	Statement* export_statement();
 
 
 

@@ -22,7 +22,7 @@ enum class TokenType
 	// keywords
 
 	Print, Var, If, Else, While, For, Loop, Break, Continue,
-	Function, Return
+	Function, Return, Import, Export
 };
 
 
