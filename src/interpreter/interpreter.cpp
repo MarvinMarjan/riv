@@ -29,20 +29,6 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 
 
 
-std::map<std::string, Type> Interpreter::get_exported_identifiers() noexcept
-{
-	std::map<std::string, Type> identifiers;
-
-	for (const auto& [name, value] : global()->data())
-		if (exists(export_list_, name))
-			identifiers.insert({ name, value });
-
-	return identifiers;
-}
-
-
-
-
 
 
 void Interpreter::process_expression(ExpressionStatement& statement)
@@ -140,7 +126,7 @@ void Interpreter::process_import(ImportStatement& statement)
 	Interpreter interpreter;
 	interpreter.interpret(parse(scan(state.strsource)));
 
-	global()->add_from(interpreter.get_exported_identifiers());
+	global()->add_from(interpreter.environment.get_exported_identifiers());
 
 	// return to previous state
 	init_state_using_copy(old);
@@ -152,15 +138,15 @@ void Interpreter::process_export(ExportStatement& statement)
 	if (statement.export_all)
 	{
 		for (const auto& [identifier, value] : global()->data())
-			if (!exists(export_list_, identifier))
-				export_list_.push_back(identifier);
+			if (!exists(environment.export_list_, identifier))
+				environment.export_list_.push_back(identifier);
 
 		return;
 	}
 
 	for (const Token& identifier : statement.identifiers)
-		if (global()->defined(identifier.lexeme) && !exists(export_list_, identifier.lexeme))
-			export_list_.push_back(identifier.lexeme);
+		if (global()->defined(identifier.lexeme) && !exists(environment.export_list_, identifier.lexeme))
+			environment.export_list_.push_back(identifier.lexeme);
 }
 
 

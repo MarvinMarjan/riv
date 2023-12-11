@@ -30,10 +30,6 @@ private:
 	friend class RivFunction;
 
 
-	// get identifiers listed in "export_list_"
-	std::map<std::string, Type> get_exported_identifiers() noexcept;
-
-
 	void process_expression	(ExpressionStatement&)	override;
 	void process_block		(BlockStatement&)		override;
 	void process_print		(PrintStatement&)		override;
@@ -87,9 +83,4 @@ private:
 	static bool are_values_of_type(const std::initializer_list<Type>& values, const TypeIndex type) noexcept;
 
 	static void throw_if_type_differs(const std::initializer_list<Type>& values, const TypeIndex type, const Exception& err);
-
-
-
-
-	std::vector<std::string> export_list_;
 };

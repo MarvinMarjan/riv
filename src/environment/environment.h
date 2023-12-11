@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 
 
@@ -27,6 +28,10 @@ public:
 	bool defined(const std::string& identifier) const noexcept;
 
 
+	// get identifiers listed in "export_list_"
+	std::map<std::string, Type> get_exported_identifiers() noexcept;
+
+
 	Environment* top() noexcept;
 	Environment* enclosing() noexcept { return enclosing_; }
 
@@ -34,11 +39,15 @@ public:
 	void set_enclosing(Environment* const enclosing) noexcept { enclosing_ = enclosing; }
 
 
-	const std::map<std::string, Type>& data() const noexcept { return data_; }
+	const std::map<std::string, Type>&	data()			const noexcept { return data_; }
+	std::vector<std::string>			export_list()	const noexcept { return export_list_; }
 
 
 private:
+	friend class Interpreter;
+
 	std::map<std::string, Type> data_;
+	std::vector<std::string> export_list_;
 
 	Environment* enclosing_ = nullptr;
 };
