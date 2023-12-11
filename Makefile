@@ -46,6 +46,12 @@ LIBRARIES = \
 	-l$(SPECTER_LIB_NAME)
 
 
+CPP_WANINGS = -Wall -Wno-switch
+
+
+CPP_FLAGS = $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION) $(CPP_WANINGS)
+LINK_FLAGS = $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
+
 
 SOURCES = $(shell find src -name "*.cpp")
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -68,7 +74,7 @@ run:
 .PHONY:
 $(OUT_APP) build: $(OBJECTS)
 	@ echo Linking objects: $(FULL_OBJECTS)
-	@ $(CC) $(FULL_OBJECTS) -o $(OUT_APP) $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
+	@ $(CC) $(FULL_OBJECTS) -o $(OUT_APP) $(LINK_FLAGS)
 	@ echo Application created at $(OUT_APP)
 
 
@@ -77,7 +83,7 @@ $(OUT_APP) build: $(OBJECTS)
 # compiles source files into objects
 $(OBJECTS): %.o: %.cpp
 	@ echo Compiling $<
-	@ $(CC) -c $< -o $(addprefix $(OUT_PATH)/, $(notdir $@)) $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION)
+	@ $(CC) -c $< -o $(addprefix $(OUT_PATH)/, $(notdir $@)) $(CPP_FLAGS)
 
 
 .PHONY:
