@@ -120,7 +120,7 @@ Exception riv_e221(const TokenPosition& pos) noexcept {
 }
 
 Exception riv_e222(const TokenPosition& pos) noexcept {
-	return Exception("Expect path string after \"import\" statement.", pos, 222);
+	return Exception("Expect module path string after \"import\" statement.", pos, 222);
 }
 
 Exception riv_e223(const TokenPosition& pos) noexcept {
@@ -164,5 +164,5 @@ Exception riv_e303(const int expect, const int got, const TokenPosition& pos) no
 }
 
 Exception riv_e304(const TokenPosition& pos) noexcept {
-	return Exception("Invalid import path.", pos, 304);
+	return Exception("Invalid module path.", pos, 304);
 }

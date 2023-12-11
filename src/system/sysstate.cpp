@@ -18,6 +18,11 @@ void set_error_flag() noexcept {
 
 
 
+void init_state_using_copy(const SystemState& copy) noexcept {
+	s_sys_state = copy;
+}
+
+
 void init_state_using_srcfile(const std::string& path) noexcept
 {
 	std::filesystem::path fpath = path;

@@ -3,12 +3,25 @@
 #include <system/exception.h>
 #include <language/error_codes.h>
 
+#include <specter/output/ostream.h>
+
 
 
 Environment::Environment(Environment* enclosing)
 {
 	enclosing_ = enclosing;
 }
+
+
+
+
+void Environment::add_from(const std::map<std::string, Type>& other) noexcept
+{
+	for (const auto& [name, value] : other)
+		if (!defined(name))
+			declare(name, value);
+}
+
 
 
 
@@ -46,6 +59,20 @@ Type Environment::get(const Token& identifier) const
 
 	throw riv_e301(identifier); // undefined identifier
 }
+
+
+
+bool Environment::defined(const std::string& identifier) const noexcept
+{
+	if (data_.contains(identifier))
+		return true;
+
+	if (enclosing_)
+		return enclosing_->defined(identifier);
+
+	return false;
+}
+
 
 
 Environment* Environment::top() noexcept

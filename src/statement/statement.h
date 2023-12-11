@@ -261,5 +261,5 @@ public:
 
 
 	std::vector<Token> identifiers;
-	bool export_all;
+	bool export_all = false;
 };

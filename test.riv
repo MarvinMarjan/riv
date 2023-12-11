@@ -1,0 +1,5 @@
+import "test2";
+
+print sum(90, 5);
+
+special();

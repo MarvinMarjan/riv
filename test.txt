@@ -1,6 +1,0 @@
-var name = "marvin";
-var age = 14;
-
-
-
-export .;

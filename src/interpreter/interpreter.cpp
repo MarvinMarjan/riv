@@ -1,12 +1,17 @@
 #include <interpreter/interpreter.h>
 
+#include <filesystem>
+
 #include <specter/output/ostream.h>
 
 #include <language/error_codes.h>
 #include <system/exception.h>
-#include <type/function.h>
 #include <system/debug.h>
+#include <type/function.h>
 #include <common/vector.h>
+#include <common/filesys.h>
+#include <system/sysstate.h>
+#include <system/init.h>
 
 
 
@@ -20,6 +25,19 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 	{
 		log_error(e);
 	}
+}
+
+
+
+std::map<std::string, Type> Interpreter::get_exported_identifiers() noexcept
+{
+	std::map<std::string, Type> identifiers;
+
+	for (const auto& [name, value] : global()->data())
+		if (exists(export_list_, name))
+			identifiers.insert({ name, value });
+
+	return identifiers;
 }
 
 
@@ -106,17 +124,34 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
-	// TODO: finish
+	const std::filesystem::path import_path = statement.path.value.as_str() + ".riv";
+
+	if (!path_exists(import_path.string()))
+		throw riv_e304(statement.path.pos); // invalid module path
+
+	// save current state
+	const SystemState old = sys_state();
+
+	// start processing of file
+	init_state_using_srcfile(import_path.string());
+
+	const SystemState& state = sys_state();
+
+	Interpreter interpreter;
+	interpreter.interpret(parse(scan(state.strsource)));
+
+	global()->add_from(interpreter.get_exported_identifiers());
+
+	// return to previous state
+	init_state_using_copy(old);
 }
 
 
 void Interpreter::process_export(ExportStatement& statement)
 {
-	// TODO: verify if identifier exists in environment
-
 	if (statement.export_all)
 	{
-		for (const auto& [identifier, value] : environment.top()->data())
+		for (const auto& [identifier, value] : global()->data())
 			if (!exists(export_list_, identifier))
 				export_list_.push_back(identifier);
 
@@ -124,7 +159,7 @@ void Interpreter::process_export(ExportStatement& statement)
 	}
 
 	for (const Token& identifier : statement.identifiers)
-		if (!exists(export_list_, identifier.lexeme))
+		if (global()->defined(identifier.lexeme) && !exists(export_list_, identifier.lexeme))
 			export_list_.push_back(identifier.lexeme);
 }
 
@@ -140,9 +175,17 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 		new_env.set_enclosing(&old_env);
 
 	environment = std::move(new_env);
-
-	for (Statement* const statement : statements)
-		execute(statement);
+	
+	try {
+		for (Statement* const statement : statements)
+			execute(statement);
+	}
+	catch (const RivFunction::ReturnSignal& signal)
+	{
+		// make sure to recover the old environment
+		environment = std::move(old_env);
+		throw signal;
+	}
 
 	environment = std::move(old_env);
 }

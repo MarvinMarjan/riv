@@ -304,6 +304,7 @@ Statement* Parser::return_statement()
 Statement* Parser::import_statement()
 {
 	Token path = consume(TokenType::String, riv_e222(previous().pos)); // path to import
+	consume(TokenType::SemiColon, riv_e202(previous().pos));
 	return new ImportStatement(path);
 }
 
@@ -314,23 +315,23 @@ Statement* Parser::export_statement()
 	bool export_all = false;
 
 
+	// export identifiers
 	if (check(TokenType::Identifier))
 		do {
-			identifiers.push_back(consume(TokenType::Identifier, riv_e223(previous().pos)));
+			identifiers.push_back(consume(TokenType::Identifier, riv_e223(previous().pos))); // expect identifier to export after ","
 		} while (match({ TokenType::Comma }));
 
+	// export all
 	else if (check(TokenType::SemiColon))
 		export_all = true;
 
 	else if (!at_end())
-		throw riv_e224(peek().pos);
+		throw riv_e224(peek().pos); // unexpected token after "export" statement
 
-	consume(TokenType::SemiColon, riv_e202(previous().pos));
-
+	consume(TokenType::SemiColon, riv_e202(previous().pos)); // expect ";" after statement
 
 	if (export_all)
 		return new ExportStatement(export_all);
-
 	else
 		return new ExportStatement(identifiers);
 }

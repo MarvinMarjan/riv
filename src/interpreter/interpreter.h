@@ -20,11 +20,18 @@ public:
 	void interpret(const std::vector<Statement*>& statements);
 
 
+	Environment* global() noexcept { return environment.top(); }
+
+
 	Environment environment;
 
 
 private:
 	friend class RivFunction;
+
+
+	// get identifiers listed in "export_list_"
+	std::map<std::string, Type> get_exported_identifiers() noexcept;
 
 
 	void process_expression	(ExpressionStatement&)	override;
