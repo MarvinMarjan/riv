@@ -61,7 +61,7 @@ Exception riv_e222(const TokenPosition& pos) noexcept; // expect module path str
 // 300 - 399: runtime errors
 
 Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op) noexcept; // Operator "..." doesn't support operands of type: type1, type2, ...
-Exception riv_e301(const TokenPosition& pos) noexcept; // undefined indentifier.
+Exception riv_e301(const TokenPosition& pos) noexcept; // undefined identifier.
 Exception riv_e302(const TokenPosition& pos) noexcept; // only functions can be called
 Exception riv_e303(const int expect, const int got, const TokenPosition& pos) noexcept; // expect ... arguments, got ...
 Exception riv_e304(const TokenPosition& pos) noexcept; // invalid module path

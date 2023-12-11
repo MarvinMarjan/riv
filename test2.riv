@@ -1,1 +1,5 @@
-var name = "pedro";
+import "test3";
+
+function bar() {
+	print "declared at test2";
+}

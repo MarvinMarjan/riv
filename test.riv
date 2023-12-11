@@ -1,2 +1,10 @@
 import "test2";
 
+function baz() {
+	print "declared at test1";
+}
+
+
+foo();
+bar();
+baz();
