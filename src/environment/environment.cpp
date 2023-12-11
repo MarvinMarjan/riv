@@ -19,7 +19,7 @@ Environment::Environment(Environment* enclosing)
 
 
 
-void Environment::add_from(const std::map<std::string, Type>& other) noexcept
+void Environment::import(const std::map<std::string, Type>& other) noexcept
 {
 	for (const auto& [name, value] : other)
 		if (!defined(name))
@@ -31,6 +31,9 @@ void Environment::add_from(const std::map<std::string, Type>& other) noexcept
 
 void Environment::declare(const std::string& name, const Type& value) noexcept
 {
+	// if (data_.contains(name))
+	// 	throw riv_e305();
+
 	data_.insert({ name, value });
 }
 
@@ -49,7 +52,7 @@ void Environment::assign(const Token& identifier, const Type& value)
 		return;
 	}
 
-	throw riv_e301(identifier); // undefined identifier
+	throw riv_e301(identifier.pos); // undefined identifier
 }
 
 
@@ -61,7 +64,7 @@ Type Environment::get(const Token& identifier) const
 	if (enclosing_)
 		return enclosing_->get(identifier);
 
-	throw riv_e301(identifier); // undefined identifier
+	throw riv_e301(identifier.pos); // undefined identifier
 }
 
 

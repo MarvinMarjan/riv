@@ -10,7 +10,7 @@
 
 
 
-static std::string generate_error_indicator(const std::string& line, const TokenPosition& pos)
+std::string generate_error_indicator(const std::string& line, const TokenPosition& pos)
 {
 	std::string error_indicator = "";
 
@@ -34,7 +34,7 @@ static std::string generate_error_indicator(const std::string& line, const Token
 }
 
 
-static std::string format_token_position(const TokenPosition& pos) noexcept
+std::string format_token_position(const TokenPosition& pos) noexcept
 {
 	std::stringstream stream;
 
@@ -45,7 +45,7 @@ static std::string format_token_position(const TokenPosition& pos) noexcept
 }
 
 
-static std::string get_error_line(std::string& line, const TokenPosition& pos) noexcept
+std::string get_error_line(std::string& line, const TokenPosition& pos) noexcept
 {
 	std::stringstream stream;
 
@@ -60,7 +60,7 @@ static std::string get_error_line(std::string& line, const TokenPosition& pos) n
 }
 
 
-static unsigned int count_decimal_floors(const unsigned int number) noexcept
+unsigned int count_decimal_floors(const unsigned int number) noexcept
 {
 	unsigned int buff = 1;
 
@@ -76,7 +76,7 @@ static unsigned int count_decimal_floors(const unsigned int number) noexcept
 }
 
 
-static std::string format_code(const char ch, const unsigned int code) noexcept
+std::string format_code(const char ch, const unsigned int code) noexcept
 {
 	std::stringstream stream;
 

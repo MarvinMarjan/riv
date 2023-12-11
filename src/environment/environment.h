@@ -19,7 +19,7 @@ public:
 	Environment(Environment* enclosing);
 
 
-	void add_from(const std::map<std::string, Type>& other) noexcept;
+	void import(const std::map<std::string, Type>& other) noexcept;
 
 
 	void declare(const std::string& name, const Type& value) noexcept;
@@ -33,16 +33,13 @@ public:
 	Environment* enclosing() noexcept { return enclosing_; }
 
 
-	void set_enclosing(Environment* const enclosing)	noexcept { enclosing_ = enclosing; }
+	void set_enclosing(Environment* const enclosing) noexcept { enclosing_ = enclosing; }
 
 
-	const std::map<std::string, Type>&	data()			const noexcept { return data_; }
+	const std::map<std::string, Type>& data() const noexcept { return data_; }
 
 
 private:
-	friend class Interpreter;
-
-
 	std::map<std::string, Type> data_;
 
 

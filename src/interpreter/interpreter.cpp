@@ -115,14 +115,18 @@ void Interpreter::process_import(ImportStatement& statement)
 	if (!path_exists(import_path.string()))
 		throw riv_e304(statement.path.pos); // invalid module path
 
-	// TODO
+	const SystemState old = sys_state();
+
+	init_state_using_srcfile(import_path.string());
+
+	Interpreter interpreter;
+	interpreter.interpret(parse(scan(sys_state().strsource)));
+
+	environment.import(interpreter.environment.data());
+
+	init_state_using_copy(old);
 }
 
-
-void Interpreter::process_export(ExportStatement& statement)
-{
-	
-}
 
 
 

@@ -60,14 +60,3 @@ ImportStatement::ImportStatement(const Token& path)
 {
 	this->path = path;
 }
-
-
-ExportStatement::ExportStatement(const std::vector<Token>& identifiers)
-{
-	this->identifiers = identifiers;
-}
-
-ExportStatement::ExportStatement(const bool all)
-{
-	this->export_all = all;
-}

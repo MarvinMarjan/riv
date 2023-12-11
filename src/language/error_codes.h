@@ -54,8 +54,6 @@ Exception riv_e219(const TokenPosition& pos) noexcept; // expect function body
 Exception riv_e220(const TokenPosition& pos) noexcept; // expect ")" after function arguments
 Exception riv_e221(const TokenPosition& pos) noexcept; // cannot use "return" statement outside a function
 Exception riv_e222(const TokenPosition& pos) noexcept; // expect module path string after "import" statement
-Exception riv_e223(const TokenPosition& pos) noexcept; // expect identifier to export after ","
-Exception riv_e224(const TokenPosition& pos) noexcept; // unexpected token after "export" statement
 
 
 
@@ -63,8 +61,8 @@ Exception riv_e224(const TokenPosition& pos) noexcept; // unexpected token after
 // 300 - 399: runtime errors
 
 Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op) noexcept; // Operator "..." doesn't support operands of type: type1, type2, ...
-Exception riv_e301(const Token& identifier) noexcept; // undefined indentifier "..."
+Exception riv_e301(const TokenPosition& pos) noexcept; // undefined indentifier.
 Exception riv_e302(const TokenPosition& pos) noexcept; // only functions can be called
 Exception riv_e303(const int expect, const int got, const TokenPosition& pos) noexcept; // expect ... arguments, got ...
 Exception riv_e304(const TokenPosition& pos) noexcept; // invalid module path
-// Exception riv_e305(const Exception& err, const std::string& import_file, const std::string& imported_by) noexcept; // in file ... imported by ...:
+Exception riv_e305(const std::string& identifier, const TokenPosition& already_declared) noexcept; // identifier ... already declared at ...

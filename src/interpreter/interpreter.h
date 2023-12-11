@@ -41,7 +41,6 @@ private:
 	void process_function	(FunctionStatement&)	override;
 	void process_return		(ReturnStatement&)		override;
 	void process_import		(ImportStatement&)		override;
-	void process_export		(ExportStatement&)		override;
 
 
 	struct ScopeConfig

@@ -7,6 +7,10 @@
 
 
 
+extern std::string format_token_position(const TokenPosition& pos) noexcept;
+
+
+
 Exception riv_e001(const std::string& path) noexcept {
 	return Exception("Invalid source file: " + qt(path), {}, 1);
 }
@@ -123,14 +127,6 @@ Exception riv_e222(const TokenPosition& pos) noexcept {
 	return Exception("Expect module path string after \"import\" statement.", pos, 222);
 }
 
-Exception riv_e223(const TokenPosition& pos) noexcept {
-	return Exception("Expect identifier to export after \",\".", pos, 223);
-}
-
-Exception riv_e224(const TokenPosition& pos) noexcept {
-	return Exception("Unexpected token after \"export\" statement.", pos, 224);
-}
-
 
 
 
@@ -151,8 +147,8 @@ Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op)
 	return Exception("Operator \"" + op.lexeme + "\" doesn't support operands of type: " + operands_str.str(), op.pos, 300);
 }
 
-Exception riv_e301(const Token& identifier) noexcept {
-	return Exception("Undefined identifier \"" + identifier.lexeme + "\".", identifier.pos, 301);
+Exception riv_e301(const TokenPosition& pos) noexcept {
+	return Exception("Undefined identifier.", pos, 301);
 }
 
 Exception riv_e302(const TokenPosition& pos) noexcept {
@@ -165,4 +161,8 @@ Exception riv_e303(const int expect, const int got, const TokenPosition& pos) no
 
 Exception riv_e304(const TokenPosition& pos) noexcept {
 	return Exception("Invalid module path.", pos, 304);
+}
+
+Exception riv_e305(const std::string& identifier, const TokenPosition& already_declared) noexcept {
+	return Exception("Identifier " + qt(identifier) + " already declared at " + format_token_position(already_declared) + ".");
 }

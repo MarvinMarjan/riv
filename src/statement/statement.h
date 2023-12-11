@@ -20,7 +20,6 @@ class ContinueStatement;
 class FunctionStatement;
 class ReturnStatement;
 class ImportStatement;
-class ExportStatement;
 
 
 class StatementProcessor
@@ -37,7 +36,6 @@ public:
 	virtual void process_function	(FunctionStatement&) 	= 0;
 	virtual void process_return		(ReturnStatement&) 		= 0;
 	virtual void process_import		(ImportStatement&)		= 0;
-	virtual void process_export		(ExportStatement&)		= 0;
 };
 
 
@@ -246,20 +244,4 @@ public:
 
 
 	Token path;
-};
-
-class ExportStatement : public Statement
-{
-public:
-	ExportStatement(const std::vector<Token>& identifiers);
-	ExportStatement(const bool all);
-
-
-	void process(StatementProcessor& processor) override {
-		processor.process_export(*this);
-	}
-
-
-	std::vector<Token> identifiers;
-	bool export_all = false;
 };
