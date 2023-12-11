@@ -10,6 +10,7 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 	// avoids some annoying bugs
 	Environment global = *interpreter.global();
 
+
 	Environment new_env(&global);
 	Type return_value;
 

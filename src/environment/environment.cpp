@@ -1,8 +1,13 @@
 #include <environment/environment.h>
 
+#include <interpreter/interpreter.h>
+#include <system/sysstate.h>
+#include <system/init.h>
 #include <system/exception.h>
 #include <language/error_codes.h>
 #include <common/vector.h>
+
+#include <specter/output/ostream.h>
 
 
 
@@ -70,20 +75,6 @@ bool Environment::defined(const std::string& identifier) const noexcept
 		return enclosing_->defined(identifier);
 
 	return false;
-}
-
-
-
-
-std::map<std::string, Type> Environment::get_exported_identifiers() noexcept
-{
-	std::map<std::string, Type> identifiers;
-
-	for (const auto& [name, value] : top()->data())
-		if (exists(export_list_, name))
-			identifiers.insert({ name, value });
-
-	return identifiers;
 }
 
 

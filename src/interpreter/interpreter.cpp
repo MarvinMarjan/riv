@@ -115,38 +115,13 @@ void Interpreter::process_import(ImportStatement& statement)
 	if (!path_exists(import_path.string()))
 		throw riv_e304(statement.path.pos); // invalid module path
 
-	// save current state
-	const SystemState old = sys_state();
-
-	// start processing of file
-	init_state_using_srcfile(import_path.string());
-
-	const SystemState& state = sys_state();
-
-	Interpreter interpreter;
-	interpreter.interpret(parse(scan(state.strsource)));
-
-	global()->add_from(interpreter.environment.get_exported_identifiers());
-
-	// return to previous state
-	init_state_using_copy(old);
+	// TODO
 }
 
 
 void Interpreter::process_export(ExportStatement& statement)
 {
-	if (statement.export_all)
-	{
-		for (const auto& [identifier, value] : global()->data())
-			if (!exists(environment.export_list_, identifier))
-				environment.export_list_.push_back(identifier);
-
-		return;
-	}
-
-	for (const Token& identifier : statement.identifiers)
-		if (global()->defined(identifier.lexeme) && !exists(environment.export_list_, identifier.lexeme))
-			environment.export_list_.push_back(identifier.lexeme);
+	
 }
 
 
