@@ -22,7 +22,7 @@ public:
 		: declaration(declaration) {}
 
 
-	int arity() override { return declaration.params.size(); }
+	size_t arity() override { return declaration.params.size(); }
 
 	Type call(Interpreter& interpreter, const std::vector<Type>& arguments) override;
 

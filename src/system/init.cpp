@@ -25,8 +25,6 @@ InitMode get_init_mode(const int argc, const char** argv) noexcept
 
 std::vector<Token> scan(const std::string& source)
 {
-	const SystemState& state = sys_state();
-
 	Scanner scanner(source);
 
 	// scan source into tokens
