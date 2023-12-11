@@ -1,6 +1,2 @@
 import "test2";
 
-var name = "lucas";
-
-
-print name;

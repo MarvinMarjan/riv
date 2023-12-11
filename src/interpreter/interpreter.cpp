@@ -51,7 +51,7 @@ void Interpreter::process_print(PrintStatement& statement)
 
 void Interpreter::process_var(VarStatement& statement)
 {
-	environment.declare(statement.name.lexeme, evaluate(statement.value));
+	environment.declare(statement.name, evaluate(statement.value));
 }
 
 
@@ -98,7 +98,7 @@ void Interpreter::process_continue(ContinueStatement&)
 
 void Interpreter::process_function(FunctionStatement& statement)
 {
-	environment.declare(statement.name.lexeme, new RivFunction(statement));
+	environment.declare(statement.name, new RivFunction(statement));
 }
 
 

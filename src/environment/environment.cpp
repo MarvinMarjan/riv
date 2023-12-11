@@ -1,5 +1,7 @@
 #include <environment/environment.h>
 
+#include <filesystem>
+
 #include <interpreter/interpreter.h>
 #include <system/sysstate.h>
 #include <system/init.h>
@@ -19,30 +21,39 @@ Environment::Environment(Environment* enclosing)
 
 
 
-void Environment::import(const std::map<std::string, Type>& other) noexcept
+void Environment::import(const std::map<std::string, IdentifierData>& other)
 {
-	for (const auto& [name, value] : other)
-		if (!defined(name))
-			declare(name, value);
+	for (const auto& [name, data] : other)
+		declare(name, data);
 }
 
 
 
 
-void Environment::declare(const std::string& name, const Type& value) noexcept
-{
-	// if (data_.contains(name))
-	// 	throw riv_e305();
-
-	data_.insert({ name, value });
+void Environment::declare(const Token& name, const Type& value) {
+	declare(name.lexeme, IdentifierData(name.pos, value, sys_state().source_path));
 }
+
+
+void Environment::declare(const std::string& name, const IdentifierData& data)
+{
+	if (data_.contains(name))
+	{
+		const IdentifierData decldata = data_[name];
+	 	throw riv_e305(name, data.pos, decldata.pos, std::filesystem::path(decldata.filepath).filename().string());
+	}
+
+	data_.insert({ name, data });
+}
+
+
 
 
 void Environment::assign(const Token& identifier, const Type& value)
 {
 	if (data_.contains(identifier.lexeme))
 	{
-		data_.at(identifier.lexeme) = value;
+		data_[identifier.lexeme].value = value;
 		return;
 	}
 
@@ -59,7 +70,7 @@ void Environment::assign(const Token& identifier, const Type& value)
 Type Environment::get(const Token& identifier) const
 {
 	if (data_.contains(identifier.lexeme))
-		return data_.at(identifier.lexeme);
+		return data_.at(identifier.lexeme).value;
 
 	if (enclosing_)
 		return enclosing_->get(identifier);

@@ -16,7 +16,7 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 
 	// assign the arguments
 	for (size_t i = 0; i < declaration.params.size(); i++)
-		new_env.declare(declaration.params[i].lexeme, arguments[i]);
+		new_env.declare(declaration.params[i], arguments[i]);
 
 	Interpreter::ScopeConfig config;
 

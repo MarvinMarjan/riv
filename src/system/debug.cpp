@@ -10,8 +10,8 @@
 
 static void print_environment_data(const Environment& environment, const std::string& prefix = "")
 {
-	for (const auto& [name, value] : environment.data())
-		sp::println(prefix, name, surround(value.type_to_string(), " (", ") "), " = ", value.to_string());
+	for (const auto& [name, data] : environment.data())
+		sp::println(prefix, name, surround(data.value.type_to_string(), " (", ") "), " = ", data.value.to_string());
 }
 
 

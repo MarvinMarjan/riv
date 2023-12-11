@@ -163,6 +163,10 @@ Exception riv_e304(const TokenPosition& pos) noexcept {
 	return Exception("Invalid module path.", pos, 304);
 }
 
-Exception riv_e305(const std::string& identifier, const TokenPosition& already_declared) noexcept {
-	return Exception("Identifier " + qt(identifier) + " already declared at " + format_token_position(already_declared) + ".");
+Exception riv_e305(const std::string& identifier, const TokenPosition& pos, const TokenPosition& already_declared, const std::string& file_path) noexcept
+{
+	const std::string already_declared_location = qt(file_path) + surround(format_token_position(already_declared), " (", ")");
+	const std::string message = "Identifier " + qt(identifier) + " already declared at " + already_declared_location + ".";
+
+	return Exception(message, pos, 305);
 }
