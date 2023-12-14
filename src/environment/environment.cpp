@@ -75,6 +75,18 @@ Type Environment::get(const Token& identifier) const
 }
 
 
+Type Environment::get(const std::string &identifier) const noexcept
+{
+	if (data_.contains(identifier))
+		return data_.at(identifier).value;
+
+	if (enclosing_)
+		return enclosing_->get(identifier);
+
+	return {};
+}
+
+
 
 bool Environment::defined(const std::string& identifier) const noexcept
 {

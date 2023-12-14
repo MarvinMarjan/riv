@@ -127,6 +127,10 @@ Exception riv_e222(const TokenPosition& pos) noexcept {
 	return Exception("Expect module path string after \"import\" statement.", pos, 222);
 }
 
+Exception riv_e223(const TokenPosition& pos) noexcept {
+	return Exception("Expect declaration statement at global scope.", pos, 223);
+}
+
 
 
 
@@ -169,4 +173,8 @@ Exception riv_e305(const std::string& identifier, const TokenPosition& pos, cons
 	const std::string message = "Identifier " + qt(identifier) + " already declared at " + already_declared_location + ".";
 
 	return Exception(message, pos, 305);
+}
+
+Exception riv_e306() noexcept {
+	return Exception("Function \"main\" not declared.", {}, 306);
 }

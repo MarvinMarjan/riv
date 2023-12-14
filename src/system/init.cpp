@@ -133,6 +133,6 @@ void srcf_init(const int, const char** argv)
 	const SystemState& state = sys_state();
 
 	init_state_using_srcfile(argv[1]);
-	
+
 	run(state.strsource);
 }

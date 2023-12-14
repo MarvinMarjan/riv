@@ -25,7 +25,7 @@ public:
 
 
 private:
-	Statement* declaration();
+	Statement* declaration(bool force = false);
 	Statement* statement();
 	Statement* expression_statement();
 	Statement* block_statement();
@@ -73,9 +73,12 @@ private:
 	Token consume(const TokenType type, const Exception& err);
 
 
+	bool at_global_scope() const noexcept { return !scope_depth_; }
+
 
 	int loop_depth_ = 0;
 	int function_depth_ = 0;
+	int scope_depth_ = 0;
 
 
 	std::vector<Token> tokens_;

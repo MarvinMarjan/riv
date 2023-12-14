@@ -17,7 +17,14 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 {
 	try {
 		for (Statement* const statement : statements)
-			execute(statement);	
+			execute(statement);
+
+		Type main_func = environment.get("main");
+
+		if (!main_func.is_func())
+			throw riv_e306();
+
+		main_func.as_func()->call(*this, {});
 	}
 	catch (const Exception& e)
 	{

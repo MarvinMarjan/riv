@@ -6,6 +6,8 @@
 #include <common/string.h>
 #include <common/filesys.h>
 
+#include <specter/output/ostream.h>
+
 
 
 static SystemState s_sys_state;

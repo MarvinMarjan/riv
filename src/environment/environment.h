@@ -39,6 +39,7 @@ public:
 
 	void assign(const Token& identifier, const Type& value);
 	Type get(const Token& identifier) const;
+	Type get(const std::string& identifier) const noexcept;
 
 	bool defined(const std::string& identifier) const noexcept;
 

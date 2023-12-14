@@ -19,15 +19,16 @@ std::string read_file(const std::string& path)
 	if (!file.is_open())
 		throw FileException(path, "Could not open file.");
 
-	std::string content = "";
+	std::string content;
 	std::string buffer;
 
 	// reads every line of the file
 	while (std::getline(file, buffer))
 		content += buffer + '\n';
 
-	// last endline ('\n')
-	content.erase(content.cend() - 1);
+	// last newline ('\n'); do not erase if it's empty
+	if (!content.empty())
+		content.erase(content.cend() - 1);
 
 	return content;
 }

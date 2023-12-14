@@ -19,7 +19,7 @@ std::vector<Statement*> Parser::parse()
 	std::vector<Statement*> statements;
 
 	while (!at_end())
-		statements.push_back(declaration());
+		statements.push_back(declaration(true));
 
 	return statements;
 }
@@ -29,14 +29,24 @@ std::vector<Statement*> Parser::parse()
 
 
 
-Statement* Parser::declaration()
+Statement* Parser::declaration(const bool force)
 {
 	try
 	{
 		if (match({ TokenType::Var }))
 			return var_declaration();
 
-		return statement();
+		if (match({ TokenType::Function }))
+			return function_statement();
+
+		if (match({ TokenType::Import }))
+			return import_statement();
+
+
+		if (!force)
+			return statement();
+		else
+			throw riv_e223(peek().pos);
 	}
 	catch (const Exception& e)
 	{
@@ -73,14 +83,8 @@ Statement* Parser::statement()
 	if (match({ TokenType::Continue }))
 		return continue_statement();
 
-	if (match({ TokenType::Function }))
-		return function_statement();
-
 	if (match({ TokenType::Return }))
 		return return_statement();
-
-	if (match({ TokenType::Import }))
-		return import_statement();
 
 	return expression_statement();
 }
@@ -491,8 +495,12 @@ std::vector<Statement*> Parser::block()
 {
 	std::vector<Statement*> statements;
 
+	scope_depth_++;
+
 	while (!check(TokenType::RightCurlyBrace) && !at_end())
 		statements.push_back(declaration());
+
+	scope_depth_--;
 
 	consume(TokenType::RightCurlyBrace, riv_e205(peek().pos));
 

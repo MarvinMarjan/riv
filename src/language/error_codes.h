@@ -54,6 +54,7 @@ Exception riv_e219(const TokenPosition& pos) noexcept; // expect function body
 Exception riv_e220(const TokenPosition& pos) noexcept; // expect ")" after function arguments
 Exception riv_e221(const TokenPosition& pos) noexcept; // cannot use "return" statement outside a function
 Exception riv_e222(const TokenPosition& pos) noexcept; // expect module path string after "import" statement
+Exception riv_e223(const TokenPosition& pos) noexcept; // expect declaration statements at global scope
 
 
 
@@ -66,3 +67,4 @@ Exception riv_e302(const TokenPosition& pos) noexcept; // only functions can be 
 Exception riv_e303(int expect, int got, const TokenPosition& pos) noexcept; // expect ... arguments, got ...
 Exception riv_e304(const TokenPosition& pos) noexcept; // invalid module path
 Exception riv_e305(const std::string& identifier, const TokenPosition& pos, const TokenPosition& already_declared, const std::string& file_path = "") noexcept; // identifier ... already declared at ...
+Exception riv_e306() noexcept; // function "main" not declared

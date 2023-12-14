@@ -97,12 +97,13 @@ std::string exception_to_string(const Exception& exception) noexcept
 
 	// error position (generally a token)
 	const TokenPosition& pos = exception.pos;
+	const bool pos_valid = pos.valid();
 
 	// line where the error occurred
 	std::string line;
 	
 	// only initialize when the position is valid
-	if (pos.valid())
+	if (pos_valid)
 		line = state.vecsource[pos.line];
 	
 	std::stringstream stream;
@@ -112,12 +113,14 @@ std::string exception_to_string(const Exception& exception) noexcept
 	// source where the error occurred
 	stream << std::endl << sp::clr(surround(code, "(", ")"), sp::fg_bred, sp::underline) << " " << sp::bred("Error ") << state.source_name;
 	
-	if (!state.source_name.empty())
+	if (!state.source_name.empty() && pos_valid)
 		stream << " ";
 
 	// error position
-	if (pos.valid())
-		stream << sp::clr(sp::bold) << "(" << format_token_position(pos) << "): " << sp::RESET_ALL;
+	if (pos_valid)
+		stream << sp::clr(sp::bold) << "(" << format_token_position(pos) << ")" << sp::RESET_ALL;
+
+	stream << ": ";
 
 	// error message
 	stream << exception.msg;
