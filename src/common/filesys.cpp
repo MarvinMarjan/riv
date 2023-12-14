@@ -9,13 +9,13 @@
 
 std::string read_file(const std::string& path)
 {
-	// if path does not exists, throws an exception.
+	// if path does not exist, throws an exception.
 	if (!path_exists(path))
 		throw FileException(path, "File does not exists.");
 
 	std::fstream file(path);
 
-	// path may exists, but can it be opened as a file?
+	// path may exist, but can it be opened as a file?
 	if (!file.is_open())
 		throw FileException(path, "Could not open file.");
 

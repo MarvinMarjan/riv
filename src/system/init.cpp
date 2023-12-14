@@ -13,7 +13,7 @@
 
 
 
-InitMode get_init_mode(const int argc, const char** argv) noexcept
+InitMode get_init_mode(const int argc, const char**) noexcept
 {
 	if (argc < 2)
 		return InitMode::REPL;
@@ -124,7 +124,7 @@ void repl_init()
 
 
 
-void srcf_init(const int argc, const char** argv)
+void srcf_init(const int, const char** argv)
 {
 	// checks if file exists
 	if (!path_exists(argv[1]))

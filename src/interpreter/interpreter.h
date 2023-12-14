@@ -8,7 +8,7 @@
 
 
 
-class Exception;
+struct Exception;
 
 
 // interpret statements

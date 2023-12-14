@@ -2,14 +2,10 @@
 
 #include <filesystem>
 
-#include <interpreter/interpreter.h>
 #include <system/sysstate.h>
 #include <system/init.h>
 #include <system/exception.h>
 #include <language/error_codes.h>
-#include <common/vector.h>
-
-#include <specter/output/ostream.h>
 
 
 

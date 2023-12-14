@@ -12,7 +12,7 @@
 
 std::string generate_error_indicator(const std::string& line, const TokenPosition& pos)
 {
-	std::string error_indicator = "";
+	std::string error_indicator;
 
 	// generates it
 	for (size_t i = 0; i < line.size() && i < pos.end; i++)
@@ -71,8 +71,6 @@ unsigned int count_decimal_floors(const unsigned int number) noexcept
 		if (buff > number)
 			return i;
 	}
-
-	return 0;
 }
 
 

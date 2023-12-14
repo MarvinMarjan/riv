@@ -6,9 +6,7 @@
 
 #include <language/error_codes.h>
 #include <system/exception.h>
-#include <system/debug.h>
 #include <type/function.h>
-#include <common/vector.h>
 #include <common/filesys.h>
 #include <system/sysstate.h>
 #include <system/init.h>
@@ -234,7 +232,7 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 		return !equals(left, right);
 	}
 
-	return Type();
+	return {};
 }
 
 
@@ -254,7 +252,7 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 		return !truthy(right);
 	}
 
-	return Type();
+	return {};
 }
 
 
@@ -310,7 +308,7 @@ Type Interpreter::process_call(CallExpression& expr)
 Type Interpreter::evaluate(Expression* const expr)
 {
 	if (!expr)
-		return Type();
+		return {};
 
 	return expr->process(*this);
 }
@@ -339,7 +337,7 @@ bool Interpreter::truthy(const Type& value) noexcept
 		return false;
 
 	if (value.is_num())
-		return value.as_num();
+		return (bool)value.as_num();
 
 	if (value.is_bool())
 		return value.as_bool();

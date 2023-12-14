@@ -85,7 +85,6 @@ Statement* Parser::statement()
 	return expression_statement();
 }
 
-#include <specter/output/ostream.h>
 
 Statement* Parser::expression_statement()
 {

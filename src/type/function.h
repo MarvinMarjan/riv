@@ -21,7 +21,6 @@ public:
 	RivFunction(const FunctionStatement& declaration)
 		: declaration(declaration) {}
 
-
 	size_t arity() override { return declaration.params.size(); }
 
 	Type call(Interpreter& interpreter, const std::vector<Type>& arguments) override;

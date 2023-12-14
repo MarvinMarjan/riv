@@ -116,7 +116,7 @@ void Scanner::string(const char encloser)
 
 std::string Scanner::advance_string(const char encloser)
 {
-	std::string str_value = "";
+	std::string str_value;
 	char current;
 
 	// while not reached at the end of the string
@@ -126,17 +126,17 @@ std::string Scanner::advance_string(const char encloser)
 		if (at_end())
 		{
 			log_error(riv_e101(position())); // unterminated string
-			return std::string();
+			return {};
 		}
 
 		// newline (not the escape code) located inside a string
 		else if (current == '\n')
 		{
 			log_error(riv_e102(position())); // multi-line string not supported
-			return std::string();
+			return {};
 		}
 
-		// is it a escape character?
+		// is it an escape character?
 		if (current == '\\')
 		{
 			str_value += string_escape(peek_next()); // adds the escape character
@@ -204,7 +204,7 @@ void Scanner::advance_number() noexcept
 			has_decimal = true;
 
 		// cannot have two '.' in a number
-		else if (current == '.' && has_decimal)
+		else if (current == '.')
 			break;
 
 		advance();

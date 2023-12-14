@@ -131,7 +131,7 @@ public:
 	IfStatement(Expression* const condition, Statement* const then_statement, Statement* const else_statement);
 
 
-	void process(StatementProcessor& processor) {
+	void process(StatementProcessor& processor) override {
 		processor.process_if(*this);
 	}
 
@@ -151,7 +151,7 @@ public:
 	WhileStatement(Expression* const condition, Statement* const body);
 
 
-	void process(StatementProcessor& processor) {
+	void process(StatementProcessor& processor) override {
 		processor.process_while(*this);
 	}
 
@@ -172,7 +172,7 @@ public:
 
 	BreakStatement() = default;
 
-	void process(StatementProcessor& processor) {
+	void process(StatementProcessor& processor) override {
 		processor.process_break(*this);
 	}
 };
@@ -186,7 +186,7 @@ public:
 
 	ContinueStatement() = default;
 
-	void process(StatementProcessor& processor) {
+	void process(StatementProcessor& processor) override {
 		processor.process_continue(*this);
 	}
 };
@@ -198,6 +198,7 @@ public:
 class FunctionStatement : public Statement
 {
 public:
+	FunctionStatement() = default;
 	FunctionStatement(const Token& name, const std::vector<Token>& params, const std::vector<Statement*>& body);
 
 

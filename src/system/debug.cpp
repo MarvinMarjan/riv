@@ -3,7 +3,6 @@
 #include <specter/output/ostream.h>
 
 #include <environment/environment.h>
-#include <type/type.h>
 #include <common/string.h>
 
 
@@ -17,9 +16,9 @@ static void print_environment_data(const Environment& environment, const std::st
 
 void print_environment(const Environment& environment)
 {
-	std::string tab = "";
+	std::string tab;
 
-	Environment env = std::move(environment);
+	Environment env = environment;
 	Environment* current = &env;
 
 	std::vector<Environment*> envs;
@@ -30,7 +29,7 @@ void print_environment(const Environment& environment)
 		current = current->enclosing();
 	}
 
-	for (int i = envs.size() - 1; i >= 0; i--)
+	for (int i = (int)envs.size() - 1; i >= 0; i--)
 	{
 		print_environment_data(*envs[i], tab);
 		tab += "    ";

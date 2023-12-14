@@ -16,7 +16,7 @@ struct Exception
 };
 
 
-// creates a exception message based on Exception object
+// creates an exception message based on Exception object
 std::string exception_to_string(const Exception& exception) noexcept;
 
 

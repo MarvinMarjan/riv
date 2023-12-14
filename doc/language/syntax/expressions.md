@@ -85,7 +85,7 @@ Operates the division of two *Number* values.
 
 
 Negates a *Number* value.
-If `value` is positive, then it will be negated to negative. It it's negative, then it will be negated to positive.
+If `value` is positive, then it will be negated to negative. If it's negative, then it will be negated to positive.
 
 
 
