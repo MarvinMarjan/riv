@@ -13,19 +13,21 @@ class LiteralExpression;
 class IdentifierExpression;
 class AssignmentExpression;
 class CallExpression;
+class PackageResolutionExpression;
 
 
 // visitor pattern
 class ExpressionProcessor
 {
 public:
-	virtual Type process_binary		(BinaryExpression&)		= 0;
-	virtual Type process_unary		(UnaryExpression&)		= 0;
-	virtual Type process_grouping	(GroupingExpression&)	= 0;
-	virtual Type process_literal	(LiteralExpression&)	= 0;
-	virtual Type process_identifier	(IdentifierExpression&)	= 0;
-	virtual Type process_assignment	(AssignmentExpression&)	= 0;
-	virtual Type process_call		(CallExpression&)		= 0;
+	virtual Type process_binary				(BinaryExpression&)				= 0;
+	virtual Type process_unary				(UnaryExpression&)				= 0;
+	virtual Type process_grouping			(GroupingExpression&)			= 0;
+	virtual Type process_literal			(LiteralExpression&)			= 0;
+	virtual Type process_identifier			(IdentifierExpression&)			= 0;
+	virtual Type process_assignment			(AssignmentExpression&)			= 0;
+	virtual Type process_call				(CallExpression&)				= 0;
+	virtual Type process_package_resolution	(PackageResolutionExpression&)	= 0;
 };
 
 
@@ -134,6 +136,25 @@ public:
 
 
 
+// assigns a value to identifier
+class AssignmentExpression : public Expression
+{
+public:
+	AssignmentExpression(const Token& identifier, Expression* const value);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_assignment(*this);
+	}
+
+
+	Token		identifier;
+	Expression* value = nullptr;
+};
+
+
+
+
 class CallExpression : public Expression
 {
 public:
@@ -153,18 +174,18 @@ public:
 
 
 
-// assigns a value to identifier
-class AssignmentExpression : public Expression
+class PackageResolutionExpression : public Expression
 {
 public:
-	AssignmentExpression(const Token& identifier, Expression* const value);
+	PackageResolutionExpression(Expression* object, const Token& identifier, const Token& op);
 
 
 	Type process(ExpressionProcessor& processor) override {
-		return processor.process_assignment(*this);
+		return processor.process_package_resolution(*this);
 	}
 
 
+	Expression*	object;
 	Token		identifier;
-	Expression* value = nullptr;
+	Token		op;
 };

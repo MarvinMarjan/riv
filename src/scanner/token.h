@@ -11,7 +11,7 @@ enum class TokenType
 	Plus, Minus, Star, Slash, PlusEqual, MinusEqual, StarEqual, SlashEqual,
 	Equal, Bang, Greater, Lesser, GreaterEqual, LesserEqual, EqualEqual, BangEqual,
 	LeftParen, RightParen, LeftBrace, RightBrace, LeftCurlyBrace, RightCurlyBrace,
-	SemiColon, Dot, Comma, 
+	SemiColon, Dot, Comma, Colon, ColonColon,
 
 
 	// literal
@@ -22,7 +22,7 @@ enum class TokenType
 	// keywords
 
 	Print, Var, If, Else, While, For, Loop, Break, Continue,
-	Function, Return, Import
+	Function, Return, Import, Package
 };
 
 
@@ -32,7 +32,7 @@ class TokenPosition
 public:
 	TokenPosition() = default;
 	TokenPosition(const size_t line, const size_t begin, const size_t end)
-		: line(line), begin(begin), end(end), valid_(true) {}
+			: line(line), begin(begin), end(end), valid_(true) {}
 
 
 	bool valid() const noexcept { return valid_; }
@@ -43,6 +43,7 @@ public:
 private:
 	bool valid_ = false;
 };
+
 
 
 struct Token

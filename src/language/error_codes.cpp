@@ -128,9 +128,20 @@ Exception riv_e222(const TokenPosition& pos) noexcept {
 }
 
 Exception riv_e223(const TokenPosition& pos) noexcept {
-	return Exception("Expect declaration statement at global scope.", pos, 223);
+	return Exception("Expect declaration statement.", pos, 223);
 }
 
+Exception riv_e224(const TokenPosition& pos) noexcept {
+	return Exception("Expect package name.", pos, 224);
+}
+
+Exception riv_e225(const TokenPosition& pos) noexcept {
+	return Exception("Expect package body.", pos, 225);
+}
+
+Exception riv_e226(const TokenPosition& pos) noexcept {
+	return Exception("Expect identifier.", pos, 226);
+}
 
 
 
@@ -177,4 +188,12 @@ Exception riv_e305(const std::string& identifier, const TokenPosition& pos, cons
 
 Exception riv_e306() noexcept {
 	return Exception("Function \"main\" not declared.", {}, 306);
+}
+
+Exception riv_e307(const TokenPosition& pos) noexcept {
+	return Exception("Expect package at left of \"::\".", pos, 307);
+}
+
+Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexcept {
+	return Exception("Invalid non-assignable type " + qt(type_name) + ".", pos, 308);
 }

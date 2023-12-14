@@ -2,6 +2,7 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 #include <scanner/token.h>
 
@@ -13,18 +14,17 @@ struct Exception;
 class Environment
 {
 public:
-
-	// stores useful identifier data
 	struct IdentifierData
 	{
 		IdentifierData() = default;
 		IdentifierData(const TokenPosition& pos, const Type& value, const std::string& filepath)
-			: value(value), pos(pos), filepath(filepath) {}
+				: value(value), pos(pos), filepath(filepath) {}
 
 		Type value;
 		TokenPosition pos;
 		std::string filepath;
 	};
+
 
 
 	Environment() = default;

@@ -20,6 +20,7 @@ class ContinueStatement;
 class FunctionStatement;
 class ReturnStatement;
 class ImportStatement;
+class PackageStatement;
 
 
 class StatementProcessor
@@ -36,6 +37,7 @@ public:
 	virtual void process_function	(FunctionStatement&) 	= 0;
 	virtual void process_return		(ReturnStatement&) 		= 0;
 	virtual void process_import		(ImportStatement&)		= 0;
+	virtual void process_package	(PackageStatement&)		= 0;
 };
 
 
@@ -245,4 +247,22 @@ public:
 
 
 	Token path;
+};
+
+
+
+
+class PackageStatement : public Statement
+{
+public:
+	PackageStatement(const Token& name, const std::vector<Statement*>& declarations);
+
+
+	void process(StatementProcessor& processor) override {
+		processor.process_package(*this);
+	}
+
+
+	Token name;
+	std::vector<Statement*> declarations;
 };

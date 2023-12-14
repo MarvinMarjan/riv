@@ -54,7 +54,10 @@ Exception riv_e219(const TokenPosition& pos) noexcept; // expect function body
 Exception riv_e220(const TokenPosition& pos) noexcept; // expect ")" after function arguments
 Exception riv_e221(const TokenPosition& pos) noexcept; // cannot use "return" statement outside a function
 Exception riv_e222(const TokenPosition& pos) noexcept; // expect module path string after "import" statement
-Exception riv_e223(const TokenPosition& pos) noexcept; // expect declaration statements at global scope
+Exception riv_e223(const TokenPosition& pos) noexcept; // expect declaration statement
+Exception riv_e224(const TokenPosition& pos) noexcept; // expect package name
+Exception riv_e225(const TokenPosition& pos) noexcept; // expect package body
+Exception riv_e226(const TokenPosition& pos) noexcept; // expect identifier
 
 
 
@@ -68,3 +71,5 @@ Exception riv_e303(int expect, int got, const TokenPosition& pos) noexcept; // e
 Exception riv_e304(const TokenPosition& pos) noexcept; // invalid module path
 Exception riv_e305(const std::string& identifier, const TokenPosition& pos, const TokenPosition& already_declared, const std::string& file_path = "") noexcept; // identifier ... already declared at ...
 Exception riv_e306() noexcept; // function "main" not declared
+Exception riv_e307(const TokenPosition& pos) noexcept; // expect package at left of "::"
+Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexcept; // invalid non-assignable type "..."

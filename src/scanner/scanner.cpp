@@ -73,8 +73,10 @@ void Scanner::scan_token()
 
 	case '>': match('=') ? add_token(TokenType::GreaterEqual)	: add_token(TokenType::Greater); break;
 	case '<': match('=') ? add_token(TokenType::LesserEqual)	: add_token(TokenType::Lesser); break;
-	case '=': match('=') ? add_token(TokenType::EqualEqual)		: add_token(TokenType::Equal); break;
+	case '=': match('=') ? add_token(TokenType::EqualEqual)	: add_token(TokenType::Equal); break;
 	case '!': match('=') ? add_token(TokenType::BangEqual)		: add_token(TokenType::Bang); break;
+
+	case ':': match(':') ? add_token(TokenType::ColonColon) : add_token(TokenType::Colon); break;
 
 	case '(': add_token(TokenType::LeftParen); break;
 	case ')': add_token(TokenType::RightParen); break;

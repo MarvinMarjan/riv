@@ -29,7 +29,7 @@ std::vector<Statement*> Parser::parse()
 
 
 
-Statement* Parser::declaration(const bool force)
+Statement* Parser::declaration(const bool force_declaration)
 {
 	try
 	{
@@ -39,14 +39,17 @@ Statement* Parser::declaration(const bool force)
 		if (match({ TokenType::Function }))
 			return function_statement();
 
+		if (match({ TokenType::Package }))
+			return package_statement();
+
 		if (match({ TokenType::Import }))
 			return import_statement();
 
 
-		if (!force)
+		if (!force_declaration)
 			return statement();
 		else
-			throw riv_e223(peek().pos);
+			throw riv_e223(peek().pos); // expect declaration statement
 	}
 	catch (const Exception& e)
 	{
@@ -289,14 +292,14 @@ Statement* Parser::function_statement()
 Statement* Parser::return_statement()
 {
 	if (!function_depth_)
-		throw riv_e221(previous().pos);
+		throw riv_e221(previous().pos); // cannot use "return" statement outside a function
 
 	Expression* value = nullptr;
 
 	if (!check(TokenType::SemiColon))
 		value = expression();
 
-	consume(TokenType::SemiColon, riv_e202(peek().pos));
+	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ReturnStatement(value);
 }
 
@@ -304,8 +307,19 @@ Statement* Parser::return_statement()
 Statement* Parser::import_statement()
 {
 	Token path = consume(TokenType::String, riv_e222(peek().pos)); // path to import
-	consume(TokenType::SemiColon, riv_e202(peek().pos));
+	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ImportStatement(path);
+}
+
+
+Statement* Parser::package_statement()
+{
+	const Token name = consume(TokenType::Identifier, riv_e224(peek().pos)); // expect package name
+
+	consume(TokenType::LeftCurlyBrace, riv_e225(peek().pos)); // expect package body
+	const std::vector<Statement*> declarations = block(true);
+
+	return new PackageStatement(name, declarations);
 }
 
 
@@ -445,27 +459,45 @@ Expression* Parser::unary()
 	return call();
 }
 
+#include <specter/output/ostream.h>
 
 Expression* Parser::call()
 {
 	Expression* expr = primary();
 
-	while (match({ TokenType::LeftParen }))
+	while (true)
 	{
-		const Token paren = previous();
-		std::vector<Expression*> arguments;
+		if (match({ TokenType::LeftParen }))
+			expr = finish_call(expr);
 
-		if (!check(TokenType::RightParen))
-			do {
-				arguments.push_back(expression());
-			} while (match({ TokenType::Comma }));
+		else if (match({ TokenType::ColonColon }))
+		{
+			const Token op = previous();
+			const Token identifier = consume(TokenType::Identifier, riv_e226(peek().pos));
+			expr = new PackageResolutionExpression(expr, identifier, op);
+		}
 
-		consume(TokenType::RightParen, riv_e220(peek().pos));
-
-		expr = new CallExpression(expr, paren, arguments);
+		else
+			break;
 	}
 
 	return expr;
+}
+
+
+Expression* Parser::finish_call(Expression* expr)
+{
+	const Token paren = previous();
+	std::vector<Expression*> arguments;
+
+	if (!check(TokenType::RightParen))
+		do {
+			arguments.push_back(expression());
+		} while (match({ TokenType::Comma }));
+
+	consume(TokenType::RightParen, riv_e220(peek().pos));
+
+	return new CallExpression(expr, paren, arguments);
 }
 
 
@@ -491,14 +523,14 @@ Expression* Parser::primary()
 
 
 
-std::vector<Statement*> Parser::block()
+std::vector<Statement*> Parser::block(const bool force_declaration)
 {
 	std::vector<Statement*> statements;
 
 	scope_depth_++;
 
 	while (!check(TokenType::RightCurlyBrace) && !at_end())
-		statements.push_back(declaration());
+		statements.push_back(declaration(force_declaration));
 
 	scope_depth_--;
 

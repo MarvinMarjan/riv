@@ -2,6 +2,7 @@
 
 #include <common/string.h>
 #include <type/function.h>
+#include <type/package.h>
 
 
 
@@ -83,6 +84,22 @@ std::string type_index_to_string(const TypeIndex type) noexcept
 
 
 
+std::string type_obj_to_string(const Type& type) noexcept
+{
+	switch (type.type())
+	{
+		case TypeIndex::Null: 		return "null";
+
+		case TypeIndex::String: 	return type.as_str();
+		case TypeIndex::Number: 	return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
+		case TypeIndex::Bool:		return bool_to_string(type.as_bool());
+		case TypeIndex::Function:	return "<Function " + type.as_func()->declaration.name.lexeme + ">";
+	}
+
+
+	return "undefined";
+}
+
 
 
 Type::Type()
@@ -91,18 +108,6 @@ Type::Type()
 }
 
 
-std::string type_obj_to_string(const Type& type) noexcept
-{
-	switch (type.type())
-	{
-	case TypeIndex::Null: 		return "null";
-	
-	case TypeIndex::String: 	return type.as_str();
-	case TypeIndex::Number: 	return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
-	case TypeIndex::Bool:		return bool_to_string(type.as_bool());
-	case TypeIndex::Function:	return "<Function " + type.as_func()->declaration.name.lexeme + ">";
-	}
-
-
-	return "undefined";
+RivPackage* Type::as_package() const noexcept {
+	return dynamic_cast<RivPackage*>(as_non_assignable());
 }

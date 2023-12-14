@@ -60,3 +60,10 @@ ImportStatement::ImportStatement(const Token& path)
 {
 	this->path = path;
 }
+
+
+PackageStatement::PackageStatement(const Token &name, const std::vector<Statement*>& declarations)
+{
+	this->name = name;
+	this->declarations = declarations;
+}

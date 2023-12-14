@@ -1,6 +1,25 @@
-var name = "marvin";
+var foo = "foo var";
+
+package person
+{
+	var name = "marvin";
+	var age = "14";
+	var gender = "male";
+
+	var inner_foo = foo;
+
+	function greet() {
+   		print "hello, my name is " + name;
+    }
+}
 
 function main()
 {
-	print "in main!!";
+	print person::name;
+	print person::age;
+	print person::gender;
+
+	print person::inner_foo;
+
+	print person::greet();
 }

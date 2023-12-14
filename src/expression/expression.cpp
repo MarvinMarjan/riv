@@ -48,3 +48,11 @@ CallExpression::CallExpression(Expression* const callee, const Token& paren, con
 	this->paren = paren;
 	this->arguments = arguments;
 }
+
+
+PackageResolutionExpression::PackageResolutionExpression(Expression *object, const Token &identifier, const Token& op)
+{
+	this->object = object;
+	this->identifier = identifier;
+	this->op = op;
+}

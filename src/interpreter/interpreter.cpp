@@ -5,9 +5,10 @@
 #include <specter/output/ostream.h>
 
 #include <language/error_codes.h>
-#include <system/exception.h>
 #include <type/function.h>
+#include <type/package.h>
 #include <common/filesys.h>
+#include <system/exception.h>
 #include <system/sysstate.h>
 #include <system/init.h>
 
@@ -130,6 +131,23 @@ void Interpreter::process_import(ImportStatement& statement)
 	environment.import(interpreter.environment.data());
 
 	init_state_using_copy(old);
+}
+
+
+void Interpreter::process_package(PackageStatement& statement)
+{
+	Environment old_env = environment;
+	Environment new_env(&old_env);
+
+	environment = new_env;
+
+	for (Statement* const declaration : statement.declarations)
+		execute(declaration);
+
+	new_env = environment;
+	environment = old_env;
+
+	environment.declare(statement.name, new RivPackage(new_env));
 }
 
 
@@ -277,7 +295,12 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 
 Type Interpreter::process_identifier(IdentifierExpression& expr)
 {
-	return environment.get(expr.token);
+	Type value = environment.get(expr.token);
+
+	if (value.is_non_assignable())
+		throw riv_e308(expr.token.pos, value.as_non_assignable()->type_name()); // invalid non-assignable type "..."
+
+	return value;
 }
 
 
@@ -308,6 +331,25 @@ Type Interpreter::process_call(CallExpression& expr)
 		throw riv_e303(func->arity(), arguments.size(), expr.paren.pos); // expect ... arguments, got ...
 
 	return func->call(*this, arguments);
+}
+
+
+Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
+{
+	IdentifierExpression* const identifier = dynamic_cast<IdentifierExpression*>(expr.object);
+
+	if (!identifier)
+		throw riv_e307(expr.op.pos); // expect package at left of "::"
+
+	// do not use Interpreter::process_identifier to get packages
+	Type type_object = environment.get(identifier->token);
+
+	if (!type_object.is_package())
+		throw riv_e307(expr.op.pos); // expect package at left of "::"
+
+	RivPackage* package = type_object.as_package();
+
+	return package->environment.get(expr.identifier);
 }
 
 

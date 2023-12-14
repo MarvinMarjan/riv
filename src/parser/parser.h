@@ -25,7 +25,7 @@ public:
 
 
 private:
-	Statement* declaration(bool force = false);
+	Statement* declaration(bool force_declaration = false);
 	Statement* statement();
 	Statement* expression_statement();
 	Statement* block_statement();
@@ -40,6 +40,7 @@ private:
 	Statement* function_statement();
 	Statement* return_statement();
 	Statement* import_statement();
+	Statement* package_statement();
 
 
 
@@ -52,11 +53,12 @@ private:
 	Expression* factor();
 	Expression* unary();
 	Expression* call();
+	Expression* finish_call(Expression* expr);
 	Expression* primary();
 
 
 	// parses a block statement
-	std::vector<Statement*> block();
+	std::vector<Statement*> block(bool force_declaration = false);
 	
 	void synchronize() noexcept;
 

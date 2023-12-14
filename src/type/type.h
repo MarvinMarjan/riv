@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <variant>
+
+#include <type/non_assignable.h>
 
 
 
@@ -12,18 +13,20 @@ enum class TypeIndex
 	String,
 	Number,
 	Bool,
-	Function
+	Function,
+	NonAssignable
 };
 
 
 class RivFunction;
+class RivPackage;
 
 
 std::string type_index_to_string(const TypeIndex type) noexcept;
 
 
 
-using VariantType = std::variant<std::string, double, bool, RivFunction*>;
+using VariantType = std::variant<std::string, double, bool, RivFunction*, NonAssignable*>;
 
 
 class Type;
@@ -54,15 +57,25 @@ public:
 
 	bool is_null() const noexcept { return is_null_; }
 
-	bool is_str()	const noexcept { return is_typeof(TypeIndex::String); }
-	bool is_num()	const noexcept { return is_typeof(TypeIndex::Number); }
-	bool is_bool()	const noexcept { return is_typeof(TypeIndex::Bool); }
-	bool is_func()	const noexcept { return is_typeof(TypeIndex::Function); }
+	bool is_str()				const noexcept { return is_typeof(TypeIndex::String); }
+	bool is_num()				const noexcept { return is_typeof(TypeIndex::Number); }
+	bool is_bool()				const noexcept { return is_typeof(TypeIndex::Bool); }
+	bool is_func()				const noexcept { return is_typeof(TypeIndex::Function); }
+	bool is_non_assignable()	const noexcept { return is_typeof(TypeIndex::NonAssignable); }
 
-	std::string		as_str()	const noexcept { return std::get<std::string>(*this); }
-	double			as_num()	const noexcept { return std::get<double>(*this); }
-	bool			as_bool()	const noexcept { return std::get<bool>(*this); }
-	RivFunction* 	as_func()	const noexcept { return std::get<RivFunction*>(*this); }
+	std::string		as_str()			const noexcept { return std::get<std::string>(*this); }
+	double			as_num()			const noexcept { return std::get<double>(*this); }
+	bool			as_bool()			const noexcept { return std::get<bool>(*this); }
+	RivFunction* 	as_func()			const noexcept { return std::get<RivFunction*>(*this); }
+	NonAssignable* 	as_non_assignable()	const noexcept { return std::get<NonAssignable*>(*this); }
+
+
+	// non-assignable types
+
+	bool is_package() const noexcept { return as_package(); }
+
+
+	RivPackage* as_package() const noexcept;
 
 private:
 	bool is_null_ = false;
