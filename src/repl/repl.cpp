@@ -21,7 +21,7 @@ RivREPL::RivREPL()
 
 	// type keywords
 	sp::MatcherRule* type_keywords_rule = new sp::MatcherRule({}, 215);
-	type_keywords_rule->matchers = sp::Matcher::matchers_from_string_list(get_keys_from_map(lang_type_keywords()));git
+	type_keywords_rule->matchers = sp::Matcher::matchers_from_string_list(get_keys_from_map(lang_type_keywords()));
 
 
 	painter_.add_rule(operators_rule);
