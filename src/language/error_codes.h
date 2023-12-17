@@ -35,29 +35,28 @@ Exception riv_e200(const TokenPosition& pos) noexcept; // expression expected
 Exception riv_e201(const TokenPosition& pos) noexcept; // expect ")" to close grouping expression
 Exception riv_e202(const TokenPosition& pos) noexcept; // expect ";" after statement
 Exception riv_e203(const TokenPosition& pos) noexcept; // expect variable name after "var" statement
-Exception riv_e204(const TokenPosition& pos) noexcept; // only variables can be assigned.
-Exception riv_e205(const TokenPosition& pos) noexcept; // expect "}" to close block statement
-Exception riv_e206(const TokenPosition& pos) noexcept; // expect "(" after "if" statement
-Exception riv_e207(const TokenPosition& pos) noexcept; // expect ")" after "if" condition
-Exception riv_e208(const TokenPosition& pos) noexcept; // expect "(" after "while" statement
-Exception riv_e209(const TokenPosition& pos) noexcept; // expect ")" after "while" condition
-Exception riv_e210(const TokenPosition& pos) noexcept; // expect "(" after "for" statement
-Exception riv_e211(const TokenPosition& pos) noexcept; // expect ";" after "for" condition
-Exception riv_e212(const TokenPosition& pos) noexcept; // expect ")" after "for" increment
-Exception riv_e213(const TokenPosition& pos) noexcept; // cannot use "break" statement outside a loop
-Exception riv_e214(const TokenPosition& pos) noexcept; // cannot use "continue" statement outside a loop
-Exception riv_e215(const TokenPosition& pos) noexcept; // expect function name after "function" statement
-Exception riv_e216(const TokenPosition& pos) noexcept; // expect "(" after function name
-Exception riv_e217(const TokenPosition& pos) noexcept; // expect ")" after function parameter list
-Exception riv_e218(const TokenPosition& pos) noexcept; // expect parameter after ","
-Exception riv_e219(const TokenPosition& pos) noexcept; // expect function body
-Exception riv_e220(const TokenPosition& pos) noexcept; // expect ")" after function arguments
-Exception riv_e221(const TokenPosition& pos) noexcept; // cannot use "return" statement outside a function
-Exception riv_e222(const TokenPosition& pos) noexcept; // expect module path string after "import" statement
-Exception riv_e223(const TokenPosition& pos) noexcept; // expect declaration statement
-Exception riv_e224(const TokenPosition& pos) noexcept; // expect package name
-Exception riv_e225(const TokenPosition& pos) noexcept; // expect package body
-Exception riv_e226(const TokenPosition& pos) noexcept; // expect identifier
+Exception riv_e204(const TokenPosition& pos) noexcept; // expect "}" to close block statement
+Exception riv_e205(const TokenPosition& pos) noexcept; // expect "(" after "if" statement
+Exception riv_e206(const TokenPosition& pos) noexcept; // expect ")" after "if" condition
+Exception riv_e207(const TokenPosition& pos) noexcept; // expect "(" after "while" statement
+Exception riv_e208(const TokenPosition& pos) noexcept; // expect ")" after "while" condition
+Exception riv_e209(const TokenPosition& pos) noexcept; // expect "(" after "for" statement
+Exception riv_e210(const TokenPosition& pos) noexcept; // expect ";" after "for" condition
+Exception riv_e211(const TokenPosition& pos) noexcept; // expect ")" after "for" increment
+Exception riv_e212(const TokenPosition& pos) noexcept; // cannot use "break" statement outside a loop
+Exception riv_e213(const TokenPosition& pos) noexcept; // cannot use "continue" statement outside a loop
+Exception riv_e214(const TokenPosition& pos) noexcept; // expect function name after "function" statement
+Exception riv_e215(const TokenPosition& pos) noexcept; // expect "(" after function name
+Exception riv_e216(const TokenPosition& pos) noexcept; // expect ")" after function parameter list
+Exception riv_e217(const TokenPosition& pos) noexcept; // expect parameter after ","
+Exception riv_e218(const TokenPosition& pos) noexcept; // expect function body
+Exception riv_e219(const TokenPosition& pos) noexcept; // expect ")" after function arguments
+Exception riv_e220(const TokenPosition& pos) noexcept; // cannot use "return" statement outside a function
+Exception riv_e221(const TokenPosition& pos) noexcept; // expect module path string after "import" statement
+Exception riv_e222(const TokenPosition& pos) noexcept; // expect declaration statement
+Exception riv_e223(const TokenPosition& pos) noexcept; // expect package name
+Exception riv_e224(const TokenPosition& pos) noexcept; // expect package body
+Exception riv_e225(const TokenPosition& pos) noexcept; // expect identifier
 
 
 
@@ -73,3 +72,4 @@ Exception riv_e305(const std::string& identifier, const TokenPosition& pos, cons
 Exception riv_e306() noexcept; // function "main" not declared
 Exception riv_e307(const TokenPosition& pos) noexcept; // expect package at left of "::"
 Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexcept; // invalid non-assignable type "..."
+Exception riv_e309(const TokenPosition& pos) noexcept; // only variables can be assigned.

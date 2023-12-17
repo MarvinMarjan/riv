@@ -49,7 +49,7 @@ Statement* Parser::declaration(const bool force_declaration)
 		if (!force_declaration)
 			return statement();
 		else
-			throw riv_e223(peek().pos); // expect declaration statement
+			throw riv_e222(peek().pos); // expect declaration statement
 	}
 	catch (const Exception& e)
 	{
@@ -131,9 +131,9 @@ Statement* Parser::var_declaration()
 
 Statement* Parser::if_statement()
 {
-	consume(TokenType::LeftParen, riv_e206(peek().pos)); // expect "(" after "if" statement
+	consume(TokenType::LeftParen, riv_e205(peek().pos)); // expect "(" after "if" statement
 	Expression* const condition = expression();
-	consume(TokenType::RightParen, riv_e207(peek().pos)); // expect ")" after "if" condition
+	consume(TokenType::RightParen, riv_e206(peek().pos)); // expect ")" after "if" condition
 
 	Statement* then_statement = statement();
 	Statement* else_statement = nullptr;
@@ -147,9 +147,9 @@ Statement* Parser::if_statement()
 
 Statement* Parser::while_statement()
 {
-	consume(TokenType::LeftParen, riv_e208(peek().pos)); // expect "(" after "while" statement
+	consume(TokenType::LeftParen, riv_e207(peek().pos)); // expect "(" after "while" statement
 	Expression* const condition = expression();
-	consume(TokenType::RightParen, riv_e209(peek().pos)); // expect ")" after "while" condition
+	consume(TokenType::RightParen, riv_e208(peek().pos)); // expect ")" after "while" condition
 
 	loop_depth_++;
 	Statement* statement = this->statement();
@@ -161,7 +161,7 @@ Statement* Parser::while_statement()
 
 Statement* Parser::for_statement()
 {
-	consume(TokenType::LeftParen, riv_e210(peek().pos)); // expect "(" after "for" statement
+	consume(TokenType::LeftParen, riv_e209(peek().pos)); // expect "(" after "for" statement
 
 
 	// initializer
@@ -185,7 +185,7 @@ Statement* Parser::for_statement()
 	if (!check(TokenType::SemiColon))
 		condition = expression();
 
-	consume(TokenType::SemiColon, riv_e211(peek().pos)); // expect ";" after "for" condition
+	consume(TokenType::SemiColon, riv_e210(peek().pos)); // expect ";" after "for" condition
 
 
 	// increment
@@ -195,7 +195,7 @@ Statement* Parser::for_statement()
 	if (!check(TokenType::RightParen))
 		increment = expression();
 
-	consume(TokenType::RightParen, riv_e212(peek().pos)); // expect ")" after "for" increment
+	consume(TokenType::RightParen, riv_e211(peek().pos)); // expect ")" after "for" increment
 
 
 	// statement
@@ -237,7 +237,7 @@ Statement* Parser::loop_statement()
 Statement* Parser::break_statement()
 {
 	if (!loop_depth_)
-		throw riv_e213(previous().pos);
+		throw riv_e212(previous().pos);
 
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new BreakStatement;
@@ -247,7 +247,7 @@ Statement* Parser::break_statement()
 Statement* Parser::continue_statement()
 {
 	if (!loop_depth_)
-		throw riv_e214(peek().pos);
+		throw riv_e213(peek().pos);
 
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ContinueStatement;
@@ -258,26 +258,26 @@ Statement* Parser::function_statement()
 {
 	// name
 
-	const Token name = consume(TokenType::Identifier, riv_e215(peek().pos)); // expect function name after "function" statement
+	const Token name = consume(TokenType::Identifier, riv_e214(peek().pos)); // expect function name after "function" statement
 
 
 	// parameter list
 
-	consume(TokenType::LeftParen, riv_e216(peek().pos)); // expect "(" after function name
+	consume(TokenType::LeftParen, riv_e215(peek().pos)); // expect "(" after function name
 
 	std::vector<Token> params;
 
 	if (check(TokenType::Identifier))
 		do {
-			params.push_back(consume(TokenType::Identifier, riv_e218(peek().pos)));
+			params.push_back(consume(TokenType::Identifier, riv_e217(peek().pos)));
 		} while(match({ TokenType::Comma })); 
 	
-	consume(TokenType::RightParen, riv_e217(peek().pos)); // expect ")" after parameter list
+	consume(TokenType::RightParen, riv_e216(peek().pos)); // expect ")" after parameter list
 
 
 	// body
 
-	consume(TokenType::LeftCurlyBrace, riv_e219(peek().pos)); // expect function body
+	consume(TokenType::LeftCurlyBrace, riv_e218(peek().pos)); // expect function body
 
 
 	function_depth_++;
@@ -292,7 +292,7 @@ Statement* Parser::function_statement()
 Statement* Parser::return_statement()
 {
 	if (!function_depth_)
-		throw riv_e221(previous().pos); // cannot use "return" statement outside a function
+		throw riv_e220(previous().pos); // cannot use "return" statement outside a function
 
 	Expression* value = nullptr;
 
@@ -306,7 +306,7 @@ Statement* Parser::return_statement()
 
 Statement* Parser::import_statement()
 {
-	Token path = consume(TokenType::String, riv_e222(peek().pos)); // path to import
+	Token path = consume(TokenType::String, riv_e221(peek().pos)); // expect module path string after "import" statement
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ImportStatement(path);
 }
@@ -314,9 +314,9 @@ Statement* Parser::import_statement()
 
 Statement* Parser::package_statement()
 {
-	const Token name = consume(TokenType::Identifier, riv_e224(peek().pos)); // expect package name
+	const Token name = consume(TokenType::Identifier, riv_e223(peek().pos)); // expect package name
 
-	consume(TokenType::LeftCurlyBrace, riv_e225(peek().pos)); // expect package body
+	consume(TokenType::LeftCurlyBrace, riv_e224(peek().pos)); // expect package body
 	const std::vector<Statement*> declarations = block(true);
 
 	return new PackageStatement(name, declarations);
@@ -339,27 +339,22 @@ Expression* Parser::assignment()
 
 	if (match({ TokenType::Equal, TokenType::PlusEqual, TokenType::MinusEqual, TokenType::StarEqual, TokenType::SlashEqual }))
 	{
-		IdentifierExpression* const identifier = dynamic_cast<IdentifierExpression*>(expr);
 		const Token equal = previous();
 
-		// it's not a identifier
-		if (!identifier)
-			throw riv_e204(equal.pos); // only variables can be assigned
-
 		Expression* value = assignment();
-		
+
 		// +=, -=, *=, ...
 		if (equal.type != TokenType::Equal)
-			value = desugarize_assignment(identifier, equal, value);
+			value = desugarize_assignment(expr, equal, value);
 
-		return new AssignmentExpression(identifier->token, value);
+		return new AssignmentExpression(expr, equal, value);
 	}
 
 	return expr;
 }
 
 
-Expression* Parser::desugarize_assignment(IdentifierExpression* const identifier, const Token& assignment_operator, Expression* const value)
+Expression* Parser::desugarize_assignment(Expression* const identifier, const Token& assignment_operator, Expression* const value)
 {
 	Token op = assignment_operator;
 
@@ -472,7 +467,7 @@ Expression* Parser::call()
 		else if (match({ TokenType::ColonColon }))
 		{
 			const Token op = previous();
-			const Token identifier = consume(TokenType::Identifier, riv_e226(peek().pos));
+			const Token identifier = consume(TokenType::Identifier, riv_e225(peek().pos));
 			expr = new PackageResolutionExpression(expr, identifier, op);
 		}
 
@@ -494,7 +489,7 @@ Expression* Parser::finish_call(Expression* expr)
 			arguments.push_back(expression());
 		} while (match({ TokenType::Comma }));
 
-	consume(TokenType::RightParen, riv_e220(peek().pos));
+	consume(TokenType::RightParen, riv_e219(peek().pos));
 
 	return new CallExpression(expr, paren, arguments);
 }
@@ -533,7 +528,7 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 
 	scope_depth_--;
 
-	consume(TokenType::RightCurlyBrace, riv_e205(peek().pos));
+	consume(TokenType::RightCurlyBrace, riv_e204(peek().pos));
 
 	return statements;
 }

@@ -71,8 +71,11 @@ private:
 	Type process_literal			(LiteralExpression&)			override;
 	Type process_identifier			(IdentifierExpression&)			override;
 	Type process_assignment			(AssignmentExpression&)			override;
+	Type assign_variable			(const Token&, const Type&);
+	Type assign_package_member		(AssignmentExpression&, PackageResolutionExpression*);
 	Type process_call				(CallExpression&)				override;
 	Type process_package_resolution	(PackageResolutionExpression&)	override;
+	Type get_package_object_from_expression(PackageResolutionExpression &package_expression);
 
 	Type evaluate(Expression* expr);
 

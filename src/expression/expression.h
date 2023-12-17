@@ -140,7 +140,7 @@ public:
 class AssignmentExpression : public Expression
 {
 public:
-	AssignmentExpression(const Token& identifier, Expression* value);
+	AssignmentExpression(Expression* identifier, const Token& op, Expression* value);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -148,7 +148,8 @@ public:
 	}
 
 
-	Token		identifier;
+	Expression*	identifier = nullptr;
+	Token		op;
 	Expression* value = nullptr;
 };
 

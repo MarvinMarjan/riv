@@ -35,9 +35,10 @@ IdentifierExpression::IdentifierExpression(const Token& token)
 }
 
 
-AssignmentExpression::AssignmentExpression(const Token& identifier, Expression* const value)
+AssignmentExpression::AssignmentExpression(Expression* const identifier, const Token& op, Expression* const value)
 {
 	this->identifier = identifier;
+	this->op = op;
 	this->value = value;
 }
 

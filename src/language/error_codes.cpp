@@ -52,95 +52,91 @@ Exception riv_e203(const TokenPosition& pos) noexcept {
 }
 
 Exception riv_e204(const TokenPosition& pos) noexcept {
-	return { "Only variables can be assigned.", pos, 204 };
+	return { "Expect \"}\" to close block statement.", pos, 204 };
 }
 
 Exception riv_e205(const TokenPosition& pos) noexcept {
-	return { "Expect \"}\" to close block statement.", pos, 205 };
+	return { R"(Expect "(" after "if" statement.)", pos, 205 };
 }
 
 Exception riv_e206(const TokenPosition& pos) noexcept {
-	return { R"(Expect "(" after "if" statement.)", pos, 206 };
+	return { "Expect \")\" after \"if\" condition.", pos, 206 };
 }
 
 Exception riv_e207(const TokenPosition& pos) noexcept {
-	return { "Expect \")\" after \"if\" condition.", pos, 207 };
+	return { R"(Expect "(" after "while" statement.)", pos, 207 };
 }
 
 Exception riv_e208(const TokenPosition& pos) noexcept {
-	return { R"(Expect "(" after "while" statement.)", pos, 208 };
+	return { "Expect \")\" after \"while\" condition.", pos, 208 };
 }
 
 Exception riv_e209(const TokenPosition& pos) noexcept {
-	return { "Expect \")\" after \"while\" condition.", pos, 209 };
+	return { R"(Expect "(" after "for" statement.)", pos, 209 };
 }
 
 Exception riv_e210(const TokenPosition& pos) noexcept {
-	return { R"(Expect "(" after "for" statement.)", pos, 210 };
+	return { R"(Expect ";" after "for" condition.)", pos, 210 };
 }
 
 Exception riv_e211(const TokenPosition& pos) noexcept {
-	return { R"(Expect ";" after "for" condition.)", pos, 211 };
+	return { "Expect \")\" after \"for\" increment.", pos, 211 };
 }
 
 Exception riv_e212(const TokenPosition& pos) noexcept {
-	return { "Expect \")\" after \"for\" increment.", pos, 212 };
+	return { "Cannot use \"break\" statement outside a loop.", pos, 212 };
 }
 
 Exception riv_e213(const TokenPosition& pos) noexcept {
-	return { "Cannot use \"break\" statement outside a loop.", pos, 213 };
+	return { "Cannot use \"continue\" statement outside a loop.", pos, 213 };
 }
 
 Exception riv_e214(const TokenPosition& pos) noexcept {
-	return { "Cannot use \"continue\" statement outside a loop.", pos, 214 };
+	return { "Expect function name after \"function\" statement.", pos, 214 };
 }
 
 Exception riv_e215(const TokenPosition& pos) noexcept {
-	return { "Expect function name after \"function\" statement.", pos, 215 };
+	return { "Expect \"(\" after function name.", pos, 215 };
 }
 
 Exception riv_e216(const TokenPosition& pos) noexcept {
-	return { "Expect \"(\" after function name.", pos, 216 };
+	return { "Expect \")\" after parameter list.", pos, 216 };
 }
 
 Exception riv_e217(const TokenPosition& pos) noexcept {
-	return { "Expect \")\" after parameter list.", pos, 217 };
+	return { "Expect parameter after \",\".", pos, 217 };
 }
 
 Exception riv_e218(const TokenPosition& pos) noexcept {
-	return { "Expect parameter after \",\".", pos, 218 };
+	return { "Expect function body.", pos, 218 };
 }
 
 Exception riv_e219(const TokenPosition& pos) noexcept {
-	return { "Expect function body.", pos, 219 };
+	return { "Expect \")\" after function arguments.", pos, 219 };
 }
 
 Exception riv_e220(const TokenPosition& pos) noexcept {
-	return { "Expect \")\" after function arguments.", pos, 220 };
+	return { "Cannot use \"return\" statement outside a function.", pos, 220 };
 }
 
 Exception riv_e221(const TokenPosition& pos) noexcept {
-	return { "Cannot use \"return\" statement outside a function.", pos, 221 };
+	return { "Expect module path string after \"import\" statement.", pos, 221 };
 }
 
 Exception riv_e222(const TokenPosition& pos) noexcept {
-	return { "Expect module path string after \"import\" statement.", pos, 222 };
+	return { "Expect declaration statement.", pos, 222 };
 }
 
 Exception riv_e223(const TokenPosition& pos) noexcept {
-	return { "Expect declaration statement.", pos, 223 };
+	return { "Expect package name.", pos, 223 };
 }
 
 Exception riv_e224(const TokenPosition& pos) noexcept {
-	return { "Expect package name.", pos, 224 };
+	return { "Expect package body.", pos, 224 };
 }
 
 Exception riv_e225(const TokenPosition& pos) noexcept {
-	return { "Expect package body.", pos, 225 };
-}
-
-Exception riv_e226(const TokenPosition& pos) noexcept {
-	return { "Expect identifier.", pos, 226 };
+	return { "Expect identifier.", pos, 225 };
 }
 
 
@@ -196,4 +192,8 @@ Exception riv_e307(const TokenPosition& pos) noexcept {
 
 Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexcept {
 	return { "Invalid non-assignable type " + qt(type_name) + ".", pos, 308 };
+}
+
+Exception riv_e309(const TokenPosition& pos) noexcept {
+	return { "Only variables can be assigned.", pos, 309 };
 }

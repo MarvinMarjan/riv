@@ -307,8 +307,35 @@ Type Interpreter::process_identifier(IdentifierExpression& expr)
 // x = y
 Type Interpreter::process_assignment(AssignmentExpression& expr)
 {
+	IdentifierExpression* identifier_expression = nullptr;
+	PackageResolutionExpression* package_expression = nullptr;
+
+	// variable assignment
+	if ((identifier_expression = dynamic_cast<IdentifierExpression*>(expr.identifier)))
+		return assign_variable(identifier_expression->token, evaluate(expr.value));
+
+	// package member assignment
+	else if ((package_expression = dynamic_cast<PackageResolutionExpression*>(expr.identifier)))
+		return assign_package_member(expr, package_expression);
+
+	throw riv_e309(expr.op.pos); // only variables can be assigned
+}
+
+
+Type Interpreter::assign_variable(const Token& identifier, const Type& value)
+{
+	environment.assign(identifier, value);
+	return value;
+}
+
+
+Type Interpreter::assign_package_member(AssignmentExpression& expr, PackageResolutionExpression* const package_expression)
+{
+	RivPackage* package = get_package_object_from_expression(*package_expression).as_package();
+
 	const Type value = evaluate(expr.value);
-	environment.assign(expr.identifier, value);
+	package->environment.assign(package_expression->identifier, value);
+
 	return value;
 }
 
@@ -336,20 +363,27 @@ Type Interpreter::process_call(CallExpression& expr)
 
 Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 {
-	IdentifierExpression* const identifier = dynamic_cast<IdentifierExpression*>(expr.object);
+	const Type package_object = get_package_object_from_expression(expr);
+	RivPackage* package = package_object.as_package();
+
+	return package->environment.get(expr.identifier);
+}
+
+
+Type Interpreter::get_package_object_from_expression(PackageResolutionExpression& package_expression)
+{
+	IdentifierExpression* const identifier = dynamic_cast<IdentifierExpression*>(package_expression.object);
 
 	if (!identifier)
-		throw riv_e307(expr.op.pos); // expect package at left of "::"
+		throw riv_e307(package_expression.op.pos); // expect package at left of "::"
 
-	// do not use Interpreter::process_identifier to get packages
+	// note: do not use Interpreter::process_identifier to get packages
 	Type type_object = environment.get(identifier->token);
 
 	if (!type_object.is_package())
-		throw riv_e307(expr.op.pos); // expect package at left of "::"
+		throw riv_e307(package_expression.op.pos); // expect package at left of "::"
 
-	RivPackage* package = type_object.as_package();
-
-	return package->environment.get(expr.identifier);
+	return type_object;
 }
 
 

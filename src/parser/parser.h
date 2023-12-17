@@ -46,7 +46,7 @@ private:
 
 	Expression* expression();
 	Expression* assignment();
-	Expression* desugarize_assignment(IdentifierExpression* identifier, const Token& assignment_operator, Expression* value);
+	Expression* desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
 	Expression* equality();
 	Expression* comparison();
 	Expression* term();
