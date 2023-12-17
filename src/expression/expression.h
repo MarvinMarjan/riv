@@ -20,6 +20,9 @@ class PackageResolutionExpression;
 class ExpressionProcessor
 {
 public:
+	ExpressionProcessor() = default;
+	virtual ~ExpressionProcessor() = default;
+
 	virtual Type process_binary				(BinaryExpression&)				= 0;
 	virtual Type process_unary				(UnaryExpression&)				= 0;
 	virtual Type process_grouping			(GroupingExpression&)			= 0;
@@ -36,6 +39,9 @@ public:
 class Expression
 {
 public:
+	Expression() = default;
+	virtual ~Expression() = default;
+
 	virtual Type process(ExpressionProcessor&) = 0;
 };
 

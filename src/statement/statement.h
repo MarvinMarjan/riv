@@ -26,6 +26,9 @@ class PackageStatement;
 class StatementProcessor
 {
 public:
+	StatementProcessor() = default;
+	virtual ~StatementProcessor() = default;
+
 	virtual void process_expression	(ExpressionStatement&)	= 0;
 	virtual void process_block		(BlockStatement&)		= 0;
 	virtual void process_print		(PrintStatement&)		= 0;
@@ -46,6 +49,9 @@ public:
 class Statement
 {
 public:
+	Statement() = default;
+	virtual ~Statement() = default;
+
 	virtual void process(StatementProcessor&) = 0;
 };
 
