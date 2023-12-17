@@ -28,7 +28,7 @@ public:
 
 
 	Environment() = default;
-	Environment(Environment* enclosing);
+	explicit Environment(Environment* enclosing);
 
 
 	void import(const std::map<std::string, IdentifierData>& other);

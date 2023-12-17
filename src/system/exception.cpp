@@ -17,15 +17,15 @@ std::string generate_error_indicator(const std::string& line, const TokenPositio
 	// generates it
 	for (size_t i = 0; i < line.size() && i < pos.end; i++)
 	{
-		// before the begin of the token
+		// before the beginning of the token
 		if (i < pos.begin)
 			error_indicator += line[i] == '\t' ? '\t' : ' ';
 
-		// at the begin of the token
+		// at the beginning of the token
 		else if (i == pos.begin)
 			error_indicator += '^';
 
-		// after the begin of the token
+		// after the beginning of the token
 		else if (i > pos.begin)
 			error_indicator += '~';
 	}

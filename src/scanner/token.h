@@ -38,7 +38,9 @@ public:
 	bool valid() const noexcept { return valid_; }
 
 
-	size_t line, begin, end;
+	size_t line = 0;
+	size_t begin = 0;
+	size_t end = 0;
 
 private:
 	bool valid_ = false;

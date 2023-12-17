@@ -12,8 +12,8 @@ class RivREPL : public sp::StdIstream
 {
 
 	// returns a vector containing all keys of a map
-	template <typename _Key, typename _Value>
-	static std::vector<_Key> get_keys_from_map(const std::map<_Key, _Value>& map);
+	template <typename KeyType, typename ValueType>
+	static std::vector<KeyType> get_keys_from_map(const std::map<KeyType, ValueType>& map);
 
 public:
 	RivREPL();
@@ -32,10 +32,10 @@ private:
 
 
 
-template <typename _Key, typename _Value>
-std::vector<_Key> RivREPL::get_keys_from_map(const std::map<_Key, _Value>& map)
+template <typename KeyType, typename ValueType>
+std::vector<KeyType> RivREPL::get_keys_from_map(const std::map<KeyType, ValueType>& map)
 {
-	std::vector<_Key> keys;
+	std::vector<KeyType> keys;
 
 	for (const auto& [key, value] : map)
 		keys.push_back(key);

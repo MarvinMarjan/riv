@@ -8,7 +8,9 @@
 class NonAssignable
 {
 public:
-	NonAssignable(const std::string& type_name) : type_name_(type_name) {}
+	explicit NonAssignable(const std::string& type_name)
+		: type_name_(type_name) {}
+
 	virtual ~NonAssignable() = default;
 
 	std::string type_name() const noexcept { return type_name_; }

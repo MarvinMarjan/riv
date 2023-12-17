@@ -74,14 +74,14 @@ private:
 	Type process_call				(CallExpression&)				override;
 	Type process_package_resolution	(PackageResolutionExpression&)	override;
 
-	Type evaluate(Expression* const expr);
+	Type evaluate(Expression* expr);
 
 
 
 	static bool equals(const Type& left, const Type& right) noexcept;
 	static bool truthy(const Type& value) noexcept;
 
-	static bool are_values_of_type(const std::initializer_list<Type>& values, const TypeIndex type) noexcept;
+	static bool are_values_of_type(const std::initializer_list<Type>& values, TypeIndex type) noexcept;
 
-	static void throw_if_type_differs(const std::initializer_list<Type>& values, const TypeIndex type, const Exception& err);
+	static void throw_if_type_differs(const std::initializer_list<Type>& values, TypeIndex type, const Exception& err);
 };

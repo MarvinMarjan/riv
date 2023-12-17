@@ -177,9 +177,10 @@ char Scanner::string_escape(const char escape)
 
 	case '\\':
 		return '\\';
-	}
 
-	return '\0';
+	default:
+		return '\0';
+	}
 }
 
 

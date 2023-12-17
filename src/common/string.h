@@ -6,7 +6,7 @@
 
 
 // splits a string at every splitter character into a vector
-std::vector<std::string> split(const std::string& str, const char splitter = ' ') noexcept;
+std::vector<std::string> split(const std::string& str, char splitter = ' ') noexcept;
 
 
 

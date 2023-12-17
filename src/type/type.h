@@ -22,8 +22,7 @@ class RivFunction;
 class RivPackage;
 
 
-std::string type_index_to_string(const TypeIndex type) noexcept;
-
+std::string type_index_to_string(TypeIndex type) noexcept;
 
 
 using VariantType = std::variant<std::string, double, bool, RivFunction*, NonAssignable*>;

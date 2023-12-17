@@ -13,7 +13,7 @@ enum class InitMode
 
 
 // gets the initialization mode
-InitMode get_init_mode(const int argc, const char** argv) noexcept;
+InitMode get_init_mode(int argc, const char** argv) noexcept;
 
 
 struct Token;
@@ -34,4 +34,4 @@ void run(const std::string& source);
 void repl_init();
 
 // source file init
-void srcf_init(const int argc, const char** argv);
+void srcf_init(int argc, const char** argv);

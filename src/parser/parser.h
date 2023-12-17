@@ -18,7 +18,7 @@ class IdentifierExpression;
 class Parser
 {
 public:
-	Parser(const std::vector<Token>& tokens);
+	explicit Parser(const std::vector<Token>& tokens);
 
 
 	std::vector<Statement*> parse();
@@ -46,7 +46,7 @@ private:
 
 	Expression* expression();
 	Expression* assignment();
-	Expression* desugarize_assignment(IdentifierExpression* const identifier, const Token& assignment_operator, Expression* const value);
+	Expression* desugarize_assignment(IdentifierExpression* identifier, const Token& assignment_operator, Expression* value);
 	Expression* equality();
 	Expression* comparison();
 	Expression* term();
@@ -68,11 +68,11 @@ private:
 	Token previous()	const	noexcept;
 
 	bool match(const std::initializer_list<TokenType>& tokens) noexcept;
-	bool check(const TokenType type) const noexcept;
+	bool check(TokenType type) const noexcept;
 	bool at_end() const noexcept;
 
 
-	Token consume(const TokenType type, const Exception& err);
+	Token consume(TokenType type, const Exception& err);
 
 
 	bool at_global_scope() const noexcept { return !scope_depth_; }

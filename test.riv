@@ -9,8 +9,8 @@ package person
 	var inner_foo = foo;
 
 	function greet() {
-   		print "hello, my name is " + name;
-    }
+		print "hello, my name is " + name;
+	}
 }
 
 function main()

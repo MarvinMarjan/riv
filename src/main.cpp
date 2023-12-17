@@ -11,7 +11,7 @@ int main(const int argc, const char** argv)
 
 	try
 	{
-		// interative mode
+		// interactive mode
 		if (mode == InitMode::REPL)
 			repl_init();
 

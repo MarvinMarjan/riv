@@ -10,7 +10,7 @@
 class Scanner
 {
 public:
-	Scanner(const std::string& source);
+	explicit Scanner(const std::string& source);
 
 
 	// scan tokens
@@ -33,15 +33,15 @@ private:
 
 
 	// current token position
-	TokenPosition position() const noexcept { return TokenPosition(line_, ln_begin_, ln_end_); }
+	TokenPosition position() const noexcept { return { line_, ln_begin_, ln_end_ }; }
 
 
 	// scans the token
 	void scan_token();
 
-	void		string(const char encloser);		// processes a string token
-	std::string advance_string(const char encloser);
-	char		string_escape(const char escape);	// processes a string token escape characters
+	void		string(char encloser);		// processes a string token
+	std::string advance_string(char encloser);
+	char		string_escape(char escape);	// processes a string token escape characters
 
 	void number() noexcept;					// processes a number token
 	void advance_number() noexcept;			// advances to the end of a number token
@@ -58,7 +58,7 @@ private:
 	char peek()			const	noexcept;
 	char peek_next()	const	noexcept;
 
-	bool match(const char next) noexcept;
+	bool match(char next) noexcept;
 
 
 	// advances the current token position to the next line

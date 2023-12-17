@@ -57,7 +57,7 @@ public:
 class ExpressionStatement : public Statement
 {
 public:
-	ExpressionStatement(Expression* const expr);
+	explicit ExpressionStatement(Expression* expr);
 
 
 	void process(StatementProcessor& processor) override {
@@ -75,7 +75,7 @@ public:
 class BlockStatement : public Statement
 {
 public:
-	BlockStatement(const std::vector<Statement*>& statements);
+	explicit BlockStatement(const std::vector<Statement*>& statements);
 
 
 	void process(StatementProcessor& processor) override {
@@ -93,7 +93,7 @@ public:
 class PrintStatement : public Statement
 {
 public:
-	PrintStatement(Expression* const value);
+	explicit PrintStatement(Expression* value);
 
 
 	void process(StatementProcessor& processor) override {
@@ -111,7 +111,7 @@ public:
 class VarStatement : public Statement
 {
 public:
-	VarStatement(const Token& name, Expression* const value);
+	VarStatement(const Token& name, Expression* value);
 
 
 	void process(StatementProcessor& processor) override {
@@ -130,7 +130,7 @@ public:
 class IfStatement : public Statement
 {
 public:
-	IfStatement(Expression* const condition, Statement* const then_statement, Statement* const else_statement);
+	IfStatement(Expression* condition, Statement* then_statement, Statement* else_statement);
 
 
 	void process(StatementProcessor& processor) override {
@@ -150,7 +150,7 @@ public:
 class WhileStatement : public Statement
 {
 public:
-	WhileStatement(Expression* const condition, Statement* const body);
+	WhileStatement(Expression* condition, Statement* body);
 
 
 	void process(StatementProcessor& processor) override {
@@ -221,7 +221,7 @@ public:
 class ReturnStatement : public Statement
 {
 public:
-	ReturnStatement(Expression* const value);
+	explicit ReturnStatement(Expression* value);
 
 
 	void process(StatementProcessor& processor) override {
@@ -238,7 +238,7 @@ public:
 class ImportStatement : public Statement
 {
 public:
-	ImportStatement(const Token& path);
+	explicit ImportStatement(const Token& path);
 
 
 	void process(StatementProcessor& processor) override {

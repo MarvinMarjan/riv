@@ -156,8 +156,8 @@ void Interpreter::process_package(PackageStatement& statement)
 
 void Interpreter::execute_block(const std::vector<Statement*>& statements, const ScopeConfig& config)
 {
-	Environment old_env = std::move(config.old_env);
-	Environment new_env = std::move(config.new_env);
+	Environment old_env = config.old_env;
+	Environment new_env = config.new_env;
 
 	if (config.enclose_old)
 		new_env.set_enclosing(&old_env);

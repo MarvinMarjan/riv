@@ -47,7 +47,7 @@ public:
 class BinaryExpression : public Expression
 {
 public:
-	BinaryExpression(Expression* const left, const Token& op, Expression* const right);
+	BinaryExpression(Expression* left, const Token& op, Expression* right);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -67,7 +67,7 @@ public:
 class UnaryExpression : public Expression
 {
 public:
-	UnaryExpression(const Token& op, Expression* const right);
+	UnaryExpression(const Token& op, Expression* right);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -86,7 +86,7 @@ public:
 class GroupingExpression : public Expression
 {
 public:
-	GroupingExpression(Expression* const expr);
+	explicit GroupingExpression(Expression* expr);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -104,7 +104,7 @@ public:
 class LiteralExpression : public Expression
 {
 public:
-	LiteralExpression(const Type& value = Type());
+	explicit LiteralExpression(const Type& value = Type());
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -122,7 +122,7 @@ public:
 class IdentifierExpression : public Expression
 {
 public:
-	IdentifierExpression(const Token& token);
+	explicit IdentifierExpression(const Token& token);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -140,7 +140,7 @@ public:
 class AssignmentExpression : public Expression
 {
 public:
-	AssignmentExpression(const Token& identifier, Expression* const value);
+	AssignmentExpression(const Token& identifier, Expression* value);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -158,7 +158,7 @@ public:
 class CallExpression : public Expression
 {
 public:
-	CallExpression(Expression* const callee, const Token& paren, const std::vector<Expression*>& arguments);
+	CallExpression(Expression* callee, const Token& paren, const std::vector<Expression*>& arguments);
 
 
 	Type process(ExpressionProcessor& processor) override {

@@ -459,7 +459,6 @@ Expression* Parser::unary()
 	return call();
 }
 
-#include <specter/output/ostream.h>
 
 Expression* Parser::call()
 {
