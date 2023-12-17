@@ -8,10 +8,7 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 {
 	// creating a local instance of the global environment instead of using the pointer
 	// avoids some annoying bugs
-	Environment global = *interpreter.global();
-
-
-	Environment new_env(&global);
+	Environment new_env(&closure);
 	Type return_value;
 
 	// assign the arguments

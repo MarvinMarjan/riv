@@ -2,6 +2,7 @@
 
 #include <type/callable.h>
 #include <statement/statement.h>
+#include <environment/environment.h>
 
 
 
@@ -18,8 +19,8 @@ public:
 	
 
 	RivFunction() = default;
-	RivFunction(const FunctionStatement& declaration)
-		: declaration(declaration) {}
+	explicit RivFunction(const FunctionStatement& declaration, const Environment& closure)
+		: declaration(declaration), closure(closure) {}
 
 	size_t arity() override { return declaration.params.size(); }
 
@@ -27,4 +28,5 @@ public:
 
 
 	FunctionStatement declaration;
+	Environment closure;
 };

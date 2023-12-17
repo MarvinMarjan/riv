@@ -21,5 +21,7 @@ function main()
 
 	print person::inner_foo;
 
-	print person::greet();
+	person::name = "lucas";
+
+	person::greet();
 }

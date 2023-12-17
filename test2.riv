@@ -1,5 +1,14 @@
-import "test3";
+function main()
+{
+	var a = "global";
 
-function bar() {
-	print "declared at test2";
+	{
+		function showA() {
+			print a;
+		}
+
+		showA();
+		var a = "block";
+		showA();
+	}
 }
