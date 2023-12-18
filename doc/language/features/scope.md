@@ -3,7 +3,7 @@ Every ***Riv*** program has an environment that stores each variable and identif
 Every program starts with a scope: the global scope. It's the root scope in which every other inner scope will have access. At global scope, **only declarations are valid**. A new scope is created every time a block is used `{ ... }`.
 
 
-***note: the example below ignores the rule of "`at global scope, only declarations are valid`" for educational porpuses. But, when writing true programs with riv, you will not be able to cheat that.*** [See more](/doc/language/syntax/init.md)
+***note: the example below and most of this documentation examples ignores the rule of "`at global scope, only declarations are valid`" for educational porpuses. But, when writing true programs with riv, you will not be able to ignore that.*** [See more](/doc/language/syntax/init.md)
 ```
 var global_x = "global";
 
