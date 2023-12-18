@@ -24,4 +24,6 @@ function main()
 	person::name = "lucas";
 
 	person::greet();
+
+	person::asdasd;
 }
