@@ -30,7 +30,7 @@ private:
 	Statement* expression_statement();
 	Statement* block_statement();
 	Statement* print_statement();
-	Statement* var_declaration();
+	Statement* var_statement();
 	Statement* if_statement();
 	Statement* while_statement();
 	Statement* for_statement();
@@ -57,15 +57,18 @@ private:
 	Expression* primary();
 
 
+
+
+
 	// parses a block statement
 	std::vector<Statement*> block(bool force_declaration = false);
 	
 	void synchronize() noexcept;
 
 
-	Token peek()		const	noexcept;
-	Token advance()				noexcept;
-	Token previous()	const	noexcept;
+	Token peek()					const	noexcept;
+	Token advance()							noexcept;
+	Token previous(int amount = 1)	const	noexcept;
 
 	bool match(const std::initializer_list<TokenType>& tokens) noexcept;
 	bool check(TokenType type) const noexcept;

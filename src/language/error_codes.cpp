@@ -197,3 +197,7 @@ Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexc
 Exception riv_e309(const TokenPosition& pos) noexcept {
 	return { "Only variables can be assigned.", pos, 309 };
 }
+
+Exception riv_e310(const TokenPosition& pos) noexcept {
+	return { "Cannot modify the value of an immutable variable.", pos, 310 };
+}

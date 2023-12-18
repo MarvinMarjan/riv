@@ -111,3 +111,29 @@ Type::Type()
 RivPackage* Type::as_package() const noexcept {
 	return dynamic_cast<RivPackage*>(as_non_assignable());
 }
+
+
+
+Type::Mutability Type::get_mutability_from_modifier(TokenType specifier) noexcept
+{
+	switch (specifier)
+	{
+	case TokenType::Mut:	return Mutable;
+	case TokenType::Imut:	return Immutable;
+
+	default: return Mutable;
+	}
+}
+
+
+bool Type::is_valid_mutability_modifier(TokenType specifier) noexcept
+{
+	switch (specifier)
+	{
+	case TokenType::Mut:
+	case TokenType::Imut:
+		return true;
+
+	default: return false;
+	}
+}

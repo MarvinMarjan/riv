@@ -117,7 +117,7 @@ public:
 class VarStatement : public Statement
 {
 public:
-	VarStatement(const Token& name, Expression* value);
+	VarStatement(const Token& name, Expression* value, Type::Mutability mutability);
 
 
 	void process(StatementProcessor& processor) override {
@@ -125,8 +125,9 @@ public:
 	}
 
 
-	Token		name;
-	Expression*	value = nullptr;
+	Token				name;
+	Expression*			value = nullptr;
+	Type::Mutability	mutability;
 };
 
 

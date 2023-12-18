@@ -20,10 +20,11 @@ PrintStatement::PrintStatement(Expression* const value)
 }
 
 
-VarStatement::VarStatement(const Token& name, Expression* const value)
+VarStatement::VarStatement(const Token& name, Expression* const value, const Type::Mutability mutability)
 {
 	this->name = name;
 	this->value = value;
+	this->mutability = mutability;
 }
 
 

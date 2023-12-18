@@ -64,7 +64,7 @@ Exception riv_e225(const TokenPosition& pos) noexcept; // expect package member 
 // 300 - 399: runtime errors
 
 Exception riv_e300(const std::initializer_list<Type>& operands, const Token& op) noexcept; // Operator "..." doesn't support operands of type: type1, type2, ...
-Exception riv_e301(const TokenPosition& pos) noexcept; // undefined identifier.
+Exception riv_e301(const TokenPosition& pos) noexcept; // undefined identifier
 Exception riv_e302(const TokenPosition& pos) noexcept; // only functions can be called
 Exception riv_e303(int expect, int got, const TokenPosition& pos) noexcept; // expect ... arguments, got ...
 Exception riv_e304(const TokenPosition& pos) noexcept; // invalid module path
@@ -72,4 +72,5 @@ Exception riv_e305(const std::string& identifier, const TokenPosition& pos, cons
 Exception riv_e306() noexcept; // function "main" not declared
 Exception riv_e307(const TokenPosition& pos) noexcept; // expect package at left of "::"
 Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexcept; // invalid non-assignable type "..."
-Exception riv_e309(const TokenPosition& pos) noexcept; // only variables can be assigned.
+Exception riv_e309(const TokenPosition& pos) noexcept; // only variables can be assigned
+Exception riv_e310(const TokenPosition& pos) noexcept; // cannot modify the value of an immutable variable

@@ -49,6 +49,9 @@ void Environment::assign(const Token& identifier, const Type& value)
 {
 	if (data_.contains(identifier.lexeme))
 	{
+		if (data_[identifier.lexeme].value.mutability() != Type::Mutable)
+			throw riv_e310(identifier.pos); // cannot modify the value of an immutable variable
+
 		data_[identifier.lexeme].value = value;
 		return;
 	}

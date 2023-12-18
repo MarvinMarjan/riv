@@ -1,16 +1,4 @@
-package values
-{
-	var num1 = 10;
-	var num2 = -5;
-	var num3 = 3.14;
-}
-
-
 function main()
 {
-	values::num1 = 90;
-
-	print values::num1;
-	print values::num2;
-	print values::num3;
+	main();
 }

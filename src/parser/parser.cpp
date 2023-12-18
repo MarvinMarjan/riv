@@ -4,6 +4,8 @@
 #include <system/exception.h>
 #include <statement/statement.h>
 #include <expression/expression.h>
+#include <common/vector.h>
+#include <language/riv.h>
 
 
 
@@ -19,11 +21,20 @@ std::vector<Statement*> Parser::parse()
 	std::vector<Statement*> statements;
 
 	while (!at_end())
-		statements.push_back(declaration(true));
+	{
+		Statement* const statement = declaration(true);
+
+		if (!statement)
+		{
+			advance();
+			continue;
+		}
+
+		statements.push_back(statement);
+	}
 
 	return statements;
 }
-
 
 
 
@@ -34,7 +45,7 @@ Statement* Parser::declaration(const bool force_declaration)
 	try
 	{
 		if (match({ TokenType::Var }))
-			return var_declaration();
+			return var_statement();
 
 		if (match({ TokenType::Function }))
 			return function_statement();
@@ -48,15 +59,17 @@ Statement* Parser::declaration(const bool force_declaration)
 
 		if (!force_declaration)
 			return statement();
-		else
+
+		else if (!exists(lang_modifiers(), peek().type))
 			throw riv_e222(peek().pos); // expect declaration statement
 	}
 	catch (const Exception& e)
 	{
 		log_error(e);
 		synchronize();
-		return nullptr;
 	}
+
+	return nullptr;
 }
 
 
@@ -89,6 +102,10 @@ Statement* Parser::statement()
 	if (match({ TokenType::Return }))
 		return return_statement();
 
+	// is it modifier? (then ignore)
+	if (exists(lang_modifiers(), peek().type))
+		return nullptr;
+
 	return expression_statement();
 }
 
@@ -115,9 +132,19 @@ Statement* Parser::print_statement()
 }
 
 
-Statement* Parser::var_declaration()
+Statement* Parser::var_statement()
 {
-	Token name = consume(TokenType::Identifier, riv_e203(peek().pos)); // expect variable name after "var"
+	const Token mutability_specifier = previous(2);
+	Type::Mutability mutability;
+
+
+	if (!Type::is_valid_mutability_modifier(mutability_specifier.type))
+		mutability = Type::Mutable;
+	else
+		mutability = Type::get_mutability_from_modifier(mutability_specifier.type);
+
+
+	const Token name = consume(TokenType::Identifier, riv_e203(peek().pos)); // expect variable name after "var"
 	Expression* value = nullptr;
 
 	if (match({ TokenType::Equal }))
@@ -125,7 +152,7 @@ Statement* Parser::var_declaration()
 
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 
-	return new VarStatement(name, value);
+	return new VarStatement(name, value, mutability);
 }
 
 
@@ -172,7 +199,7 @@ Statement* Parser::for_statement()
 		initializer = nullptr;
 
 	else if (match({ TokenType::Var }))
-		initializer = var_declaration();
+		initializer = var_statement();
 
 	else
 		initializer = expression_statement();
@@ -524,7 +551,17 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 	scope_depth_++;
 
 	while (!check(TokenType::RightCurlyBrace) && !at_end())
-		statements.push_back(declaration(force_declaration));
+	{
+		Statement* const statement = declaration(force_declaration);
+
+		if (!statement)
+		{
+			advance();
+			continue;
+		}
+
+		statements.push_back(statement);
+	}
 
 	scope_depth_--;
 
@@ -579,9 +616,9 @@ Token Parser::advance() noexcept
 }
 
 
-Token Parser::previous() const noexcept
+Token Parser::previous(const int amount) const noexcept
 {
-	return tokens_[current_ - 1];
+	return tokens_[current_ - amount];
 }
 
 

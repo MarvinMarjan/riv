@@ -57,7 +57,10 @@ void Interpreter::process_print(PrintStatement& statement)
 
 void Interpreter::process_var(VarStatement& statement)
 {
-	environment.declare(statement.name, evaluate(statement.value));
+	Type value = evaluate(statement.value);
+	value.set_mutability(statement.mutability);
+
+	environment.declare(statement.name, value);
 }
 
 
@@ -163,7 +166,7 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 		new_env.set_enclosing(&old_env);
 
 	environment = std::move(new_env);
-	
+
 	try {
 		for (Statement* const statement : statements)
 			execute(statement);
