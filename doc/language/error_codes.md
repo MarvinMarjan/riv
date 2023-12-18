@@ -9,29 +9,39 @@
 	- [*201*: Expect ")" to close grouping expression](#201-expect--to-close-grouping-expression)
 	- [*202*: Expect ";" after statement](#202-expect--after-statement)
 	- [*203*: Expect variable name after "var" keyword](#203-expect-variable-name-after-var-keyword)
-	- [*204*: Only variables can be assigned](#204-only-variables-can-be-assigned)
-	- [*205*: Expect "}" to close block statement](#205-expect--to-close-block-statement)
-	- [*206*: Expect "(" after "if" statement](#206-expect--after-if-statement)
-	- [*207*: Expect ")" after "if" condition](#207-expect--after-if-condition)
-	- [*208*: Expect "(" after "while" statement](#208-expect--after-while-statement)
-	- [*209*: Expect ")" after "while" condition](#209-expect--after-while-condition)
-	- [*210*: Expect "(" after "for" statement](#210-expect--after-for-statement)
-	- [*211*: Expect ";" after "for" condition](#211-expect--after-for-condition)
-	- [*212*: Expect ")" after "for" increment](#212-expect--after-for-increment)
-	- [*213*: Cannot use "break" statement outside a loop](#213-cannot-use-break-statement-outside-a-loop)
-	- [*214*: Cannot use "continue" statement outside a loop](#214-cannot-use-continue-statement-outside-a-loop)
-	- [*215*: Expect function name after "function" statement](#215-expect-function-name-after-function-statement)
-	- [*216*: Expect "(" after function name](#216-expect--after-function-name)
-	- [*217*: Expect ")" after function parameter list](#217-expect--after-function-parameter-list)
-	- [*218*: Expect parameter after ","](#218-expect-parameter-after-)
-	- [*219*: Expect function body](#219-expect-function-body)
-	- [*220*: Expect ")" after function arguments](#220-expect--after-function-arguments)
-	- [*221*: Cannot use "return" statement outside a function](#221-cannot-use-return-statement-outside-a-function)
+	- [*204*: Expect "}" to close block statement](#204-expect--to-close-block-statement)
+	- [*205*: Expect "(" after "if" statement](#205-expect--after-if-statement)
+	- [*206*: Expect ")" after "if" condition](#206-expect--after-if-condition)
+	- [*207*: Expect "(" after "while" statement](#207-expect--after-while-statement)
+	- [*208*: Expect ")" after "while" condition](#208-expect--after-while-condition)
+	- [*209*: Expect "(" after "for" statement](#209-expect--after-for-statement)
+	- [*210*: Expect ";" after "for" condition](#210-expect--after-for-condition)
+	- [*211*: Expect ")" after "for" increment](#211-expect--after-for-increment)
+	- [*212*: Cannot use "break" statement outside a loop](#212-cannot-use-break-statement-outside-a-loop)
+	- [*213*: Cannot use "continue" statement outside a loop](#213-cannot-use-continue-statement-outside-a-loop)
+	- [*214*: Expect function name after "function" statement](#214-expect-function-name-after-function-statement)
+	- [*215*: Expect "(" after function name](#215-expect--after-function-name)
+	- [*216*: Expect ")" after function parameter list](#216-expect--after-function-parameter-list)
+	- [*217*: Expect parameter after ","](#217-expect-parameter-after-)
+	- [*218*: Expect function body](#218-expect-function-body)
+	- [*219*: Expect ")" after function arguments](#219-expect--after-function-arguments)
+	- [*220*: Cannot use "return" statement outside a function](#220-cannot-use-return-statement-outside-a-function)
+	- [*221*: Expect module path string after "import" statement](#221-expect-module-path-string-after-import-statement)
+	- [*222*: Expect declaration statement](#222-expect-declaration-statement)
+	- [*223*: Expect package name](#223-expect-package-name)
+	- [*224*: Expect package body](#224-expect-package-body)
+	- [*225*: Expect package member identifier](#225-expect-package-member-identifier)
 - [Runtime errors](#runtime-errors)
 	- [*300*: Operator "..." doesn't support operands of type: type1, type2, ...](#300-operator--doesnt-support-operands-of-type-type1-type2-)
 	- [*301*: Undefined indentifier "..."](#301-undefined-indentifier-)
 	- [*302*: Only functions can be called](#302-only-functions-can-be-called)
 	- [*303*: Expect ... arguments, got ...](#303-expect--arguments-got-)
+	- [*304*: Invalid module path](#304-invalid-module-path)
+	- [*305*: Identifier ... already declared at ...](#305-identifier--already-declared-at-)
+	- [*306*: Function "main" not declared](#306-function-main-not-declared)
+	- [*307*: Expect package at left of "::"](#307-expect-package-at-left-of-)
+	- [*308*: Invalid non-assignable type "..."](#308-invalid-non-assignable-type-)
+	- [*309*: Only variables can be assigned](#309-only-variables-can-be-assigned)
 
 
 
@@ -129,17 +139,7 @@ Error caused when the variable name is missing at its declaration.
 
 
 
-### *204*: Only variables can be assigned
-
-Error caused when trying to assign a non-variable value.
-
-`5 = 90;`
-
-
-
-
-
-### *205*: Expect "}" to close block statement
+### *204*: Expect "}" to close block statement
 
 Error caused when a [Block Statement](/doc/language/syntax/statements.md#block-statement) isn't closed.
 
@@ -152,7 +152,7 @@ Error caused when a [Block Statement](/doc/language/syntax/statements.md#block-s
 
 
 
-### *206*: Expect "(" after "if" statement
+### *205*: Expect "(" after "if" statement
 
 Error caused when the token after an `if` ([If Statement](/doc/language/syntax/statements.md#if-else-statement)) isn't a `(`.
 
@@ -162,7 +162,7 @@ Error caused when the token after an `if` ([If Statement](/doc/language/syntax/s
 
 
 
-### *207*: Expect ")" after "if" condition
+### *206*: Expect ")" after "if" condition
 
 Error caused when the token before the then-block of an `if` isn't a `)`.
 
@@ -172,7 +172,7 @@ Error caused when the token before the then-block of an `if` isn't a `)`.
 
 
 
-### *208*: Expect "(" after "while" statement
+### *207*: Expect "(" after "while" statement
 
 Error caused when the token after a `while` ([While Statement](/doc/language/syntax/statements.md#while-statement)) isn't `(`.
 
@@ -182,7 +182,7 @@ Error caused when the token after a `while` ([While Statement](/doc/language/syn
 
 
 
-### *209*: Expect ")" after "while" condition
+### *208*: Expect ")" after "while" condition
 
 Error caused when the token before a `while` body isn't `)`.
 
@@ -192,7 +192,7 @@ Error caused when the token before a `while` body isn't `)`.
 
 
 
-### *210*: Expect "(" after "for" statement
+### *209*: Expect "(" after "for" statement
 
 Error caused when the token after a `for` ([For Statement](/doc/language/syntax/statements.md#for-statement)) isn't `(`.
 
@@ -202,7 +202,7 @@ Error caused when the token after a `for` ([For Statement](/doc/language/syntax/
 
 
 
-### *211*: Expect ";" after "for" condition
+### *210*: Expect ";" after "for" condition
 
 Error caused when the token after a `for` condition `for (decl; condition; incr) { ... }` isn't a `;`.
 
@@ -212,7 +212,7 @@ Error caused when the token after a `for` condition `for (decl; condition; incr)
 
 
 
-### *212*: Expect ")" after "for" increment
+### *211*: Expect ")" after "for" increment
 
 Error caused when the token after a `for` increment `for (decl; cond; increment) { ... }` isn't a `)`.
 
@@ -222,7 +222,7 @@ Error caused when the token after a `for` increment `for (decl; cond; increment)
 
 
 
-### *213*: Cannot use "break" statement outside a loop
+### *212*: Cannot use "break" statement outside a loop
 
 Error caused when a `break` ([Break Statement](/doc/language/syntax/statements.md#break-statement)) is placed outside any loop body.
 
@@ -230,14 +230,14 @@ Error caused when a `break` ([Break Statement](/doc/language/syntax/statements.m
 var foo = 10;
 
 if (foo < 20)
-	break; // e213
+	break; // e212
 ```
 
 
 
 
 
-### *214*: Cannot use "continue" statement outside a loop
+### *213*: Cannot use "continue" statement outside a loop
 
 Error caused when a `continue` ([Continue Statement](/doc/language/syntax/statements.md#continue-statement)) is placed outside any loop body.
 
@@ -245,14 +245,14 @@ Error caused when a `continue` ([Continue Statement](/doc/language/syntax/statem
 var bar = !!false != (!true == true);
 
 if (!bar)
-	continue; // e214
+	continue; // e213
 ```
 
 
 
 
 
-### *215*: Expect function name after "function" statement
+### *214*: Expect function name after "function" statement
 
 Error caused when the token after a `function` ([Function Statement](/doc/language/syntax/statements.md#function-statement)) isn't an identifier (name of the function).
 
@@ -262,7 +262,7 @@ Error caused when the token after a `function` ([Function Statement](/doc/langua
 
 
 
-### *216*: Expect "(" after function name
+### *215*: Expect "(" after function name
 
 Error caused when the token after a `function` name isn't a `(`.
 
@@ -272,7 +272,7 @@ Error caused when the token after a `function` name isn't a `(`.
 
 
 
-### *217*: Expect ")" after function parameter list
+### *216*: Expect ")" after function parameter list
 
 Error caused when the token after a `function` parameter list isn't `)`.
 
@@ -282,7 +282,7 @@ Error caused when the token after a `function` parameter list isn't `)`.
 
 
 
-### *218*: Expect parameter after ","
+### *217*: Expect parameter after ","
 
 Error caused when the token after a `,` (used to separate parameters) isn't an identifier (parameter).
 
@@ -292,7 +292,7 @@ Error caused when the token after a `,` (used to separate parameters) isn't an i
 
 
 
-### *219*: Expect function body
+### *218*: Expect function body
 
 Error caused when the token after a `)` (closes the parameter list) of a parameter list isn't `{`.
 
@@ -302,7 +302,7 @@ Error caused when the token after a `)` (closes the parameter list) of a paramet
 
 
 
-### *220*: Expect ")" after function arguments
+### *219*: Expect ")" after function arguments
 
 Error caused when the token after an arguments list of a [Call Expression](/doc/language/syntax/expressions.md#calling) isn't `)`.
 
@@ -310,14 +310,14 @@ Error caused when the token after an arguments list of a [Call Expression](/doc/
 function foo(number) { ... }
 
 
-foo(4; // e220
+foo(4; // e219
 ```
 
 
 
 
 
-### *221*: Cannot use "return" statement outside a function
+### *220*: Cannot use "return" statement outside a function
 
 Error caused when a `return` ([Return Statement](/doc/language/syntax/statements.md#return-statement)) is placed outside a function body.
 
@@ -325,8 +325,62 @@ Error caused when a `return` ([Return Statement](/doc/language/syntax/statements
 var is_monday = true;
 
 if (is_monday)
-	return "wanna die..."; // e221
+	return "wanna die..."; // e220
 ```
+
+
+
+
+
+### *221*: Expect module path string after "import" statement
+
+Error caused when the token after an `import` ([Import Statement](/doc/language/syntax/statements.md#import-statement)) isn't a string.
+
+`import false;`
+
+
+
+
+
+### *222*: Expect declaration statement
+
+Error caused when a statement is placed in somewhere that expects a declaration.
+
+```
+// at global scope...
+
+print "invalid statement"; // e222
+```
+
+
+
+
+
+### *223*: Expect package name
+
+Error caused when the token after a `package` ([Package Statement](/doc/language/syntax/statements.md#package-statement)) isn't an identifier.
+
+`package 2 + 2 { ... }`
+
+
+
+
+
+### *224*: Expect package body
+
+Error caused by omitting the package body after its name.
+
+`package foo 15`
+
+
+
+
+
+### *225*: Expect package member identifier
+
+Error caused when the token after an `::` ([Package Resolution Expression](/doc/language/syntax/expressions.md#package-resolution)) isn't a identifier.
+
+`my_pack::(2 / 9.4);`
 
 
 
@@ -381,3 +435,76 @@ function say(text)
 
 say("hello, " + "world", "some extra value here"); // e303
 ```
+
+
+
+
+
+### *304*: Invalid module path
+
+Error caused when the path specified after an `import` ([Import Statement](/doc/language/syntax/statements.md)) isn't valid (does not exist).
+
+`import "some_invalid/path";`
+
+
+
+
+
+### *305*: Identifier ... already declared at ...
+
+Error caused when an identifier is being re-declared.
+
+```
+var foo = 8;
+
+var foo = "string"; // e305
+```
+
+
+
+
+### *306*: Function "main" not declared
+
+Error caused when the `main` function isn't declared.
+
+```
+function invert(x) { return !x; }
+function is_null(x) { return !x; }
+
+// interpreter: where do i start the program? (e306)
+```
+
+
+
+
+
+### *307*: Expect package at left of "::"
+
+Error caused when the value at left of a `::` ([Package Resolution Expression](/doc/language/syntax/expressions.md#package-resolution)) isn't a [Package](/doc/language/features/packages.md)
+
+```
+package my_pack
+{
+	...
+}
+
+print 50::my_var; // e307
+```
+
+
+
+
+
+### *308*: Invalid non-assignable type "..."
+
+Error caused when trying to do an invalid operation with any [non-assignable](/doc/language/syntax/non-assignable.md) type
+
+
+
+
+
+### *309*: Only variables can be assigned
+
+Error caused when trying to assign a non-variable value.
+
+`5 = 90;`

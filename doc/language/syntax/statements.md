@@ -10,6 +10,8 @@
 - [Continue Statement](#continue-statement)
 - [Function Statement](#function-statement)
 - [Return Statement](#return-statement)
+- [Import Statement](#import-statement)
+- [Package Statement](#package-statement)
 
 
 **Statements** are operations that, unlike [Expressions](/doc/language/syntax/expressions.md), do not return any value. They just perform an action and... that's it. These actions generally affects the current environment, produces a side effect and stuff like that. **Statements** may use **Expressions** as "arguments".
@@ -221,4 +223,29 @@ This statement declares a [Function](/doc/language/features/functions.md).
 
 `"return" [expression]? ";"`
 
-Returns a value from a function. [See More](/doc/language/features/functions.md)
+Returns a value from a function. [See More](/doc/language/features/functions.md).
+
+
+
+## Import Statement
+
+`"import" [path] ";"`
+
+Imports data from other source file. [See More](/doc/language/features/importing.md).
+
+
+
+## Package Statement
+
+`"package" <name> "{" declarations* "}"`
+
+For better understanding:
+
+```
+package my_pack
+{
+	declaration1
+	declaration2
+	...
+}
+```

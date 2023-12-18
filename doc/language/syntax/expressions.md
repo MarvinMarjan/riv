@@ -20,6 +20,7 @@
 	- [Operator \*=](#operator--5)
 	- [Operator /=](#operator--6)
 - [Calling](#calling)
+- [Package Resolution](#package-resolution)
 
 
 **Expressions** are literal values (like `false` `"hello"` and `8`) or operations that returns a value.
@@ -158,3 +159,11 @@ After a variable is declared, you can change its value. This expression evaluate
 Calls anything that can be called.
 
 See [Function Calling](/doc/language/features/functions.md#calling).
+
+
+
+# Package Resolution
+
+`<package> "::" <package_member>`
+
+Searches for a identifier inside a package. [See More](/doc/language/features/packages.md).

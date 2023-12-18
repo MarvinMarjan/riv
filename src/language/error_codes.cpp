@@ -136,7 +136,7 @@ Exception riv_e224(const TokenPosition& pos) noexcept {
 }
 
 Exception riv_e225(const TokenPosition& pos) noexcept {
-	return { "Expect identifier.", pos, 225 };
+	return { "Expect package member identifier.", pos, 225 };
 }
 
 

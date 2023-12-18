@@ -56,7 +56,7 @@ Exception riv_e221(const TokenPosition& pos) noexcept; // expect module path str
 Exception riv_e222(const TokenPosition& pos) noexcept; // expect declaration statement
 Exception riv_e223(const TokenPosition& pos) noexcept; // expect package name
 Exception riv_e224(const TokenPosition& pos) noexcept; // expect package body
-Exception riv_e225(const TokenPosition& pos) noexcept; // expect identifier
+Exception riv_e225(const TokenPosition& pos) noexcept; // expect package member identifier
 
 
 
