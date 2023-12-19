@@ -74,3 +74,4 @@ Exception riv_e307(const TokenPosition& pos) noexcept; // expect package at left
 Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexcept; // invalid non-assignable type "..."
 Exception riv_e309(const TokenPosition& pos) noexcept; // only variables can be assigned
 Exception riv_e310(const TokenPosition& pos) noexcept; // cannot modify the value of an immutable variable
+Exception riv_e311(const TokenPosition& pos, size_t limit) noexcept; // recursion limit of ... exceeded

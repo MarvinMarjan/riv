@@ -29,4 +29,7 @@ public:
 
 	FunctionStatement declaration;
 	Environment       closure;
+
+private:
+	size_t recursion_depth_ = 0;
 };

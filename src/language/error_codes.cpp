@@ -201,3 +201,7 @@ Exception riv_e309(const TokenPosition& pos) noexcept {
 Exception riv_e310(const TokenPosition& pos) noexcept {
 	return { "Cannot modify the value of an immutable variable.", pos, 310 };
 }
+
+Exception riv_e311(const TokenPosition& pos, const size_t limit) noexcept {
+	return { "Recursion limit of " + std::to_string(limit) + " exceeded.", pos, 311 };
+}

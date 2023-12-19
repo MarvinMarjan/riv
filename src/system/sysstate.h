@@ -19,6 +19,8 @@ struct SystemState
 	InitMode init_mode;
 
 	bool has_error;
+
+	size_t recursion_limit = 1000;
 };
 
 

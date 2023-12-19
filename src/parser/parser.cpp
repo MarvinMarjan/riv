@@ -630,7 +630,7 @@ Token Parser::advance() noexcept
 
 Token Parser::previous(const int amount) const noexcept
 {
-	if (current_ < amount)
+	if ((int)current_ < amount)
 		return tokens_[current_];
 
 	return tokens_[current_ - amount];
