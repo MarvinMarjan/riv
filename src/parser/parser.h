@@ -25,6 +25,9 @@ public:
 
 
 private:
+
+	// Statements
+
 	Statement* declaration(bool force_declaration = false);
 	Statement* statement();
 	Statement* expression_statement();
@@ -44,25 +47,36 @@ private:
 
 
 
+	// Expressions
+
 	Expression* expression();
 	Expression* assignment();
-	Expression* desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
 	Expression* equality();
 	Expression* comparison();
 	Expression* term();
 	Expression* factor();
 	Expression* unary();
 	Expression* call();
-	Expression* finish_call(Expression* expr);
 	Expression* primary();
 
 
 
-
+	// Statement Utilities
 
 	// parses a block statement
 	std::vector<Statement*> block(bool force_declaration = false);
-	
+
+
+
+	// Expression Utilities
+
+	Expression* desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
+	Expression* finish_call(Expression* expr);
+
+
+
+	// Parsing Utilities
+
 	void synchronize() noexcept;
 
 
@@ -71,7 +85,6 @@ private:
 	Token previous(int amount = 1) const noexcept;
 
 	bool match(const std::initializer_list<TokenType>& tokens) noexcept;
-
 	bool check(TokenType type) const noexcept;
 	bool at_end()              const noexcept;
 

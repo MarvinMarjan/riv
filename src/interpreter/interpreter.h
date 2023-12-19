@@ -17,6 +17,7 @@ class Interpreter : public ExpressionProcessor, public StatementProcessor
 public:
 	Interpreter() = default;
 
+	
 	void interpret(const std::vector<Statement*>& statements);
 
 
@@ -25,10 +26,25 @@ public:
 
 	Environment environment;
 
-
 private:
 	friend class RivFunction;
 
+
+	struct ScopeConfig
+	{
+		ScopeConfig() = default;
+		ScopeConfig(const Environment& old_env, const Environment& new_env, const bool enclose_old)
+				: old_env(old_env), new_env(new_env), enclose_old(enclose_old) {}
+
+		Environment old_env;
+		Environment new_env;
+
+		bool enclose_old = true;
+	};
+
+
+
+	// Statements
 
 	void process_expression (ExpressionStatement&) override;
 	void process_block      (BlockStatement     &) override;
@@ -43,20 +59,6 @@ private:
 	void process_import     (ImportStatement    &) override;
 	void process_package    (PackageStatement   &) override;
 
-
-	struct ScopeConfig
-	{
-		ScopeConfig() = default;
-		ScopeConfig(const Environment& old_env, const Environment& new_env, const bool enclose_old)
-			: old_env(old_env), new_env(new_env), enclose_old(enclose_old) {}
-
-		Environment old_env;
-		Environment new_env;
-		
-		bool enclose_old = true;
-	};
-
-
 	void execute_block(const std::vector<Statement*>& statements, const ScopeConfig& config);
 
 	void execute(Statement* const statement) {
@@ -65,22 +67,32 @@ private:
 
 
 
+	// Expressions
+
 	Type process_binary             (BinaryExpression&)             override;
 	Type process_unary              (UnaryExpression&)              override;
 	Type process_grouping           (GroupingExpression&)           override;
 	Type process_literal            (LiteralExpression&)            override;
 	Type process_identifier         (IdentifierExpression&)         override;
 	Type process_assignment         (AssignmentExpression&)         override;
-	Type assign_variable            (const Token&, const Type&);
-	Type assign_package_member      (AssignmentExpression&, PackageResolutionExpression*);
+
 	Type process_call               (CallExpression&)               override;
 	Type process_package_resolution	(PackageResolutionExpression&)  override;
-	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
+
 
 	Type evaluate(Expression* expr);
 
 
 
+	// Expression Utilities
+
+	Type assign_variable                   (const Token& identifier, const Type& value);
+	Type assign_package_member             (AssignmentExpression& assignment_expression, PackageResolutionExpression* package_expression);
+	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
+
+
+
+	// todo: move these to type.h/type.cpp
 	static bool equals(const Type& left, const Type& right) noexcept;
 	static bool truthy(const Type& value) noexcept;
 

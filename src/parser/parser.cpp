@@ -41,6 +41,9 @@ std::vector<Statement*> Parser::parse()
 
 
 
+
+// ************* Statements *************
+
 Statement* Parser::declaration(const bool force_declaration)
 {
 	try
@@ -349,6 +352,8 @@ Statement* Parser::package_statement()
 
 
 
+// ************* Expressions *************
+
 Expression* Parser::expression()
 {
 	return assignment();
@@ -373,34 +378,6 @@ Expression* Parser::assignment()
 	}
 
 	return expr;
-}
-
-
-Expression* Parser::desugarize_assignment(Expression* const identifier, const Token& assignment_operator, Expression* const value)
-{
-	Token op = assignment_operator;
-
-	switch (op.type)
-	{
-	case TokenType::PlusEqual:
-		op.type = TokenType::Plus;
-		break;
-
-	case TokenType::MinusEqual:
-		op.type = TokenType::Minus;
-		break;
-
-	case TokenType::StarEqual:
-		op.type = TokenType::Star;
-		break;
-
-	case TokenType::SlashEqual:
-		op.type = TokenType::Slash;
-		break;
-	}
-
-	// right value must have higher precedence
-	return new BinaryExpression(identifier, op, new GroupingExpression(value));
 }
 
 
@@ -501,22 +478,6 @@ Expression* Parser::call()
 }
 
 
-Expression* Parser::finish_call(Expression* expr)
-{
-	const Token paren = previous();
-	std::vector<Expression*> arguments;
-
-	if (!check(TokenType::RightParen))
-		do {
-			arguments.push_back(expression());
-		} while (match({ TokenType::Comma }));
-
-	consume(TokenType::RightParen, riv_e219(peek().pos));
-
-	return new CallExpression(expr, paren, arguments);
-}
-
-
 Expression* Parser::primary()
 {
 	if (match({ TokenType::String, TokenType::Number, TokenType::Bool, TokenType::Null }))
@@ -538,6 +499,9 @@ Expression* Parser::primary()
 
 
 
+
+
+// ************* Statement Utilities *************
 
 std::vector<Statement*> Parser::block(const bool force_declaration)
 {
@@ -569,6 +533,61 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 }
 
 
+
+
+
+
+// ************* Expression Utilities *************
+
+Expression* Parser::desugarize_assignment(Expression* const identifier, const Token& assignment_operator, Expression* const value)
+{
+	Token op = assignment_operator;
+
+	switch (op.type)
+	{
+	case TokenType::PlusEqual:
+		op.type = TokenType::Plus;
+		break;
+
+	case TokenType::MinusEqual:
+		op.type = TokenType::Minus;
+		break;
+
+	case TokenType::StarEqual:
+		op.type = TokenType::Star;
+		break;
+
+	case TokenType::SlashEqual:
+		op.type = TokenType::Slash;
+		break;
+	}
+
+	// right value must have higher precedence
+	return new BinaryExpression(identifier, op, new GroupingExpression(value));
+}
+
+
+Expression* Parser::finish_call(Expression* expr)
+{
+	const Token paren = previous();
+	std::vector<Expression*> arguments;
+
+	if (!check(TokenType::RightParen))
+		do {
+			arguments.push_back(expression());
+		} while (match({ TokenType::Comma }));
+
+	consume(TokenType::RightParen, riv_e219(peek().pos));
+
+	return new CallExpression(expr, paren, arguments);
+}
+
+
+
+
+
+
+// ************* Parsing Utilities *************
 
 void Parser::synchronize() noexcept
 {
@@ -602,8 +621,6 @@ void Parser::synchronize() noexcept
 		advance();
 	}
 }
-
-
 
 
 

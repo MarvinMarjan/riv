@@ -34,6 +34,12 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 }
 
 
+
+
+
+
+// ************* Statements *************
+
 void Interpreter::process_expression(ExpressionStatement& statement)
 {
 	evaluate(statement.expr);
@@ -183,6 +189,12 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 }
 
 
+
+
+
+
+// ************* Expressions *************
+
 Type Interpreter::process_binary(BinaryExpression& expr)
 {
 	const Type left  = evaluate(expr.left);
@@ -298,7 +310,6 @@ Type Interpreter::process_identifier(IdentifierExpression& expr)
 }
 
 
-// x = y
 Type Interpreter::process_assignment(AssignmentExpression& expr)
 {
 	IdentifierExpression       * identifier_expression = nullptr;
@@ -314,24 +325,6 @@ Type Interpreter::process_assignment(AssignmentExpression& expr)
 		return assign_package_member(expr, package_expression);
 
 	throw riv_e309(expr.op.pos); // only variables can be assigned
-}
-
-
-Type Interpreter::assign_variable(const Token& identifier, const Type& value)
-{
-	environment.assign(identifier, value);
-	return value;
-}
-
-
-Type Interpreter::assign_package_member(AssignmentExpression& expr, PackageResolutionExpression* const package_expression)
-{
-	RivPackage* const package = get_package_object_from_expression(*package_expression).as_package();
-
-	const Type value = evaluate(expr.value);
-	package->environment.assign(package_expression->identifier, value);
-
-	return value;
 }
 
 
@@ -365,6 +358,39 @@ Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 }
 
 
+Type Interpreter::evaluate(Expression* const expr)
+{
+	if (!expr)
+		return {};
+
+	return expr->process(*this);
+}
+
+
+
+
+
+
+// ************* Expression Utilities *************
+
+Type Interpreter::assign_variable(const Token& identifier, const Type& value)
+{
+	environment.assign(identifier, value);
+	return value;
+}
+
+
+Type Interpreter::assign_package_member(AssignmentExpression& assignment_expression, PackageResolutionExpression* const package_expression)
+{
+	RivPackage* const package = get_package_object_from_expression(*package_expression).as_package();
+
+	const Type value = evaluate(assignment_expression.value);
+	package->environment.assign(package_expression->identifier, value);
+
+	return value;
+}
+
+
 Type Interpreter::get_package_object_from_expression(PackageResolutionExpression& package_expression)
 {
 	IdentifierExpression* const identifier = dynamic_cast<IdentifierExpression*>(package_expression.object);
@@ -382,13 +408,8 @@ Type Interpreter::get_package_object_from_expression(PackageResolutionExpression
 }
 
 
-Type Interpreter::evaluate(Expression* const expr)
-{
-	if (!expr)
-		return {};
 
-	return expr->process(*this);
-}
+
 
 
 bool Interpreter::equals(const Type& left, const Type& right) noexcept
