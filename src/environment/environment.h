@@ -56,6 +56,8 @@ public:
 
 
 private:
+	friend class Interpreter;
+
 	std::map<std::string, IdentifierData> data_;
 
 
