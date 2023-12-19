@@ -108,6 +108,35 @@ RivPackage* Type::as_package() const noexcept
 }
 
 
+
+bool Type::equals(const Type& left, const Type& right) noexcept
+{
+	if (left.is_null() && right.is_null())
+		return true;
+
+	if (left.is_null())
+		return false;
+
+	return left == right;
+}
+
+
+bool Type::truthy(const Type& value) noexcept
+{
+	if (value.is_null())
+		return false;
+
+	if (value.is_num())
+		return (bool) value.as_num();
+
+	if (value.is_bool())
+		return value.as_bool();
+
+	return true;
+}
+
+
+
 Type::Mutability Type::get_mutability_from_modifier(const TokenType specifier, const Mutability default_value) noexcept
 {
 	switch (specifier)

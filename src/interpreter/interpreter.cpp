@@ -69,7 +69,7 @@ void Interpreter::process_var(VarStatement& statement)
 
 void Interpreter::process_if(IfStatement& statement)
 {
-	if (truthy(evaluate(statement.condition)))
+	if (Type::truthy(evaluate(statement.condition)))
 		execute(statement.then_statement);
 
 	else if (statement.else_statement)
@@ -79,7 +79,7 @@ void Interpreter::process_if(IfStatement& statement)
 
 void Interpreter::process_while(WhileStatement& statement)
 {
-	while (truthy(evaluate(statement.condition)))
+	while (Type::truthy(evaluate(statement.condition)))
 	{
 		try
 		{
@@ -259,10 +259,10 @@ Type Interpreter::process_binary(BinaryExpression& expr)
 
 
 		// x == y
-	case TokenType::EqualEqual: return equals(left, right);
+	case TokenType::EqualEqual: return Type::equals(left, right);
 
 		// x != y
-	case TokenType::BangEqual: return !equals(left, right);
+	case TokenType::BangEqual: return !Type::equals(left, right);
 	}
 
 	return {};
@@ -280,7 +280,7 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 		return -right.as_num();
 
 		// !x
-	case TokenType::Bang: return !truthy(right);
+	case TokenType::Bang: return !Type::truthy(right);
 	}
 
 	return {};
@@ -410,33 +410,6 @@ Type Interpreter::get_package_object_from_expression(PackageResolutionExpression
 
 
 
-
-
-bool Interpreter::equals(const Type& left, const Type& right) noexcept
-{
-	if (left.is_null() && right.is_null())
-		return true;
-
-	if (left.is_null())
-		return false;
-
-	return left == right;
-}
-
-
-bool Interpreter::truthy(const Type& value) noexcept
-{
-	if (value.is_null())
-		return false;
-
-	if (value.is_num())
-		return (bool) value.as_num();
-
-	if (value.is_bool())
-		return value.as_bool();
-
-	return true;
-}
 
 
 bool Interpreter::are_values_of_type(const std::initializer_list<Type>& values, const TypeIndex type) noexcept

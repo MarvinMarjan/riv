@@ -17,7 +17,7 @@ class Interpreter : public ExpressionProcessor, public StatementProcessor
 public:
 	Interpreter() = default;
 
-	
+
 	void interpret(const std::vector<Statement*>& statements);
 
 
@@ -91,10 +91,6 @@ private:
 	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
 
 
-
-	// todo: move these to type.h/type.cpp
-	static bool equals(const Type& left, const Type& right) noexcept;
-	static bool truthy(const Type& value) noexcept;
 
 	static bool are_values_of_type(const std::initializer_list<Type>& values, TypeIndex type) noexcept;
 
