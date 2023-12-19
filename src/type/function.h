@@ -28,5 +28,5 @@ public:
 
 
 	FunctionStatement declaration;
-	Environment closure;
+	Environment       closure;
 };

@@ -13,14 +13,14 @@
 #include <system/init.h>
 
 
-
 void Interpreter::interpret(const std::vector<Statement*>& statements)
 {
-	try {
+	try
+	{
 		for (Statement* const statement : statements)
 			execute(statement);
 
-		Type main_func = environment.get("main");
+		const Type main_func = environment.get("main");
 
 		if (!main_func.is_func())
 			throw riv_e306();
@@ -32,9 +32,6 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 		log_error(e);
 	}
 }
-
-
-
 
 
 void Interpreter::process_expression(ExpressionStatement& statement)
@@ -78,7 +75,8 @@ void Interpreter::process_while(WhileStatement& statement)
 {
 	while (truthy(evaluate(statement.condition)))
 	{
-		try {
+		try
+		{
 			execute(statement.body);
 		}
 		catch (const BreakStatement::Signal&)
@@ -147,14 +145,11 @@ void Interpreter::process_package(PackageStatement& statement)
 	for (Statement* const declaration : statement.declarations)
 		execute(declaration);
 
-	new_env = environment;
+	new_env     = environment;
 	environment = old_env;
 
 	environment.declare(statement.name, new RivPackage(new_env));
 }
-
-
-
 
 
 void Interpreter::execute_block(const std::vector<Statement*>& statements, const ScopeConfig& config)
@@ -167,7 +162,8 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 
 	environment = std::move(new_env);
 
-	try {
+	try
+	{
 		for (Statement* const statement : statements)
 			execute(statement);
 	}
@@ -182,82 +178,74 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 }
 
 
-
-
-
 Type Interpreter::process_binary(BinaryExpression& expr)
 {
-	const Type left = evaluate(expr.left);
+	const Type left  = evaluate(expr.left);
 	const Type right = evaluate(expr.right);
 
 	switch (expr.op.type)
 	{
-	// x + y
+		// x + y
 	case TokenType::Plus:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() + right.as_num();
-		
+
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str() + right.as_str();
 
-	// x - y
-	case TokenType::Minus:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
+		// x - y
+	case TokenType::Minus: throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() - right.as_num();
 
-	// x * y
-	case TokenType::Star:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
+		// x * y
+	case TokenType::Star: throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() * right.as_num();
 
-	// x / y
-	case TokenType::Slash:
-		throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
+		// x / y
+	case TokenType::Slash: throw_if_type_differs({ left, right }, TypeIndex::Number, riv_e300({ left, right }, expr.op));
 		return left.as_num() / right.as_num();
 
 
 
-	// x > y
+		// x > y
 	case TokenType::Greater:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() > right.as_num();
-	
+
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() > right.as_str().size();
 
-	// x < y
+		// x < y
 	case TokenType::Lesser:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() < right.as_num();
-	
+
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() < right.as_str().size();
 
-	// x >= y
+		// x >= y
 	case TokenType::GreaterEqual:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() >= right.as_num();
-	
+
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() >= right.as_str().size();
 
-	// x <= y
+		// x <= y
 	case TokenType::LesserEqual:
 		if (are_values_of_type({ left, right }, TypeIndex::Number))
 			return left.as_num() <= right.as_num();
-	
+
 		if (are_values_of_type({ left, right }, TypeIndex::String))
 			return left.as_str().size() <= right.as_str().size();
 
 
-	
-	// x == y
-	case TokenType::EqualEqual:
-		return equals(left, right);
 
-	// x != y
-	case TokenType::BangEqual:
-		return !equals(left, right);
+		// x == y
+	case TokenType::EqualEqual: return equals(left, right);
+
+		// x != y
+	case TokenType::BangEqual: return !equals(left, right);
 	}
 
 	return {};
@@ -270,14 +258,12 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 
 	switch (expr.op.type)
 	{
-	// -x
-	case TokenType::Minus:
-		throw_if_type_differs({ right }, TypeIndex::Number, riv_e300({ right }, expr.op));
+		// -x
+	case TokenType::Minus: throw_if_type_differs({ right }, TypeIndex::Number, riv_e300({ right }, expr.op));
 		return -right.as_num();
 
-	// !x
-	case TokenType::Bang:
-		return !truthy(right);
+		// !x
+	case TokenType::Bang: return !truthy(right);
 	}
 
 	return {};
@@ -298,7 +284,7 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 
 Type Interpreter::process_identifier(IdentifierExpression& expr)
 {
-	Type value = environment.get(expr.token);
+	const Type value = environment.get(expr.token);
 
 	if (value.is_non_assignable())
 		throw riv_e308(expr.token.pos, value.as_non_assignable()->type_name()); // invalid non-assignable type "..."
@@ -310,14 +296,15 @@ Type Interpreter::process_identifier(IdentifierExpression& expr)
 // x = y
 Type Interpreter::process_assignment(AssignmentExpression& expr)
 {
-	IdentifierExpression* identifier_expression = nullptr;
-	PackageResolutionExpression* package_expression = nullptr;
+	IdentifierExpression       * identifier_expression = nullptr;
+	PackageResolutionExpression* package_expression    = nullptr;
+
 
 	// variable assignment
 	if ((identifier_expression = dynamic_cast<IdentifierExpression*>(expr.identifier)))
 		return assign_variable(identifier_expression->token, evaluate(expr.value));
 
-	// package member assignment
+		// package member assignment
 	else if ((package_expression = dynamic_cast<PackageResolutionExpression*>(expr.identifier)))
 		return assign_package_member(expr, package_expression);
 
@@ -334,7 +321,7 @@ Type Interpreter::assign_variable(const Token& identifier, const Type& value)
 
 Type Interpreter::assign_package_member(AssignmentExpression& expr, PackageResolutionExpression* const package_expression)
 {
-	RivPackage* package = get_package_object_from_expression(*package_expression).as_package();
+	RivPackage* const package = get_package_object_from_expression(*package_expression).as_package();
 
 	const Type value = evaluate(expr.value);
 	package->environment.assign(package_expression->identifier, value);
@@ -345,7 +332,7 @@ Type Interpreter::assign_package_member(AssignmentExpression& expr, PackageResol
 
 Type Interpreter::process_call(CallExpression& expr)
 {
-	Type callee = evaluate(expr.callee);
+	const Type callee = evaluate(expr.callee);
 
 	if (!callee.is_func())
 		throw riv_e302(expr.paren.pos); // only functions can be called
@@ -366,8 +353,8 @@ Type Interpreter::process_call(CallExpression& expr)
 
 Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 {
-	const Type package_object = get_package_object_from_expression(expr);
-	RivPackage* package = package_object.as_package();
+	const Type        package_object = get_package_object_from_expression(expr);
+	RivPackage* const package        = package_object.as_package();
 
 	return package->environment.get(expr.identifier);
 }
@@ -381,14 +368,13 @@ Type Interpreter::get_package_object_from_expression(PackageResolutionExpression
 		throw riv_e307(package_expression.op.pos); // expect package at left of "::"
 
 	// note: do not use Interpreter::process_identifier to get packages
-	Type type_object = environment.get(identifier->token);
+	const Type type_object = environment.get(identifier->token);
 
 	if (!type_object.is_package())
 		throw riv_e307(package_expression.op.pos); // expect package at left of "::"
 
 	return type_object;
 }
-
 
 
 Type Interpreter::evaluate(Expression* const expr)
@@ -400,21 +386,16 @@ Type Interpreter::evaluate(Expression* const expr)
 }
 
 
-
-
-
-
 bool Interpreter::equals(const Type& left, const Type& right) noexcept
 {
 	if (left.is_null() && right.is_null())
 		return true;
-	
+
 	if (left.is_null())
 		return false;
 
 	return left == right;
 }
-
 
 
 bool Interpreter::truthy(const Type& value) noexcept
@@ -423,14 +404,13 @@ bool Interpreter::truthy(const Type& value) noexcept
 		return false;
 
 	if (value.is_num())
-		return (bool)value.as_num();
+		return (bool) value.as_num();
 
 	if (value.is_bool())
 		return value.as_bool();
 
 	return true;
 }
-
 
 
 bool Interpreter::are_values_of_type(const std::initializer_list<Type>& values, const TypeIndex type) noexcept
@@ -441,7 +421,6 @@ bool Interpreter::are_values_of_type(const std::initializer_list<Type>& values, 
 
 	return true;
 }
-
 
 
 void Interpreter::throw_if_type_differs(const std::initializer_list<Type>& values, const TypeIndex type, const Exception& err)

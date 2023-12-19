@@ -13,8 +13,8 @@ Scanner::Scanner(const std::string& source)
 {
 	source_ = source;
 
-	line_ = 0;
-	begin_ = end_ = 0;
+	line_     =           0;
+	begin_    = end_    = 0;
 	ln_begin_ = ln_end_ = 0;
 }
 
@@ -53,9 +53,9 @@ void Scanner::scan_token()
 		next_line();
 		break;
 
-	case '+': match('=') ? add_token(TokenType::PlusEqual)	: add_token(TokenType::Plus); break;
-	case '-': match('=') ? add_token(TokenType::MinusEqual)	: add_token(TokenType::Minus); break;
-	case '*': match('=') ? add_token(TokenType::StarEqual)	: add_token(TokenType::Star); break;
+	case '+': match('=') ? add_token(TokenType::PlusEqual ) : add_token(TokenType::Plus ); break;
+	case '-': match('=') ? add_token(TokenType::MinusEqual) : add_token(TokenType::Minus); break;
+	case '*': match('=') ? add_token(TokenType::StarEqual ) : add_token(TokenType::Star ); break;
 	case '/':
 		if (match('/'))
 			line_comment();
@@ -71,23 +71,22 @@ void Scanner::scan_token()
 
 		break;
 
-	case '>': match('=') ? add_token(TokenType::GreaterEqual)	: add_token(TokenType::Greater); break;
-	case '<': match('=') ? add_token(TokenType::LesserEqual)	: add_token(TokenType::Lesser); break;
-	case '=': match('=') ? add_token(TokenType::EqualEqual)	: add_token(TokenType::Equal); break;
-	case '!': match('=') ? add_token(TokenType::BangEqual)		: add_token(TokenType::Bang); break;
+	case '>': match('=') ? add_token(TokenType::GreaterEqual) : add_token(TokenType::Greater); break;
+	case '<': match('=') ? add_token(TokenType::LesserEqual ) : add_token(TokenType::Lesser ); break;
+	case '=': match('=') ? add_token(TokenType::EqualEqual  ) : add_token(TokenType::Equal  ); break;
+	case '!': match('=') ? add_token(TokenType::BangEqual   ) : add_token(TokenType::Bang   ); break;
+	case ':': match(':') ? add_token(TokenType::ColonColon  ) : add_token(TokenType::Colon  ); break;
 
-	case ':': match(':') ? add_token(TokenType::ColonColon) : add_token(TokenType::Colon); break;
-
-	case '(': add_token(TokenType::LeftParen); break;
-	case ')': add_token(TokenType::RightParen); break;
-	case '[': add_token(TokenType::LeftBrace); break;
-	case ']': add_token(TokenType::RightBrace); break;
-	case '{': add_token(TokenType::LeftCurlyBrace); break;
+	case '(': add_token(TokenType::LeftParen      ); break;
+	case ')': add_token(TokenType::RightParen     ); break;
+	case '[': add_token(TokenType::LeftBrace      ); break;
+	case ']': add_token(TokenType::RightBrace     ); break;
+	case '{': add_token(TokenType::LeftCurlyBrace ); break;
 	case '}': add_token(TokenType::RightCurlyBrace); break;
 
 	case ';': add_token(TokenType::SemiColon); break;
-	case '.': add_token(TokenType::Dot); break;
-	case ',': add_token(TokenType::Comma); break;
+	case '.': add_token(TokenType::Dot      ); break;
+	case ',': add_token(TokenType::Comma    ); break;
 
 
 	case '\'':
@@ -119,7 +118,7 @@ void Scanner::string(const char encloser)
 std::string Scanner::advance_string(const char encloser)
 {
 	std::string str_value;
-	char current;
+	char        current;
 
 	// while not reached at the end of the string
 	while ((current = peek()) != encloser)
@@ -163,23 +162,13 @@ char Scanner::string_escape(const char escape)
 {
 	switch (escape)
 	{
-	case 'n':
-		return '\n';
+	case 'n':  return '\n';
+	case 't':  return '\t';
+	case '\"': return '\"';
+	case '\'': return '\'';
+	case '\\': return '\\';
 
-	case 't':
-		return '\t';
-
-	case '\"':
-		return '\"';
-
-	case '\'':
-		return '\'';
-
-	case '\\':
-		return '\\';
-
-	default:
-		return '\0';
+	default: return '\0';
 	}
 }
 
@@ -317,12 +306,12 @@ char Scanner::peek_next() const noexcept
 
 bool Scanner::match(const char next) noexcept
 {
-	if (at_end()) return false;
+	if (at_end())       return false;
     if (peek() != next) return false;
 
-    current_++;
+	current_++;
 	ln_current_++;
-    return true;
+	return true;
 }
 
 

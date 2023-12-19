@@ -30,18 +30,18 @@ private:
 	friend class RivFunction;
 
 
-	void process_expression	(ExpressionStatement&)	override;
-	void process_block		(BlockStatement&)		override;
-	void process_print		(PrintStatement&)		override;
-	void process_var		(VarStatement&)			override;
-	void process_if			(IfStatement&)			override;
-	void process_while		(WhileStatement&)		override;
-	void process_break		(BreakStatement&)		override;
-	void process_continue	(ContinueStatement&)	override;
-	void process_function	(FunctionStatement&)	override;
-	void process_return		(ReturnStatement&)		override;
-	void process_import		(ImportStatement&)		override;
-	void process_package	(PackageStatement&)		override;
+	void process_expression (ExpressionStatement&) override;
+	void process_block      (BlockStatement     &) override;
+	void process_print      (PrintStatement     &) override;
+	void process_var        (VarStatement       &) override;
+	void process_if         (IfStatement        &) override;
+	void process_while      (WhileStatement     &) override;
+	void process_break      (BreakStatement     &) override;
+	void process_continue   (ContinueStatement  &) override;
+	void process_function   (FunctionStatement  &) override;
+	void process_return     (ReturnStatement    &) override;
+	void process_import     (ImportStatement    &) override;
+	void process_package    (PackageStatement   &) override;
 
 
 	struct ScopeConfig
@@ -65,17 +65,17 @@ private:
 
 
 
-	Type process_binary				(BinaryExpression&)				override;
-	Type process_unary				(UnaryExpression&)				override;
-	Type process_grouping			(GroupingExpression&)			override;
-	Type process_literal			(LiteralExpression&)			override;
-	Type process_identifier			(IdentifierExpression&)			override;
-	Type process_assignment			(AssignmentExpression&)			override;
-	Type assign_variable			(const Token&, const Type&);
-	Type assign_package_member		(AssignmentExpression&, PackageResolutionExpression*);
-	Type process_call				(CallExpression&)				override;
-	Type process_package_resolution	(PackageResolutionExpression&)	override;
-	Type get_package_object_from_expression(PackageResolutionExpression &package_expression);
+	Type process_binary             (BinaryExpression&)             override;
+	Type process_unary              (UnaryExpression&)              override;
+	Type process_grouping           (GroupingExpression&)           override;
+	Type process_literal            (LiteralExpression&)            override;
+	Type process_identifier         (IdentifierExpression&)         override;
+	Type process_assignment         (AssignmentExpression&)         override;
+	Type assign_variable            (const Token&, const Type&);
+	Type assign_package_member      (AssignmentExpression&, PackageResolutionExpression*);
+	Type process_call               (CallExpression&)               override;
+	Type process_package_resolution	(PackageResolutionExpression&)  override;
+	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
 
 	Type evaluate(Expression* expr);
 

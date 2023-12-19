@@ -26,21 +26,21 @@ class PackageStatement;
 class StatementProcessor
 {
 public:
-	StatementProcessor() = default;
+	         StatementProcessor() = default;
 	virtual ~StatementProcessor() = default;
 
-	virtual void process_expression	(ExpressionStatement&)	= 0;
-	virtual void process_block		(BlockStatement&)		= 0;
-	virtual void process_print		(PrintStatement&)		= 0;
-	virtual void process_var		(VarStatement&)			= 0;
-	virtual void process_if			(IfStatement&)			= 0;
-	virtual void process_while		(WhileStatement&)		= 0;
-	virtual void process_break		(BreakStatement&)		= 0;
-	virtual void process_continue	(ContinueStatement&)	= 0;
-	virtual void process_function	(FunctionStatement&) 	= 0;
-	virtual void process_return		(ReturnStatement&) 		= 0;
-	virtual void process_import		(ImportStatement&)		= 0;
-	virtual void process_package	(PackageStatement&)		= 0;
+	virtual void process_expression (ExpressionStatement&) = 0;
+	virtual void process_block      (BlockStatement     &) = 0;
+	virtual void process_print      (PrintStatement     &) = 0;
+	virtual void process_var        (VarStatement       &) = 0;
+	virtual void process_if         (IfStatement        &) = 0;
+	virtual void process_while      (WhileStatement     &) = 0;
+	virtual void process_break      (BreakStatement     &) = 0;
+	virtual void process_continue   (ContinueStatement  &) = 0;
+	virtual void process_function   (FunctionStatement  &) = 0;
+	virtual void process_return     (ReturnStatement    &) = 0;
+	virtual void process_import     (ImportStatement    &) = 0;
+	virtual void process_package    (PackageStatement   &) = 0;
 };
 
 
@@ -49,7 +49,7 @@ public:
 class Statement
 {
 public:
-	Statement() = default;
+	         Statement() = default;
 	virtual ~Statement() = default;
 
 	virtual void process(StatementProcessor&) = 0;
@@ -59,7 +59,7 @@ public:
 
 
 
-// expression ";"
+// [expression] ";"
 class ExpressionStatement : public Statement
 {
 public:
@@ -95,7 +95,7 @@ public:
 
 
 
-// "print" expression ";"
+// "print" [expression] ";"
 class PrintStatement : public Statement
 {
 public:
@@ -113,7 +113,7 @@ public:
 
 
 
-// "var" <name> ("=" expression)? ";"
+// "var" <name> ("=" [expression])? ";"
 class VarStatement : public Statement
 {
 public:
@@ -125,15 +125,15 @@ public:
 	}
 
 
-	Token				name;
-	Expression*			value = nullptr;
-	Type::Mutability	mutability;
+	Token            name;
+	Expression*      value = nullptr;
+	Type::Mutability mutability;
 };
 
 
 
 
-// "if" "(" expression ")" then_statement ("else" else_statement)?
+// "if" "(" [expression] ")" then_statement ("else" else_statement)?
 class IfStatement : public Statement
 {
 public:
@@ -145,15 +145,15 @@ public:
 	}
 
 
-	Expression*	condition = nullptr;
-	Statement*	then_statement = nullptr;
-	Statement*	else_statement = nullptr;
+	Expression* condition      = nullptr;
+	Statement * then_statement = nullptr;
+	Statement * else_statement = nullptr;
 };
 
 
 
 
-// "while" "(" expression ")" statement
+// "while" "(" [expression] ")" statement
 class WhileStatement : public Statement
 {
 public:
@@ -165,8 +165,8 @@ public:
 	}
 
 
-	Expression*	condition = nullptr;
-	Statement*	body = nullptr;
+	Expression* condition = nullptr;
+	Statement * body      = nullptr;
 };
 
 
@@ -216,15 +216,15 @@ public:
 	}
 
 
-	Token					name;
-	std::vector<Token>		params;
-	std::vector<Statement*>	body;
+	Token                   name;
+	std::vector<Token>      params;
+	std::vector<Statement*> body;
 };
 
 
 
 
-// "return" expression? ";"
+// "return" [expression]? ";"
 class ReturnStatement : public Statement
 {
 public:
@@ -242,6 +242,7 @@ public:
 
 
 
+// "import" [path] ";"
 class ImportStatement : public Statement
 {
 public:
@@ -259,6 +260,7 @@ public:
 
 
 
+// "package" <name> "{" declaration* "}"
 class PackageStatement : public Statement
 {
 public:
@@ -270,6 +272,6 @@ public:
 	}
 
 
-	Token name;
+	Token                   name;
 	std::vector<Statement*> declarations;
 };

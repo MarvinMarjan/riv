@@ -25,10 +25,10 @@ private:
 	std::string source_;
 
 	// locality utils
-	size_t line_, begin_, end_;
+	size_t  line_, begin_, end_;
 	size_t& current_ = end_;
 
-	size_t ln_begin_, ln_end_;
+	size_t  ln_begin_, ln_end_;
 	size_t& ln_current_ = ln_end_;
 
 
@@ -39,24 +39,24 @@ private:
 	// scans the token
 	void scan_token();
 
-	void		string(char encloser);		// processes a string token
+	void        string        (char encloser); // processes a string token
 	std::string advance_string(char encloser);
-	char		string_escape(char escape);	// processes a string token escape characters
+	char        string_escape (char escape);   // processes a string token escape characters
 
-	void number() noexcept;					// processes a number token
-	void advance_number() noexcept;			// advances to the end of a number token
+	void number()         noexcept; // processes a number token
+	void advance_number() noexcept; // advances to the end of a number token
 
-	void identifier();						// processes a identifier (booleans, keywords, identifiers...) token
-
-
-	void line_comment() noexcept;	// like this
-	void block_comment() noexcept;	/* this one */
+	void identifier(); // processes a identifier (booleans, keywords, identifiers...) token
 
 
-	bool at_end()		const	noexcept;
-	char advance()				noexcept;
-	char peek()			const	noexcept;
-	char peek_next()	const	noexcept;
+	void line_comment()  noexcept; // like this
+	void block_comment() noexcept; /* this one */
+
+
+	bool at_end()    const noexcept;
+	char advance()         noexcept;
+	char peek()      const noexcept;
+	char peek_next() const noexcept;
 
 	bool match(char next) noexcept;
 

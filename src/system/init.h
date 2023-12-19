@@ -21,11 +21,11 @@ struct Token;
 class Statement;
 
 
-std::vector<Token> scan(const std::string& source);
+std::vector<Token>      scan (const std::string       & source);
 std::vector<Statement*> parse(const std::vector<Token>& source);
 
 
-// runs the language
+// runs the language from a source
 void run(const std::vector<Statement*>& statements);
 void run(const std::string& source);
 

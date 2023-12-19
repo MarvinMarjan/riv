@@ -11,7 +11,7 @@
 
 Parser::Parser(const std::vector<Token>& tokens)
 {
-	tokens_ = tokens;
+	tokens_  = tokens;
 	current_ = 0;
 }
 
@@ -24,6 +24,7 @@ std::vector<Statement*> Parser::parse()
 	{
 		Statement* const statement = declaration(true);
 
+		// if it's not valid, jump
 		if (!statement)
 		{
 			advance();
@@ -112,7 +113,7 @@ Statement* Parser::statement()
 
 Statement* Parser::expression_statement()
 {
-	Expression* expression = this->expression();
+	Expression* const expression = this->expression();
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ExpressionStatement(expression);
 }
@@ -126,7 +127,7 @@ Statement* Parser::block_statement()
 
 Statement* Parser::print_statement()
 {
-	Expression* value = expression();
+	Expression* const value = expression();
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new PrintStatement(value);
 }
@@ -162,8 +163,8 @@ Statement* Parser::if_statement()
 	Expression* const condition = expression();
 	consume(TokenType::RightParen, riv_e206(peek().pos)); // expect ")" after "if" condition
 
-	Statement* then_statement = statement();
-	Statement* else_statement = nullptr;
+	Statement* const then_statement = statement();
+	Statement*       else_statement = nullptr;
 
 	if (match({ TokenType::Else }))
 		else_statement = statement();
@@ -179,7 +180,7 @@ Statement* Parser::while_statement()
 	consume(TokenType::RightParen, riv_e208(peek().pos)); // expect ")" after "while" condition
 
 	loop_depth_++;
-	Statement* statement = this->statement();
+	Statement* const statement = this->statement();
 	loop_depth_--;
 
 	return new WhileStatement(condition, statement);
@@ -308,7 +309,7 @@ Statement* Parser::function_statement()
 
 
 	function_depth_++;
-	std::vector<Statement*> body = block();
+	const std::vector<Statement*> body = block();
 	function_depth_--;
 
 
@@ -333,7 +334,7 @@ Statement* Parser::return_statement()
 
 Statement* Parser::import_statement()
 {
-	Token path = consume(TokenType::String, riv_e221(peek().pos)); // expect module path string after "import" statement
+	const Token path = consume(TokenType::String, riv_e221(peek().pos)); // expect module path string after "import" statement
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ImportStatement(path);
 }
@@ -415,8 +416,8 @@ Expression* Parser::equality()
 
 	while (match({ TokenType::EqualEqual, TokenType::BangEqual }))
 	{
-		const Token op = previous();
-		Expression* right = comparison();
+		const Token       op = previous();
+		Expression* const right = comparison();
 		expr = new BinaryExpression(expr, op, right);
 	}
 
@@ -430,8 +431,8 @@ Expression* Parser::comparison()
 
 	while (match({ TokenType::Greater, TokenType::Lesser, TokenType::GreaterEqual, TokenType::LesserEqual }))
 	{
-		const Token op = previous();
-		Expression* right = term();
+		const Token       op = previous();
+		Expression* const right = term();
 		expr = new BinaryExpression(expr, op, right);
 	}
 
@@ -445,8 +446,8 @@ Expression* Parser::term()
 
 	while (match({ TokenType::Plus, TokenType::Minus }))
 	{
-		const Token op = previous();
-		Expression* right = factor();
+		const Token       op = previous();
+		Expression* const right = factor();
 		expr = new BinaryExpression(expr, op, right);
 	}
 
@@ -460,8 +461,8 @@ Expression* Parser::factor()
 
 	while (match({ TokenType::Star, TokenType::Slash }))
 	{
-		const Token op = previous();
-		Expression* right = unary();
+		const Token       op = previous();
+		Expression* const right = unary();
 		expr = new BinaryExpression(expr, op, right);
 	}
 
@@ -473,8 +474,8 @@ Expression* Parser::unary()
 {
 	if (match({ TokenType::Minus, TokenType::Bang }))
 	{
-		const Token op = previous();
-		Expression* right = unary();
+		const Token       op = previous();
+		Expression* const right = unary();
 		return new UnaryExpression(op, right);
 	}
 
@@ -533,7 +534,7 @@ Expression* Parser::primary()
 	if (match({ TokenType::LeftParen }))
 	{
 		Expression* expr = expression();
-		consume(TokenType::RightParen, riv_e201(peek().pos)); // expect ')' to close grouping expression
+		consume(TokenType::RightParen, riv_e201(peek().pos)); // expect ")" to close grouping expression
 		return new GroupingExpression(expr);
 	}
 
@@ -548,12 +549,14 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 {
 	std::vector<Statement*> statements;
 
+	// entered into a block, increase scope meter
 	scope_depth_++;
 
 	while (!check(TokenType::RightCurlyBrace) && !at_end())
 	{
 		Statement* const statement = declaration(force_declaration);
 
+		// if invalid, skip
 		if (!statement)
 		{
 			advance();
@@ -563,6 +566,7 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 		statements.push_back(statement);
 	}
 
+	// decrease on exit
 	scope_depth_--;
 
 	consume(TokenType::RightCurlyBrace, riv_e204(peek().pos));
@@ -585,11 +589,19 @@ void Parser::synchronize() noexcept
 		{
 		case TokenType::Print:
 		case TokenType::Var:
+		case TokenType::Mut:
+		case TokenType::Imut:
 		case TokenType::If:
 		case TokenType::Else:
 		case TokenType::While:
 		case TokenType::For:
 		case TokenType::Loop:
+		case TokenType::Break:
+		case TokenType::Continue:
+		case TokenType::Function:
+		case TokenType::Return:
+		case TokenType::Import:
+		case TokenType::Package:
 			return;
 		}
 

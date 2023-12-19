@@ -32,15 +32,15 @@ class TokenPosition
 public:
 	TokenPosition() = default;
 	TokenPosition(const size_t line, const size_t begin, const size_t end)
-			: line(line), begin(begin), end(end), valid_(true) {}
+		: line(line), begin(begin), end(end), valid_(true) {}
 
 
 	bool valid() const noexcept { return valid_; }
 
 
-	size_t line = 0;
+	size_t line  = 0;
 	size_t begin = 0;
-	size_t end = 0;
+	size_t end   = 0;
 
 private:
 	bool valid_ = false;
@@ -57,8 +57,8 @@ struct Token
 	Token(const TokenType type, const std::string& lexeme, const Type& value, const size_t line, const size_t begin, const size_t end)
 		: Token(type, lexeme, value, { line, begin, end }) {}
 
-	TokenType type;
-	std::string lexeme;
-	Type value;
+	TokenType     type;
+	std::string   lexeme;
+	Type          value;
 	TokenPosition pos;
 };

@@ -15,10 +15,7 @@
 
 InitMode get_init_mode(const int argc, const char**) noexcept
 {
-	if (argc < 2)
-		return InitMode::REPL;
-	else
-		return InitMode::SourceFile;
+	return argc < 2 ? InitMode::REPL : InitMode::SourceFile;
 }
 
 
@@ -59,7 +56,7 @@ void run(const std::string& source)
 	const SystemState& state = sys_state();
 
 	// scanning
-	std::vector<Token> tokens = scan(source);
+	const std::vector<Token> tokens = scan(source);
 
 	if (state.has_error)
 		return;

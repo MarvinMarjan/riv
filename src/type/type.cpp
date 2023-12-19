@@ -54,7 +54,7 @@ static std::string trim_irrelevant_doublestr_zeros(const std::string& strdouble)
 
 	// index of '.'
 	size_t decimal_begin = get_doublestr_decimal_dot_index(strdouble);
-	
+
 	// last decimal number different from zero
 	size_t last_relevant_decimal = get_last_relevant_decimal_index(strdouble, decimal_begin);
 
@@ -64,42 +64,36 @@ static std::string trim_irrelevant_doublestr_zeros(const std::string& strdouble)
 }
 
 
-
-
-
 std::string type_index_to_string(const TypeIndex type) noexcept
 {
 	switch (type)
 	{
-	case TypeIndex::Null:		return "Null";
-	case TypeIndex::String:		return "String";
-	case TypeIndex::Number:		return "Number";
-	case TypeIndex::Bool:		return "Bool";
-	case TypeIndex::Function:	return "Function";
+	case TypeIndex::Null:     return "Null";
+	case TypeIndex::String:   return "String";
+	case TypeIndex::Number:   return "Number";
+	case TypeIndex::Bool:     return "Bool";
+	case TypeIndex::Function: return "Function";
 
-	default:
-		return "undefined";
+	default: return "undefined";
 	}
 }
-
 
 
 std::string type_obj_to_string(const Type& type) noexcept
 {
 	switch (type.type())
 	{
-		case TypeIndex::Null: 		return "null";
+	case TypeIndex::Null: return "null";
 
-		case TypeIndex::String: 	return type.as_str();
-		case TypeIndex::Number: 	return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
-		case TypeIndex::Bool:		return bool_to_string(type.as_bool());
-		case TypeIndex::Function:	return "<Function " + type.as_func()->declaration.name.lexeme + ">";
+	case TypeIndex::String:   return type.as_str();
+	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
+	case TypeIndex::Bool:     return bool_to_string(type.as_bool());
+	case TypeIndex::Function: return "<Function " + type.as_func()->declaration.name.lexeme + ">";
 	}
 
 
 	return "undefined";
 }
-
 
 
 Type::Type()
@@ -108,18 +102,18 @@ Type::Type()
 }
 
 
-RivPackage* Type::as_package() const noexcept {
+RivPackage* Type::as_package() const noexcept
+{
 	return dynamic_cast<RivPackage*>(as_non_assignable());
 }
-
 
 
 Type::Mutability Type::get_mutability_from_modifier(TokenType specifier) noexcept
 {
 	switch (specifier)
 	{
-	case TokenType::Mut:	return Mutable;
-	case TokenType::Imut:	return Immutable;
+	case TokenType::Mut:  return Mutable;
+	case TokenType::Imut: return Immutable;
 
 	default: return Mutable;
 	}
@@ -131,8 +125,7 @@ bool Type::is_valid_mutability_modifier(TokenType specifier) noexcept
 	switch (specifier)
 	{
 	case TokenType::Mut:
-	case TokenType::Imut:
-		return true;
+	case TokenType::Imut: return true;
 
 	default: return false;
 	}

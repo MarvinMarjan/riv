@@ -5,7 +5,7 @@
 std::vector<std::string> split(const std::string& str, const char splitter) noexcept
 {
 	std::vector<std::string> split;
-	std::string word;
+	std::string              word;
 
 	// iterate through each character
 	for (const char ch : str)

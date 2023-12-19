@@ -91,6 +91,11 @@ std::string format_code(const char ch, const unsigned int code) noexcept
 
 
 
+Exception::Exception(const std::string& msg, const TokenPosition& pos, const unsigned int code)
+	: msg(msg), pos(pos), code(code) {}
+
+
+
 std::string exception_to_string(const Exception& exception) noexcept
 {
 	const SystemState& state = sys_state();

@@ -14,21 +14,23 @@ static SystemState s_sys_state;
 
 
 
-void set_error_flag() noexcept {
+void set_error_flag() noexcept
+{
 	s_sys_state.has_error = true;
 }
 
 
 
-void init_state_using_copy(const SystemState& copy) noexcept {
+void init_state_using_copy(const SystemState& copy) noexcept
+{
 	s_sys_state = copy;
 }
 
 
 void init_state_using_srcfile(const std::string& path) noexcept
 {
-	std::filesystem::path fpath = path;
-	std::string content = read_file(path);
+	const std::filesystem::path fpath = path;
+	const std::string content = read_file(path);
 
 	s_sys_state = SystemState();
 

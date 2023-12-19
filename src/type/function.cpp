@@ -17,6 +17,7 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 
 	Interpreter::ScopeConfig config;
 
+	// configure the function body scope
 	config.old_env = interpreter.environment;
 	config.new_env = new_env;
 	config.enclose_old = false;

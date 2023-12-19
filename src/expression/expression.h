@@ -20,17 +20,17 @@ class PackageResolutionExpression;
 class ExpressionProcessor
 {
 public:
-	ExpressionProcessor() = default;
+	         ExpressionProcessor() = default;
 	virtual ~ExpressionProcessor() = default;
 
-	virtual Type process_binary				(BinaryExpression&)				= 0;
-	virtual Type process_unary				(UnaryExpression&)				= 0;
-	virtual Type process_grouping			(GroupingExpression&)			= 0;
-	virtual Type process_literal			(LiteralExpression&)			= 0;
-	virtual Type process_identifier			(IdentifierExpression&)			= 0;
-	virtual Type process_assignment			(AssignmentExpression&)			= 0;
-	virtual Type process_call				(CallExpression&)				= 0;
-	virtual Type process_package_resolution	(PackageResolutionExpression&)	= 0;
+	virtual Type process_binary             (BinaryExpression           &) = 0;
+	virtual Type process_unary              (UnaryExpression            &) = 0;
+	virtual Type process_grouping           (GroupingExpression         &) = 0;
+	virtual Type process_literal            (LiteralExpression          &) = 0;
+	virtual Type process_identifier         (IdentifierExpression       &) = 0;
+	virtual Type process_assignment         (AssignmentExpression       &) = 0;
+	virtual Type process_call               (CallExpression             &) = 0;
+	virtual Type process_package_resolution (PackageResolutionExpression&) = 0;
 };
 
 
@@ -39,7 +39,7 @@ public:
 class Expression
 {
 public:
-	Expression() = default;
+	         Expression() = default;
 	virtual ~Expression() = default;
 
 	virtual Type process(ExpressionProcessor&) = 0;
@@ -62,7 +62,7 @@ public:
 
 
 	Expression* left = nullptr;
-	Token 		op;
+	Token       op;
 	Expression* right = nullptr;
 };
 
@@ -81,7 +81,7 @@ public:
 	}
 
 
-	Token 		op;
+	Token       op;
 	Expression* right = nullptr;
 };
 
@@ -155,7 +155,7 @@ public:
 
 
 	Expression*	identifier = nullptr;
-	Token		op;
+	Token       op;
 	Expression* value = nullptr;
 };
 
@@ -173,9 +173,9 @@ public:
 	}
 
 
-	Expression*					callee;
-	Token						paren;
-	std::vector<Expression*>	arguments;
+	Expression*              callee;
+	Token                    paren;
+	std::vector<Expression*> arguments;
 };
 
 
@@ -192,7 +192,7 @@ public:
 	}
 
 
-	Expression*	object;
-	Token		identifier;
-	Token		op;
+	Expression* object;
+	Token       identifier;
+	Token       op;
 };

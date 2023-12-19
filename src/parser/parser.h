@@ -66,13 +66,14 @@ private:
 	void synchronize() noexcept;
 
 
-	Token peek()					const	noexcept;
-	Token advance()							noexcept;
-	Token previous(int amount = 1)	const	noexcept;
+	Token peek()                   const noexcept;
+	Token advance()                      noexcept;
+	Token previous(int amount = 1) const noexcept;
 
 	bool match(const std::initializer_list<TokenType>& tokens) noexcept;
+
 	bool check(TokenType type) const noexcept;
-	bool at_end() const noexcept;
+	bool at_end()              const noexcept;
 
 
 	Token consume(TokenType type, const Exception& err);
@@ -81,9 +82,9 @@ private:
 	bool at_global_scope() const noexcept { return !scope_depth_; }
 
 
-	int loop_depth_ = 0;
+	int loop_depth_     = 0;
 	int function_depth_ = 0;
-	int scope_depth_ = 0;
+	int scope_depth_    = 0;
 
 
 	std::vector<Token> tokens_;

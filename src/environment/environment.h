@@ -20,14 +20,14 @@ public:
 		IdentifierData(const TokenPosition& pos, const Type& value, const std::string& filepath)
 				: value(value), pos(pos), filepath(filepath) {}
 
-		Type value;
+		Type          value;
 		TokenPosition pos;
-		std::string filepath;
+		std::string   filepath;
 	};
 
 
 
-	Environment() = default;
+	         Environment() = default;
 	explicit Environment(Environment* enclosing);
 
 
@@ -38,7 +38,8 @@ public:
 	void declare(const std::string& name, const IdentifierData& data);
 
 	void assign(const Token& identifier, const Type& value);
-	Type get(const Token& identifier) const;
+
+	Type get(const Token& identifier)       const;
 	Type get(const std::string& identifier) const noexcept;
 
 	bool defined(const std::string& identifier) const noexcept;
