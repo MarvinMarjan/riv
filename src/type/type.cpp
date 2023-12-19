@@ -108,14 +108,15 @@ RivPackage* Type::as_package() const noexcept
 }
 
 
-Type::Mutability Type::get_mutability_from_modifier(TokenType specifier) noexcept
+Type::Mutability Type::get_mutability_from_modifier(const TokenType specifier, const Mutability default_value) noexcept
 {
 	switch (specifier)
 	{
 	case TokenType::Mut:  return Mutable;
 	case TokenType::Imut: return Immutable;
 
-	default: return Mutable;
+	// returns the default value if it's not any valid mutability modifier
+	default: return default_value;
 	}
 }
 

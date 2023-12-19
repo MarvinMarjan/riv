@@ -43,11 +43,13 @@ WhileStatement::WhileStatement(Expression* const condition, Statement* const bod
 }
 
 
-FunctionStatement::FunctionStatement(const Token& name, const std::vector<Token>& params, const std::vector<Statement*>& body)
+FunctionStatement::FunctionStatement(const Token& name, const std::vector<Token>& params,
+									 const std::vector<Statement*>& body, const Type::Mutability mutability)
 {
 	this->name = name;
 	this->params = params;
 	this->body = body;
+	this->mutability = mutability;
 }
 
 

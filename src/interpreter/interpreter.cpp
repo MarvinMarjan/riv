@@ -105,7 +105,11 @@ void Interpreter::process_continue(ContinueStatement&)
 
 void Interpreter::process_function(FunctionStatement& statement)
 {
-	environment.declare(statement.name, new RivFunction(statement, Environment()));
+	Type object = new RivFunction(statement, Environment());
+
+	object.set_mutability(statement.mutability);
+
+	environment.declare(statement.name, object);
 	environment.data_[statement.name.lexeme].value.as_func()->closure = environment;
 }
 

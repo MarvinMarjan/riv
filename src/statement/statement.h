@@ -208,7 +208,7 @@ class FunctionStatement : public Statement
 {
 public:
 	FunctionStatement() = default;
-	FunctionStatement(const Token& name, const std::vector<Token>& params, const std::vector<Statement*>& body);
+	FunctionStatement(const Token& name, const std::vector<Token>& params, const std::vector<Statement*>& body, Type::Mutability mutability);
 
 
 	void process(StatementProcessor& processor) override {
@@ -219,6 +219,7 @@ public:
 	Token                   name;
 	std::vector<Token>      params;
 	std::vector<Statement*> body;
+	Type::Mutability        mutability;
 };
 
 

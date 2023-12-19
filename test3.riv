@@ -1,14 +1,12 @@
-var i = 0;
-
-function call()
+function my_func()
 {
-	i += 1;
+	print "my_func called.";
 }
+
 
 function main()
 {
-	loop {
-		call();
-		print i;
-	}
+	my_func = 32;
+
+	my_func();
 }

@@ -135,15 +135,8 @@ Statement* Parser::print_statement()
 
 Statement* Parser::var_statement()
 {
-	const Token mutability_specifier = previous(2);
-	Type::Mutability mutability;
-
-
-	if (!Type::is_valid_mutability_modifier(mutability_specifier.type))
-		mutability = Type::Mutable;
-	else
-		mutability = Type::get_mutability_from_modifier(mutability_specifier.type);
-
+	// mutable by default
+	const Type::Mutability mutability = Type::get_mutability_from_modifier(previous(2).type, Type::Mutable);
 
 	const Token name = consume(TokenType::Identifier, riv_e203(peek().pos)); // expect variable name after "var"
 	Expression* value = nullptr;
@@ -284,7 +277,8 @@ Statement* Parser::continue_statement()
 
 Statement* Parser::function_statement()
 {
-	// name
+	// immutable by default
+	const Type::Mutability mutability = Type::get_mutability_from_modifier(previous(2).type, Type::Immutable);
 
 	const Token name = consume(TokenType::Identifier, riv_e214(peek().pos)); // expect function name after "function" statement
 
@@ -313,7 +307,7 @@ Statement* Parser::function_statement()
 	function_depth_--;
 
 
-	return new FunctionStatement(name, params, body);
+	return new FunctionStatement(name, params, body, mutability);
 }
 
 

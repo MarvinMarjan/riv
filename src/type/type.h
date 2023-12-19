@@ -87,8 +87,11 @@ public:
 	RivPackage* as_package() const noexcept;
 
 
-	static Mutability get_mutability_from_modifier(TokenType specifier) noexcept; // gets the mutability based on a modifier (mut, imut)
-	static bool       is_valid_mutability_modifier(TokenType specifier) noexcept; // checks if a token is a valid mutability modifier
+	// gets the mutability based on a modifier (mut, imut)
+	static Mutability get_mutability_from_modifier(TokenType specifier, Mutability default_value) noexcept;
+
+	// checks if a token is a valid mutability modifier
+	static bool       is_valid_mutability_modifier(TokenType specifier) noexcept;
 
 
 private:
