@@ -42,6 +42,8 @@
 	- [*307*: Expect package at left of "::"](#307-expect-package-at-left-of-)
 	- [*308*: Invalid non-assignable type "..."](#308-invalid-non-assignable-type-)
 	- [*309*: Only variables can be assigned](#309-only-variables-can-be-assigned)
+	- [*310*: Cannot modify the value of an immutable variable](#310-cannot-modify-the-value-of-an-immutable-variable)
+	- [*311*: Recursion limit of ... exceeded](#311-recursion-limit-of--exceeded)
 
 
 
@@ -508,3 +510,40 @@ Error caused when trying to do an invalid operation with any [non-assignable](/d
 Error caused when trying to assign a non-variable value.
 
 `5 = 90;`
+
+
+
+
+
+### *310*: Cannot modify the value of an immutable variable
+
+Error caused when trying to modify a immutable [Variable](/doc/language/features/variables.md) or [Function](/doc/language/features/functions.md).
+
+```
+imut my_const = "constant";
+
+my_const = "volatile"; // e310
+```
+
+or
+
+```
+// functions are immutable by default
+function my_func() {}
+
+my_func = "another value"; // e310
+```
+
+
+
+
+
+### *311*: Recursion limit of ... exceeded
+
+Error caused when a function is called inside itself (recursive function) more than the recursion limit, which is 1000 by default. This error exists to prevent stack overflow.
+
+```
+function recursive() {
+	recursive() // calling itself infinitely
+}
+```

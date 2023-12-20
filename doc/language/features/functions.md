@@ -32,6 +32,7 @@ Knowing that, the above function has the name `greetings`, receive one parameter
 
 Once you have a function, you can call it with the [Call Expression](/doc/language/syntax/expressions.md#calling). So, to call the function `greetings`, we use: `greetings("someone name")`. The param `name` in the function will be assigned with `"someone name"`. After calling a function, the code inside it will be executed and the argument passed to it will be assigned to the right parameter. So, when the function's code be executed, the message printed would be `hello, someone name!`.
 
+***note: separate arguments and parameters with `,`***
 
 
 # Returning
@@ -59,3 +60,30 @@ greetings("peter"); // hello, "peter"!
 
 
 A function, by default, returns `null` if no value is specified at `return` or if `return` is not present in the function.
+
+
+# Mutability
+
+A function is also a variable, so the following code would (but it's not) be valid:
+
+```
+function say(text) {
+	print text;
+}
+
+say("hello");
+
+say = "i don't wanna be a function anymore"; // e310
+```
+
+The above code would be valid if the function was mutable (See [Mutability](/doc/language/features/mutability.md)), but it's not. A function is immutable by default and, if you want to make it mutable, you need to specify the `mut` modifier at its declaration:
+
+```
+mut function say(text) {
+	print text;
+}
+
+say("hello");
+
+say = "i don't wanna be a function anymore"; // ok
+```
