@@ -1,8 +1,6 @@
-function foo(x) {
-	return x + x / x;
-}
-
 function main()
 {
-	print foo();
+	var number = (2 == 2 ? 10 else 20);
+
+	print number;
 }

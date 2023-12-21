@@ -57,6 +57,7 @@ Exception riv_e222(const TokenPosition& pos) noexcept; // expect declaration sta
 Exception riv_e223(const TokenPosition& pos) noexcept; // expect package name
 Exception riv_e224(const TokenPosition& pos) noexcept; // expect package body
 Exception riv_e225(const TokenPosition& pos) noexcept; // expect package member identifier
+Exception riv_e226(const TokenPosition& pos) noexcept; // expect "else" after left expression of ternary expression
 
 
 

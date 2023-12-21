@@ -14,6 +14,7 @@ class IdentifierExpression;
 class AssignmentExpression;
 class CallExpression;
 class PackageResolutionExpression;
+class TernaryExpression;
 
 
 // visitor pattern
@@ -23,14 +24,15 @@ public:
 	         ExpressionProcessor() = default;
 	virtual ~ExpressionProcessor() = default;
 
-	virtual Type process_binary             (BinaryExpression           &) = 0;
-	virtual Type process_unary              (UnaryExpression            &) = 0;
-	virtual Type process_grouping           (GroupingExpression         &) = 0;
-	virtual Type process_literal            (LiteralExpression          &) = 0;
-	virtual Type process_identifier         (IdentifierExpression       &) = 0;
-	virtual Type process_assignment         (AssignmentExpression       &) = 0;
-	virtual Type process_call               (CallExpression             &) = 0;
-	virtual Type process_package_resolution (PackageResolutionExpression&) = 0;
+	virtual Type process_binary            (BinaryExpression           &) = 0;
+	virtual Type process_unary             (UnaryExpression            &) = 0;
+	virtual Type process_grouping          (GroupingExpression         &) = 0;
+	virtual Type process_literal           (LiteralExpression          &) = 0;
+	virtual Type process_identifier        (IdentifierExpression       &) = 0;
+	virtual Type process_assignment        (AssignmentExpression       &) = 0;
+	virtual Type process_call              (CallExpression             &) = 0;
+	virtual Type process_package_resolution(PackageResolutionExpression&) = 0;
+	virtual Type process_ternary           (TernaryExpression          &) = 0;
 };
 
 
@@ -195,4 +197,23 @@ public:
 	Expression* object;
 	Token       identifier;
 	Token       op;
+};
+
+
+
+
+class TernaryExpression : public Expression
+{
+public:
+	TernaryExpression(Expression* condition, Expression* left, Expression* right);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_ternary(*this);
+	}
+
+
+	Expression* condition = nullptr;
+	Expression* left      = nullptr;
+	Expression* right     = nullptr;
 };

@@ -11,7 +11,7 @@ enum class TokenType
 	Plus, Minus, Star, Slash, PlusEqual, MinusEqual, StarEqual, SlashEqual,
 	Equal, Bang, Greater, Lesser, GreaterEqual, LesserEqual, EqualEqual, BangEqual,
 	LeftParen, RightParen, LeftBrace, RightBrace, LeftCurlyBrace, RightCurlyBrace,
-	SemiColon, Dot, Comma, Colon, ColonColon,
+	SemiColon, Dot, Comma, Colon, ColonColon, QuestionMark,
 
 
 	// literal

@@ -356,7 +356,27 @@ Statement* Parser::package_statement()
 
 Expression* Parser::expression()
 {
-	return assignment();
+	return ternary();
+}
+
+
+Expression* Parser::ternary()
+{
+	Expression* expr = assignment(); // condition
+
+	if (match({ TokenType::QuestionMark }))
+	{
+		Expression* left = ternary();
+
+		if (!match({ TokenType::Else }))
+			throw riv_e226(peek().pos);
+
+		Expression* right = ternary();
+
+		return new TernaryExpression(expr, left, right);
+	}
+
+	return expr;
 }
 
 

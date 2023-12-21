@@ -139,6 +139,10 @@ Exception riv_e225(const TokenPosition& pos) noexcept {
 	return { "Expect package member identifier.", pos, 225 };
 }
 
+Exception riv_e226(const TokenPosition& pos) noexcept {
+	return { "Expect \"else\" after left expression of ternary expression.", pos, 226 };
+}
+
 
 
 

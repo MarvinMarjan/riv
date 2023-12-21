@@ -50,6 +50,7 @@ private:
 	// Expressions
 
 	Expression* expression();
+	Expression* ternary();
 	Expression* assignment();
 	Expression* equality();
 	Expression* comparison();

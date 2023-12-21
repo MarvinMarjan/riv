@@ -375,6 +375,15 @@ Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 }
 
 
+Type Interpreter::process_ternary(TernaryExpression& expr)
+{
+	if (evaluate(expr.condition).as_bool())
+		return evaluate(expr.left);
+	else
+		return evaluate(expr.right);
+}
+
+
 Type Interpreter::evaluate(Expression* const expr)
 {
 	if (!expr)

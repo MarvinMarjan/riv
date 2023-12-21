@@ -57,3 +57,11 @@ PackageResolutionExpression::PackageResolutionExpression(Expression *object, con
 	this->identifier = identifier;
 	this->op = op;
 }
+
+
+TernaryExpression::TernaryExpression(Expression* const condition, Expression* const left, Expression* const right)
+{
+	this->condition = condition;
+	this->left = left;
+	this->right = right;
+}

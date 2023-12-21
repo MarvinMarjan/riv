@@ -23,7 +23,9 @@ static std::map<std::string, TokenType> s_operators =
 	{";", TokenType::SemiColon       },
 	{".", TokenType::Dot             },
 	{",", TokenType::Comma           },
-	{"!", TokenType::Bang            }
+	{"!", TokenType::Bang            },
+	{":", TokenType::Colon           },
+	{"?", TokenType::QuestionMark    }
 };
 
 

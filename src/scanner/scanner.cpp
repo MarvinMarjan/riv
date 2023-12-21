@@ -84,9 +84,10 @@ void Scanner::scan_token()
 	case '{': add_token(TokenType::LeftCurlyBrace ); break;
 	case '}': add_token(TokenType::RightCurlyBrace); break;
 
-	case ';': add_token(TokenType::SemiColon); break;
-	case '.': add_token(TokenType::Dot      ); break;
-	case ',': add_token(TokenType::Comma    ); break;
+	case ';': add_token(TokenType::SemiColon   ); break;
+	case '.': add_token(TokenType::Dot         ); break;
+	case ',': add_token(TokenType::Comma       ); break;
+	case '?': add_token(TokenType::QuestionMark); break;
 
 
 	case '\'':
