@@ -12,8 +12,6 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 	if (recursion_depth_ >= sys_state().recursion_limit)
 		throw riv_e311(declaration.name.pos, sys_state().recursion_limit);
 
-	// creating a local instance of the global environment instead of using the pointer
-	// avoids some annoying bugs
 	Environment new_env(&closure);
 	Type return_value;
 
