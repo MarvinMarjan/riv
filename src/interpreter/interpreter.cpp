@@ -13,6 +13,14 @@
 #include <system/init.h>
 
 
+
+Interpreter::Interpreter()
+{
+	environment = new Environment;
+	global = environment;
+}
+
+
 void Interpreter::interpret(const std::vector<Statement*>& statements)
 {
 	try
@@ -20,7 +28,7 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 		for (Statement* const statement : statements)
 			execute(statement);
 
-		const Type main_func = environment.get("main");
+		const Type main_func = environment->get("main");
 
 		if (!main_func.is_func())
 			throw riv_e306();
@@ -48,7 +56,7 @@ void Interpreter::process_expression(ExpressionStatement& statement)
 
 void Interpreter::process_block(BlockStatement& statement)
 {
-	execute_block(statement.statements, ScopeConfig(environment, Environment(), true));
+	execute_block(statement.statements, ScopeConfig(environment, new Environment(environment)));
 }
 
 
@@ -63,7 +71,7 @@ void Interpreter::process_var(VarStatement& statement)
 	Type value = evaluate(statement.value);
 	value.set_mutability(statement.mutability);
 
-	environment.declare(statement.name, value);
+	environment->declare(statement.name, value);
 }
 
 
@@ -111,12 +119,12 @@ void Interpreter::process_continue(ContinueStatement&)
 
 void Interpreter::process_function(FunctionStatement& statement)
 {
-	Type object = new RivFunction(statement, Environment());
+	Type object = new RivFunction(statement, nullptr);
 
 	object.set_mutability(statement.mutability);
 
-	environment.declare(statement.name, object);
-	environment.data_[statement.name.lexeme].value.as_func()->closure = environment;
+	environment->declare(statement.name, object);
+	environment->data_[statement.name.lexeme].value.as_func()->closure = environment;
 }
 
 
@@ -133,14 +141,14 @@ void Interpreter::process_import(ImportStatement& statement)
 	if (!path_exists(import_path.string()))
 		throw riv_e304(statement.path.pos); // invalid module path
 
-	const SystemState old = sys_state();
+	const SystemState& old = sys_state();
 
 	init_state_using_srcfile(import_path.string());
 
 	Interpreter interpreter;
 	interpreter.interpret(parse(scan(sys_state().strsource)));
 
-	environment.import(interpreter.environment.data());
+	environment->import(interpreter.environment->data());
 
 	init_state_using_copy(old);
 }
@@ -148,30 +156,26 @@ void Interpreter::process_import(ImportStatement& statement)
 
 void Interpreter::process_package(PackageStatement& statement)
 {
-	Environment old_env = environment;
-	Environment new_env(&old_env);
+	Environment* old_env = environment;
+	Environment* new_env = new Environment(old_env);
 
 	environment = new_env;
 
 	for (Statement* const declaration : statement.declarations)
 		execute(declaration);
 
-	new_env     = environment;
 	environment = old_env;
 
-	environment.declare(statement.name, new RivPackage(new_env));
+	environment->declare(statement.name, new RivPackage(new_env));
 }
 
 
 void Interpreter::execute_block(const std::vector<Statement*>& statements, const ScopeConfig& config)
 {
-	Environment old_env = config.old_env;
-	Environment new_env = config.new_env;
+	Environment* const old_env = config.old_env;
+	Environment* const new_env = config.new_env;
 
-	if (config.enclose_old)
-		new_env.set_enclosing(&old_env);
-
-	environment = std::move(new_env);
+	environment = new_env;
 
 	try
 	{
@@ -181,11 +185,14 @@ void Interpreter::execute_block(const std::vector<Statement*>& statements, const
 	catch (const RivFunction::ReturnSignal& signal)
 	{
 		// make sure to recover the old environment
-		environment = std::move(old_env);
+		environment = old_env;
 		throw signal;
 	}
 
-	environment = std::move(old_env);
+	// delete the inner scope at end
+	delete new_env;
+
+	environment = old_env;
 }
 
 
@@ -301,7 +308,7 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 
 Type Interpreter::process_identifier(IdentifierExpression& expr)
 {
-	const Type value = environment.get(expr.token);
+	const Type value = environment->get(expr.token);
 
 	if (value.is_non_assignable())
 		throw riv_e308(expr.token.pos, value.as_non_assignable()->type_name()); // invalid non-assignable type "..."
@@ -354,7 +361,7 @@ Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 	const Type        package_object = get_package_object_from_expression(expr);
 	RivPackage* const package        = package_object.as_package();
 
-	return package->environment.get(expr.identifier);
+	return package->environment->get(expr.identifier);
 }
 
 
@@ -375,7 +382,7 @@ Type Interpreter::evaluate(Expression* const expr)
 
 Type Interpreter::assign_variable(const Token& identifier, const Type& value)
 {
-	environment.assign(identifier, value);
+	environment->assign(identifier, value);
 	return value;
 }
 
@@ -385,7 +392,7 @@ Type Interpreter::assign_package_member(AssignmentExpression& assignment_express
 	RivPackage* const package = get_package_object_from_expression(*package_expression).as_package();
 
 	const Type value = evaluate(assignment_expression.value);
-	package->environment.assign(package_expression->identifier, value);
+	package->environment->assign(package_expression->identifier, value);
 
 	return value;
 }
@@ -399,7 +406,7 @@ Type Interpreter::get_package_object_from_expression(PackageResolutionExpression
 		throw riv_e307(package_expression.op.pos); // expect package at left of "::"
 
 	// note: do not use Interpreter::process_identifier to get packages
-	const Type type_object = environment.get(identifier->token);
+	const Type type_object = environment->get(identifier->token);
 
 	if (!type_object.is_package())
 		throw riv_e307(package_expression.op.pos); // expect package at left of "::"

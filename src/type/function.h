@@ -19,7 +19,7 @@ public:
 	
 
 	RivFunction() = default;
-	explicit RivFunction(const FunctionStatement& declaration, const Environment& closure)
+	explicit RivFunction(const FunctionStatement& declaration, Environment* const closure)
 		: declaration(declaration), closure(closure) {}
 
 	size_t arity() override { return declaration.params.size(); }
@@ -28,7 +28,7 @@ public:
 
 
 	FunctionStatement declaration;
-	Environment       closure;
+	Environment*      closure;
 
 private:
 	size_t recursion_depth_ = 0;

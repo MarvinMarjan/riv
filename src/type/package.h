@@ -8,9 +8,9 @@
 class RivPackage : public NonAssignable
 {
 public:
-	explicit RivPackage(const Environment& environment = {})
+	explicit RivPackage(Environment* const environment = nullptr)
 		: NonAssignable("package"), environment(environment) {}
 
 
-	Environment environment;
+	Environment* environment = nullptr;
 };

@@ -15,16 +15,14 @@ struct Exception;
 class Interpreter : public ExpressionProcessor, public StatementProcessor
 {
 public:
-	Interpreter() = default;
+	Interpreter();
 
 
 	void interpret(const std::vector<Statement*>& statements);
 
 
-	Environment* global() noexcept { return environment.top(); }
-
-
-	Environment environment;
+	Environment* global = nullptr;
+	Environment* environment = nullptr;
 
 private:
 	friend class RivFunction;
@@ -33,13 +31,11 @@ private:
 	struct ScopeConfig
 	{
 		ScopeConfig() = default;
-		ScopeConfig(const Environment& old_env, const Environment& new_env, const bool enclose_old)
-				: old_env(old_env), new_env(new_env), enclose_old(enclose_old) {}
+		ScopeConfig(Environment* const old_env, Environment* const new_env)
+				: old_env(old_env), new_env(new_env) {}
 
-		Environment old_env;
-		Environment new_env;
-
-		bool enclose_old = true;
+		Environment* old_env;
+		Environment* new_env;
 	};
 
 

@@ -12,12 +12,12 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 	if (recursion_depth_ >= sys_state().recursion_limit)
 		throw riv_e311(declaration.name.pos, sys_state().recursion_limit);
 
-	Environment new_env(&closure);
+	Environment* new_env = new Environment(closure);
 	Type return_value;
 
 	// assign the arguments
 	for (size_t i = 0; i < declaration.params.size(); i++)
-		new_env.declare(declaration.params[i], arguments[i]);
+		new_env->declare(declaration.params[i], arguments[i]);
 
 	Interpreter::ScopeConfig config;
 
@@ -25,9 +25,8 @@ Type RivFunction::call(Interpreter& interpreter, const std::vector<Type>& argume
 
 	// use "closure" instead o "interpreter.environment", that way, changes made
 	// to it by this function will not be discarded
-	config.old_env = closure;
+	config.old_env = interpreter.environment;
 	config.new_env = new_env;
-	config.enclose_old = false;
 
 	// stores the current recursion depth of the function.
 	// useful if you want to avoid a stack overflow

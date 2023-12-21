@@ -1,0 +1,17 @@
+package state
+{
+	var name = "my_app";
+	var version = "1.0.0";
+	var should_quit = false;
+}
+
+
+function quit_app() {
+	state::should_quit = true;
+}
+
+
+function print_state() {
+	print "name: " + state::name;
+	print "version: " + state::version;
+}

@@ -1,0 +1,54 @@
+import "tests/test3";
+
+
+var words_said = 0;
+
+
+function say_alias() {
+	say("alias", false);
+}
+
+
+function say(text, print_words_said) {
+	print text;
+
+	words_said += 1;
+
+	if (print_words_said)
+		print words_said;
+}
+
+
+function main()
+{
+	while (!state::should_quit) {
+		var out_foo = 10;
+		var out_bar = 90;
+
+		{
+			var in_foo = 45;
+			var in_bar = 4;
+
+			say("okay1", false);
+			say("okay2", false);
+			say("okay3", false);
+
+			say(in_foo, false);
+			say(in_bar, false);
+
+			say(out_bar, false);
+		}
+
+		if (words_said > 10)
+		{
+			quit_app();
+			print words_said;
+		}
+
+		say(out_foo, false);
+		say(out_bar, false);
+	}
+
+	print_state();
+	say_alias();
+}
