@@ -294,7 +294,7 @@ Statement* Parser::function_statement()
 
 	if (check(TokenType::Identifier))
 		do {
-			params.push_back(consume(TokenType::Identifier, riv_e217(peek().pos)));
+			params.push_back(consume(TokenType::Identifier, riv_e217(peek().pos))); // expect parameter after ","
 		} while(match({ TokenType::Comma })); 
 	
 	consume(TokenType::RightParen, riv_e216(peek().pos)); // expect ")" after parameter list
@@ -490,6 +490,15 @@ Expression* Parser::call()
 			expr = new PackageResolutionExpression(expr, identifier, op);
 		}
 
+		else if (match({ TokenType::LeftBrace }))
+		{
+			const Token brace = previous();
+			Expression* index = expression();
+			consume(TokenType::RightBrace, riv_e228(peek().pos));
+
+			return new IndexingExpression(expr, index, brace);
+		}
+
 		else
 			break;
 	}
@@ -502,6 +511,9 @@ Expression* Parser::primary()
 {
 	if (match({ TokenType::String, TokenType::Number, TokenType::Bool, TokenType::Null }))
 		return new LiteralExpression(previous().value);
+
+	if (match({ TokenType::LeftBrace }))
+		return new LiteralArrayExpression(array());
 
 	if (match({ TokenType::Identifier }))
 		return new IdentifierExpression(previous());
@@ -597,9 +609,24 @@ Expression* Parser::finish_call(Expression* expr)
 			arguments.push_back(expression());
 		} while (match({ TokenType::Comma }));
 
-	consume(TokenType::RightParen, riv_e219(peek().pos));
+	consume(TokenType::RightParen, riv_e219(peek().pos)); // expect ")" after function arguments
 
 	return new CallExpression(expr, paren, arguments);
+}
+
+
+std::vector<Expression*> Parser::array()
+{
+	std::vector<Expression*> array;
+
+	if (!check(TokenType::RightBrace))
+		do {
+			array.push_back(expression());
+		} while (match({ TokenType::Comma }));
+
+	consume(TokenType::RightBrace, riv_e227(peek().pos)); // expect "]" to close array
+
+	return array;
 }
 
 

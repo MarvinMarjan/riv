@@ -65,15 +65,17 @@ private:
 
 	// Expressions
 
-	Type process_binary            (BinaryExpression&)             override;
-	Type process_unary             (UnaryExpression&)              override;
-	Type process_grouping          (GroupingExpression&)           override;
-	Type process_literal           (LiteralExpression&)            override;
-	Type process_identifier        (IdentifierExpression&)         override;
-	Type process_assignment        (AssignmentExpression&)         override;
-	Type process_call              (CallExpression&)               override;
-	Type process_package_resolution(PackageResolutionExpression&)  override;
-	Type process_ternary           (TernaryExpression&)            override;
+	Type process_binary            (BinaryExpression           &) override;
+	Type process_unary             (UnaryExpression            &) override;
+	Type process_grouping          (GroupingExpression         &) override;
+	Type process_literal           (LiteralExpression          &) override;
+	Type process_literal_array     (LiteralArrayExpression     &) override;
+	Type process_indexing          (IndexingExpression         &) override;
+	Type process_identifier        (IdentifierExpression       &) override;
+	Type process_assignment        (AssignmentExpression       &) override;
+	Type process_call              (CallExpression             &) override;
+	Type process_package_resolution(PackageResolutionExpression&) override;
+	Type process_ternary           (TernaryExpression          &) override;
 
 
 	Type evaluate(Expression* expr);
@@ -82,9 +84,20 @@ private:
 
 	// Expression Utilities
 
-	Type assign_variable                   (const Token& identifier, const Type& value);
-	Type assign_package_member             (AssignmentExpression& assignment_expression, PackageResolutionExpression* package_expression);
-	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
+	struct ArrayData
+	{
+		ArrayData(ArrayType& array, const size_t index)
+			: array(array), index(index) {}
+
+		ArrayType& array;
+		size_t index;
+	};
+
+	Type      assign_variable                   (const Token& identifier, const Type& value);
+	Type      assign_package_member             (AssignmentExpression& assignment_expression, PackageResolutionExpression* package_expression);
+	Type      assign_array_item                 (AssignmentExpression& assignment_expression, IndexingExpression* indexing);
+	Type      get_package_object_from_expression(PackageResolutionExpression& package_expression);
+
 
 
 

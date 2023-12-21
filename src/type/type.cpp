@@ -88,6 +88,7 @@ std::string type_obj_to_string(const Type& type) noexcept
 	case TypeIndex::String:   return type.as_str();
 	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
 	case TypeIndex::Bool:     return bool_to_string(type.as_bool());
+	case TypeIndex::Array:    return "Array";
 	case TypeIndex::Function: return "<Function " + type.as_func()->declaration.name.lexeme + ">";
 	}
 
@@ -102,10 +103,18 @@ Type::Type()
 }
 
 
-RivPackage* Type::as_package() const noexcept
+const RivPackage* Type::as_package() const noexcept
+{
+	return dynamic_cast<const RivPackage*>(as_non_assignable());
+}
+
+
+
+RivPackage* Type::as_package() noexcept
 {
 	return dynamic_cast<RivPackage*>(as_non_assignable());
 }
+
 
 
 

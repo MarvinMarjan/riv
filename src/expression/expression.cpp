@@ -29,6 +29,20 @@ LiteralExpression::LiteralExpression(const Type& value)
 }
 
 
+LiteralArrayExpression::LiteralArrayExpression(const std::vector<Expression*>& array)
+{
+	this->array = array;
+}
+
+
+IndexingExpression::IndexingExpression(Expression* const array, Expression* const index, const Token& brace)
+{
+	this->array = array;
+	this->index = index;
+	this->brace = brace;
+}
+
+
 IdentifierExpression::IdentifierExpression(const Token& token)
 {
 	this->token = token;

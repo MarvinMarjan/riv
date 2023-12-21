@@ -71,8 +71,9 @@ private:
 
 	// Expression Utilities
 
-	Expression* desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
-	Expression* finish_call(Expression* expr);
+	Expression             * desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
+	Expression             * finish_call(Expression* expr);
+	std::vector<Expression*> array();
 
 
 

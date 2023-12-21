@@ -1,6 +1,7 @@
 #pragma once
 
 #include <variant>
+#include <vector>
 
 #include <type/non_assignable.h>
 
@@ -13,6 +14,7 @@ enum class TypeIndex
 	String,
 	Number,
 	Bool,
+	Array,
 	Function,
 	NonAssignable
 };
@@ -27,10 +29,11 @@ enum class TokenType;
 std::string type_index_to_string(TypeIndex type) noexcept;
 
 
-using VariantType = std::variant<std::string, double, bool, RivFunction*, NonAssignable*>;
-
-
 class Type;
+
+
+using ArrayType = std::vector<Type>;
+using VariantType = std::variant<std::string, double, bool, ArrayType, RivFunction*, NonAssignable*>;
 
 
 // returns a representation of a Type
@@ -66,25 +69,44 @@ public:
 
 	bool is_typeof(const TypeIndex type) const noexcept { return this->type() == type; }
 
-	bool is_null()                     const noexcept  { return is_null_;                                  }
-	bool is_str()                      const noexcept  { return is_typeof(TypeIndex::String);        }
-	bool is_num()                      const noexcept  { return is_typeof(TypeIndex::Number);        }
-	bool is_bool()                     const noexcept  { return is_typeof(TypeIndex::Bool);          }
-	bool is_func()                     const noexcept  { return is_typeof(TypeIndex::Function);      }
-	bool is_non_assignable()           const noexcept  { return is_typeof(TypeIndex::NonAssignable); }
+	bool is_null()               const noexcept  { return is_null_;                                  }
+	bool is_str()                const noexcept  { return is_typeof(TypeIndex::String);        }
+	bool is_num()                const noexcept  { return is_typeof(TypeIndex::Number);        }
+	bool is_bool()               const noexcept  { return is_typeof(TypeIndex::Bool);          }
+	bool is_array()              const noexcept  { return is_typeof(TypeIndex::Array);         }
+	bool is_func()               const noexcept  { return is_typeof(TypeIndex::Function);      }
+	bool is_non_assignable()     const noexcept  { return is_typeof(TypeIndex::NonAssignable); }
 
-	std::string    as_str()            const noexcept  { return std::get<std::string>(*this);           }
-	double         as_num()            const noexcept  { return std::get<double>(*this);                }
-	bool           as_bool()           const noexcept  { return std::get<bool>(*this);                  }
-	RivFunction  * as_func()           const noexcept  { return std::get<RivFunction*>(*this);          }
-	NonAssignable* as_non_assignable() const noexcept  { return std::get<NonAssignable*>(*this);        }
+
+	// const references
+
+	const std::string  & as_str()            const noexcept  { return std::get<std::string>(*this);           }
+	const double       & as_num()            const noexcept  { return std::get<double>(*this);                }
+	const bool         & as_bool()           const noexcept  { return std::get<bool>(*this);                  }
+	const ArrayType    & as_array()          const noexcept  { return std::get<ArrayType>(*this);             }
+	const RivFunction  * as_func()           const noexcept  { return std::get<RivFunction*>(*this);          }
+	const NonAssignable* as_non_assignable() const noexcept  { return std::get<NonAssignable*>(*this);        }
+
+
+	// references
+
+	std::string  &       as_str()                  noexcept  { return std::get<std::string>(*this);           }
+	double       &       as_num()                  noexcept  { return std::get<double>(*this);                }
+	bool         &       as_bool()                 noexcept  { return std::get<bool>(*this);                  }
+	ArrayType    &       as_array()                noexcept  { return std::get<ArrayType>(*this);             }
+	RivFunction  *       as_func()                 noexcept  { return std::get<RivFunction*>(*this);          }
+	NonAssignable*       as_non_assignable()       noexcept  { return std::get<NonAssignable*>(*this);        }
+
 
 
 	// non-assignable types
 
 	bool is_package() const noexcept { return as_package(); }
 
-	RivPackage* as_package() const noexcept;
+	const RivPackage* as_package() const noexcept;
+
+
+	RivPackage*       as_package()       noexcept;
 
 
 

@@ -1,6 +1,10 @@
 function main()
 {
-	var number = (2 == 2 ? 10 else 20);
+	imut var names = ["marvin", "pedro", "lucas", "ana", "maria"];
 
-	print number;
+	names[0] = "marjan";
+	names[2] = "not lucas";
+
+	print names[0];
+	print names[2];
 }

@@ -33,7 +33,7 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 		if (importing_)
 			return;
 
-		const Type main_func = environment->get("main");
+		Type main_func = environment->get("main");
 
 		if (!main_func.is_func())
 			throw riv_e306(); // function "main" not declared
@@ -313,6 +313,39 @@ Type Interpreter::process_literal(LiteralExpression& expr)
 }
 
 
+Type Interpreter::process_literal_array(LiteralArrayExpression& expr)
+{
+	ArrayType array;
+
+	for (Expression* const expression : expr.array)
+		array.push_back(evaluate(expression));
+
+	return array;
+}
+
+
+Type Interpreter::process_indexing(IndexingExpression& expr)
+{
+	const Type array = evaluate(expr.array);
+
+	if (!array.is_array())
+		throw riv_e312(expr.brace.pos); // only arrays can be indexed
+
+	const Type index = evaluate(expr.index);
+
+	if (!index.is_num())
+		throw riv_e313(expr.brace.pos); // expect number as array index
+
+	const ArrayType array_type = array.as_array();
+	const int int_index = (int)index.as_num();
+
+	if (int_index < 0 || int_index >= (int)array_type.size())
+		throw riv_e314(expr.brace.pos); // index out of range
+
+	return array_type.at(int_index);
+}
+
+
 Type Interpreter::process_identifier(IdentifierExpression& expr)
 {
 	const Type value = environment->get(expr.token);
@@ -328,6 +361,7 @@ Type Interpreter::process_assignment(AssignmentExpression& expr)
 {
 	IdentifierExpression       * identifier_expression = nullptr;
 	PackageResolutionExpression* package_expression    = nullptr;
+	IndexingExpression         * indexing_expression   = nullptr;
 
 
 	// variable assignment
@@ -338,13 +372,16 @@ Type Interpreter::process_assignment(AssignmentExpression& expr)
 	else if ((package_expression = dynamic_cast<PackageResolutionExpression*>(expr.identifier)))
 		return assign_package_member(expr, package_expression);
 
+	else if ((indexing_expression = dynamic_cast<IndexingExpression*>(expr.identifier)))
+		return assign_array_item(expr, indexing_expression);
+
 	throw riv_e309(expr.op.pos); // only variables can be assigned
 }
 
 
 Type Interpreter::process_call(CallExpression& expr)
 {
-	const Type callee = evaluate(expr.callee);
+	Type callee = evaluate(expr.callee);
 
 	if (!callee.is_func())
 		throw riv_e302(expr.paren.pos); // only functions can be called
@@ -368,8 +405,8 @@ Type Interpreter::process_call(CallExpression& expr)
 
 Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 {
-	const Type        package_object = get_package_object_from_expression(expr);
-	RivPackage* const package        = package_object.as_package();
+	const Type              package_object = get_package_object_from_expression(expr);
+	const RivPackage* const package        = package_object.as_package();
 
 	return package->environment->get(expr.identifier);
 }
@@ -414,6 +451,37 @@ Type Interpreter::assign_package_member(AssignmentExpression& assignment_express
 	package->environment->assign(package_expression->identifier, value);
 
 	return value;
+}
+
+
+Type Interpreter::assign_array_item(AssignmentExpression& assignment_expression, IndexingExpression* const indexing)
+{
+	IdentifierExpression* identifier = nullptr;
+
+	if (!(identifier = dynamic_cast<IdentifierExpression*>(indexing->array)))
+		throw riv_e309(assignment_expression.op.pos);
+
+	const Type array = evaluate(identifier);
+
+	if (!array.is_array())
+		throw riv_e312(indexing->brace.pos); // only arrays can be indexed
+
+	const Type index = evaluate(indexing->index);
+
+	if (!index.is_num())
+		throw riv_e313(indexing->brace.pos); // expect number as array index
+
+	const ArrayType array_type = array.as_array();
+	const int int_index = (int)index.as_num();
+
+	if (int_index < 0 || int_index >= (int)array_type.size())
+		throw riv_e314(indexing->brace.pos); // index out of range
+
+	const Type evaluated_value = evaluate(assignment_expression.value);
+
+	environment->data_[identifier->token.lexeme].value.as_array().at(int_index) = evaluated_value;
+
+	return evaluated_value;
 }
 
 

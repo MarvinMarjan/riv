@@ -10,6 +10,8 @@ class BinaryExpression;
 class UnaryExpression;
 class GroupingExpression;
 class LiteralExpression;
+class LiteralArrayExpression;
+class IndexingExpression;
 class IdentifierExpression;
 class AssignmentExpression;
 class CallExpression;
@@ -28,6 +30,8 @@ public:
 	virtual Type process_unary             (UnaryExpression            &) = 0;
 	virtual Type process_grouping          (GroupingExpression         &) = 0;
 	virtual Type process_literal           (LiteralExpression          &) = 0;
+	virtual Type process_literal_array     (LiteralArrayExpression     &) = 0;
+	virtual Type process_indexing          (IndexingExpression         &) = 0;
 	virtual Type process_identifier        (IdentifierExpression       &) = 0;
 	virtual Type process_assignment        (AssignmentExpression       &) = 0;
 	virtual Type process_call              (CallExpression             &) = 0;
@@ -121,6 +125,42 @@ public:
 
 
 	Type value;
+};
+
+
+
+
+class LiteralArrayExpression : public Expression
+{
+public:
+	LiteralArrayExpression(const std::vector<Expression*>& array);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_literal_array(*this);
+	}
+
+
+	std::vector<Expression*> array;
+};
+
+
+
+
+class IndexingExpression : public Expression
+{
+public:
+	IndexingExpression(Expression* array, Expression* index, const Token& brace);
+
+
+	Type process(ExpressionProcessor& processor) override {
+		return processor.process_indexing(*this);
+	}
+
+
+	Expression* array;
+	Expression* index;
+	Token       brace;
 };
 
 

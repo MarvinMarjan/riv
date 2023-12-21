@@ -143,6 +143,14 @@ Exception riv_e226(const TokenPosition& pos) noexcept {
 	return { "Expect \"else\" after left expression of ternary expression.", pos, 226 };
 }
 
+Exception riv_e227(const TokenPosition& pos) noexcept {
+	return { "Expect \"]\" to close array.", pos, 227 };
+}
+
+Exception riv_e228(const TokenPosition& pos) noexcept {
+	return { "Expect \"]\" to close indexing.", pos, 228 };
+}
+
 
 
 
@@ -208,4 +216,16 @@ Exception riv_e310(const TokenPosition& pos) noexcept {
 
 Exception riv_e311(const TokenPosition& pos, const size_t limit) noexcept {
 	return { "Recursion limit of " + std::to_string(limit) + " exceeded.", pos, 311 };
+}
+
+Exception riv_e312(const TokenPosition& pos) noexcept {
+	return { "Only arrays can be indexed.", pos, 312 };
+}
+
+Exception riv_e313(const TokenPosition& pos) noexcept {
+	return { "Expect number as array index.", pos, 313 };
+}
+
+Exception riv_e314(const TokenPosition& pos) noexcept {
+	return { "Index out of range.", pos, 314 };
 }

@@ -58,6 +58,8 @@ Exception riv_e223(const TokenPosition& pos) noexcept; // expect package name
 Exception riv_e224(const TokenPosition& pos) noexcept; // expect package body
 Exception riv_e225(const TokenPosition& pos) noexcept; // expect package member identifier
 Exception riv_e226(const TokenPosition& pos) noexcept; // expect "else" after left expression of ternary expression
+Exception riv_e227(const TokenPosition& pos) noexcept; // expect "]" to close array
+Exception riv_e228(const TokenPosition& pos) noexcept; // expect "]" to close indexing
 
 
 
@@ -76,3 +78,6 @@ Exception riv_e308(const TokenPosition& pos, const std::string& type_name) noexc
 Exception riv_e309(const TokenPosition& pos) noexcept; // only variables can be assigned
 Exception riv_e310(const TokenPosition& pos) noexcept; // cannot modify the value of an immutable variable
 Exception riv_e311(const TokenPosition& pos, size_t limit) noexcept; // recursion limit of ... exceeded
+Exception riv_e312(const TokenPosition& pos) noexcept; // only arrays can be indexed
+Exception riv_e313(const TokenPosition& pos) noexcept; // expect number as array index
+Exception riv_e314(const TokenPosition& pos) noexcept; // index out of range
