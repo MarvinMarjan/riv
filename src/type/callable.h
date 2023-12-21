@@ -13,6 +13,6 @@ class RivCallable
 public:
 	virtual ~RivCallable() = default;
 
-	virtual size_t arity() = 0;
+	virtual size_t arity() const noexcept = 0;
 	virtual Type call(Interpreter& interpreter, const std::vector<Type>& arguments) = 0;
 };

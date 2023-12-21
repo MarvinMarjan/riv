@@ -39,7 +39,7 @@ function main()
 			say(out_bar, false);
 		}
 
-		if (words_said > 10)
+		if (words_said > 100000)
 		{
 			quit_app();
 			print words_said;

@@ -34,8 +34,8 @@ private:
 		ScopeConfig(Environment* const old_env, Environment* const new_env)
 				: old_env(old_env), new_env(new_env) {}
 
-		Environment* old_env;
-		Environment* new_env;
+		Environment* old_env = nullptr;
+		Environment* new_env = nullptr;
 	};
 
 
@@ -91,4 +91,7 @@ private:
 	static bool are_values_of_type(const std::initializer_list<Type>& values, TypeIndex type) noexcept;
 
 	static void throw_if_type_differs(const std::initializer_list<Type>& values, TypeIndex type, const Exception& err);
+
+
+	bool importing_ = false;
 };

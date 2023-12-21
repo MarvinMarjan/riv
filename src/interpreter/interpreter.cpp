@@ -21,6 +21,7 @@ Interpreter::Interpreter()
 }
 
 
+
 void Interpreter::interpret(const std::vector<Statement*>& statements)
 {
 	try
@@ -28,10 +29,14 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 		for (Statement* const statement : statements)
 			execute(statement);
 
+		// do not execute the "main" function in import mode
+		if (importing_)
+			return;
+
 		const Type main_func = environment->get("main");
 
 		if (!main_func.is_func())
-			throw riv_e306();
+			throw riv_e306(); // function "main" not declared
 
 		main_func.as_func()->call(*this, {});
 	}
@@ -141,11 +146,13 @@ void Interpreter::process_import(ImportStatement& statement)
 	if (!path_exists(import_path.string()))
 		throw riv_e304(statement.path.pos); // invalid module path
 
-	const SystemState& old = sys_state();
+	const SystemState old = sys_state();
 
 	init_state_using_srcfile(import_path.string());
 
 	Interpreter interpreter;
+	interpreter.importing_ = true; // interpret with import mode
+
 	interpreter.interpret(parse(scan(sys_state().strsource)));
 
 	environment->import(interpreter.environment->data());
@@ -349,8 +356,11 @@ Type Interpreter::process_call(CallExpression& expr)
 
 	RivFunction* func = callee.as_func();
 
-	if (func->arity() != arguments.size())
-		throw riv_e303(func->arity(), arguments.size(), expr.paren.pos); // expect ... arguments, got ...
+	const int arity = (int)func->arity();
+	const int argc = (int)arguments.size();
+
+	if (arity != argc)
+		throw riv_e303(arity, argc, expr.paren.pos); // expect ... arguments, got ...
 
 	return func->call(*this, arguments);
 }

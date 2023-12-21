@@ -1,14 +1,8 @@
+function foo(x) {
+	return x + x / x;
+}
+
 function main()
 {
-	var a = "global";
-
-	{
-		function showA() {
-			print a;
-		}
-
-		showA();
-		var a = "block";
-		showA();
-	}
+	print foo();
 }
