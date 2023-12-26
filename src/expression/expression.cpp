@@ -35,9 +35,9 @@ LiteralArrayExpression::LiteralArrayExpression(const std::vector<Expression*>& a
 }
 
 
-IndexingExpression::IndexingExpression(Expression* const array, Expression* const index, const Token& brace)
+IndexingExpression::IndexingExpression(Expression* const expression, Expression* const index, const Token& brace)
 {
-	this->array = array;
+	this->expression = expression;
 	this->index = index;
 	this->brace = brace;
 }

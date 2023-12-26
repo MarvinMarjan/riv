@@ -1,17 +1,26 @@
-package state
+function count(source, char)
 {
-	var name = "my_app";
-	var version = "1.0.0";
-	var should_quit = false;
+	var counter = 0;
+	var iterator = 0;
+
+	loop {
+		if (source[iterator] == ";")
+			break;
+
+		if (source[iterator] == char)
+			counter += 1;
+
+		iterator += 1;
+	}
+
+	return counter;
 }
 
-
-function quit_app() {
-	state::should_quit = true;
+function say(value) {
+	print value;
 }
 
-
-function print_state() {
-	print "name: " + state::name;
-	print "version: " + state::version;
+function main()
+{
+	2 + 90:say();
 }

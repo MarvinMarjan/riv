@@ -326,23 +326,25 @@ Type Interpreter::process_literal_array(LiteralArrayExpression& expr)
 
 Type Interpreter::process_indexing(IndexingExpression& expr)
 {
-	const Type array = evaluate(expr.array);
+	const Type value = evaluate(expr.expression);
 
-	if (!array.is_array())
-		throw riv_e312(expr.brace.pos); // only arrays can be indexed
+	if (!value.is_array() && !value.is_str())
+		throw riv_e312(expr.brace.pos); // only arrays or string can be indexed
 
 	const Type index = evaluate(expr.index);
 
 	if (!index.is_num())
-		throw riv_e313(expr.brace.pos); // expect number as array index
+		throw riv_e313(expr.brace.pos); // expect number as index
 
-	const ArrayType array_type = array.as_array();
+	const bool is_array = value.is_array();
+
 	const int int_index = (int)index.as_num();
+	const int int_size  = (int)(is_array ? value.as_array().size() : value.as_str().size());
 
-	if (int_index < 0 || int_index >= (int)array_type.size())
+	if (int_index < 0 || int_index >= int_size)
 		throw riv_e314(expr.brace.pos); // index out of range
 
-	return array_type.at(int_index);
+	return is_array ? value.as_array().at(int_index) : std::string(1, value.as_str().at(int_index));
 }
 
 
@@ -458,7 +460,7 @@ Type Interpreter::assign_array_item(AssignmentExpression& assignment_expression,
 {
 	IdentifierExpression* identifier = nullptr;
 
-	if (!(identifier = dynamic_cast<IdentifierExpression*>(indexing->array)))
+	if (!(identifier = dynamic_cast<IdentifierExpression*>(indexing->expression)))
 		throw riv_e309(assignment_expression.op.pos);
 
 	const Type array = evaluate(identifier);

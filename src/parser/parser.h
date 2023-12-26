@@ -72,7 +72,10 @@ private:
 	// Expression Utilities
 
 	Expression             * desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
-	Expression             * finish_call(Expression* expr);
+	Expression             * finish_function_call(Expression* left);
+	Expression             * finish_package_resolution(Expression* left);
+	Expression             * finish_indexing(Expression* left);
+	Expression             * desugarize_argument_simplification(Expression* left);
 	std::vector<Expression*> array();
 
 

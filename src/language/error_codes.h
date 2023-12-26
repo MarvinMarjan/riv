@@ -60,6 +60,7 @@ Exception riv_e225(const TokenPosition& pos) noexcept; // expect package member 
 Exception riv_e226(const TokenPosition& pos) noexcept; // expect "else" after left expression of ternary expression
 Exception riv_e227(const TokenPosition& pos) noexcept; // expect "]" to close array
 Exception riv_e228(const TokenPosition& pos) noexcept; // expect "]" to close indexing
+Exception riv_e229(const TokenPosition& pos) noexcept; // expect call expression after ":"
 
 
 

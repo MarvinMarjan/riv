@@ -151,6 +151,10 @@ Exception riv_e228(const TokenPosition& pos) noexcept {
 	return { "Expect \"]\" to close indexing.", pos, 228 };
 }
 
+Exception riv_e229(const TokenPosition& pos) noexcept {
+	return { "Expect call expression after \":\".", pos, 229 };
+}
+
 
 
 
@@ -219,11 +223,11 @@ Exception riv_e311(const TokenPosition& pos, const size_t limit) noexcept {
 }
 
 Exception riv_e312(const TokenPosition& pos) noexcept {
-	return { "Only arrays can be indexed.", pos, 312 };
+	return { "Only arrays or strings can be indexed.", pos, 312 };
 }
 
 Exception riv_e313(const TokenPosition& pos) noexcept {
-	return { "Expect number as array index.", pos, 313 };
+	return { "Expect number as index.", pos, 313 };
 }
 
 Exception riv_e314(const TokenPosition& pos) noexcept {

@@ -1,6 +1,7 @@
 function main()
 {
 	imut var names = ["marvin", "pedro", "lucas", "ana", "maria"];
+	imut var name = "peter";
 
 	names[0] = "marjan";
 	names[2] = "not lucas";
@@ -9,6 +10,7 @@ function main()
 	print names[2];
 
 	print names;
+	print name[4];
 
 	print main;
 }

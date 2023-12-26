@@ -84,7 +84,7 @@ std::string type_obj_to_string(const Type& type) noexcept
 {
 	switch (type.type())
 	{
-	case TypeIndex::Null: return "null";
+	case TypeIndex::Null:     return "null";
 
 	case TypeIndex::String:   return type.as_str();
 	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));

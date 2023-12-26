@@ -481,23 +481,16 @@ Expression* Parser::call()
 	while (true)
 	{
 		if (match({ TokenType::LeftParen }))
-			expr = finish_call(expr);
+			expr = finish_function_call(expr);
 
 		else if (match({ TokenType::ColonColon }))
-		{
-			const Token op = previous();
-			const Token identifier = consume(TokenType::Identifier, riv_e225(peek().pos));
-			expr = new PackageResolutionExpression(expr, identifier, op);
-		}
+			expr = finish_package_resolution(expr);
 
 		else if (match({ TokenType::LeftBrace }))
-		{
-			const Token brace = previous();
-			Expression* index = expression();
-			consume(TokenType::RightBrace, riv_e228(peek().pos));
+			expr = finish_indexing(expr);
 
-			return new IndexingExpression(expr, index, brace);
-		}
+		else if (match({ TokenType::Colon }))
+			expr = desugarize_argument_simplification(expr);
 
 		else
 			break;
@@ -548,10 +541,7 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 
 		// if invalid, skip
 		if (!statement)
-		{
-			advance();
 			continue;
-		}
 
 		statements.push_back(statement);
 	}
@@ -599,7 +589,7 @@ Expression* Parser::desugarize_assignment(Expression* const identifier, const To
 }
 
 
-Expression* Parser::finish_call(Expression* expr)
+Expression* Parser::finish_function_call(Expression* const left)
 {
 	const Token paren = previous();
 	std::vector<Expression*> arguments;
@@ -611,7 +601,42 @@ Expression* Parser::finish_call(Expression* expr)
 
 	consume(TokenType::RightParen, riv_e219(peek().pos)); // expect ")" after function arguments
 
-	return new CallExpression(expr, paren, arguments);
+	return new CallExpression(left, paren, arguments);
+}
+
+
+Expression* Parser::finish_package_resolution(Expression* const left)
+{
+	const Token op = previous();
+	const Token identifier = consume(TokenType::Identifier, riv_e225(peek().pos));
+
+	return new PackageResolutionExpression(left, identifier, op);
+}
+
+
+Expression* Parser::finish_indexing(Expression* const left)
+{
+	const Token brace = previous();
+	Expression* const index = expression();
+	consume(TokenType::RightBrace, riv_e228(peek().pos));
+
+	return new IndexingExpression(left, index, brace);
+}
+
+
+Expression* Parser::desugarize_argument_simplification(Expression* const left)
+{
+	const Token op = previous();
+	Expression* const right = expression();
+
+	CallExpression* call_expression;
+
+	if (!(call_expression = dynamic_cast<CallExpression*>(right)))
+		throw riv_e229(op.pos);
+
+	call_expression->arguments.insert(call_expression->arguments.cbegin(), left);
+
+	return call_expression;
 }
 
 

@@ -150,7 +150,7 @@ public:
 class IndexingExpression : public Expression
 {
 public:
-	IndexingExpression(Expression* array, Expression* index, const Token& brace);
+	IndexingExpression(Expression* expression, Expression* index, const Token& brace);
 
 
 	Type process(ExpressionProcessor& processor) override {
@@ -158,7 +158,7 @@ public:
 	}
 
 
-	Expression* array;
+	Expression* expression;
 	Expression* index;
 	Token       brace;
 };
