@@ -1,27 +1,8 @@
-var foo = "foo var";
-
-package person
-{
-	var name = "marvin";
-	var age = "14";
-	var gender = "male";
-
-	var inner_foo = foo;
-
-	function greet() {
-		print "hello, my name is " + name;
-	}
-}
+import inner;
 
 function main()
 {
-	print person::name;
-	print person::age;
-	print person::gender;
-
-	print person::inner_foo;
-
-	person::name = "lucas";
-
-	person::greet();
+	foo();
+	bar();
+	baz();
 }

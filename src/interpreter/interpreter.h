@@ -82,21 +82,22 @@ private:
 
 
 
+	// Statement Utilities
+
+
+	std::string get_path_from_import_symbols(const std::vector<Token>& symbols) const;
+	void import_file(const std::string& path) const noexcept;
+	void import_dir (const std::string& path) const noexcept;
+
+
+
 	// Expression Utilities
 
-	struct ArrayData
-	{
-		ArrayData(ArrayType& array, const size_t index)
-			: array(array), index(index) {}
 
-		ArrayType& array;
-		size_t index;
-	};
-
-	Type      assign_variable                   (const Token& identifier, const Type& value);
-	Type      assign_package_member             (AssignmentExpression& assignment_expression, PackageResolutionExpression* package_expression);
-	Type      assign_array_item                 (AssignmentExpression& assignment_expression, IndexingExpression* indexing);
-	Type      get_package_object_from_expression(PackageResolutionExpression& package_expression);
+	Type assign_variable                   (const Token& identifier, const Type& value);
+	Type assign_package_member             (AssignmentExpression& assignment_expression, PackageResolutionExpression* package_expression);
+	Type assign_array_item                 (AssignmentExpression& assignment_expression, IndexingExpression* indexing);
+	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
 
 
 

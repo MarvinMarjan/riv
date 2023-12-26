@@ -1,0 +1,5 @@
+import test2;
+
+function bar() {
+	print "at bar";
+}

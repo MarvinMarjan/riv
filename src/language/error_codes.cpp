@@ -119,8 +119,8 @@ Exception riv_e220(const TokenPosition& pos) noexcept {
 	return { "Cannot use \"return\" statement outside a function.", pos, 220 };
 }
 
-Exception riv_e221(const TokenPosition& pos) noexcept {
-	return { "Expect module path string after \"import\" statement.", pos, 221 };
+Exception riv_e221(const TokenPosition& pos, const std::string& after) noexcept {
+	return { "Expect symbols to import after " + after + ".", pos, 221 };
 }
 
 Exception riv_e222(const TokenPosition& pos) noexcept {
@@ -187,7 +187,7 @@ Exception riv_e303(const int expect, const int got, const TokenPosition& pos) no
 }
 
 Exception riv_e304(const TokenPosition& pos) noexcept {
-	return { "Invalid module path.", pos, 304 };
+	return { "Invalid import symbol.", pos, 304 };
 }
 
 Exception riv_e305(const std::string& identifier, const TokenPosition& pos, const TokenPosition& already_declared, const std::string& file_path) noexcept

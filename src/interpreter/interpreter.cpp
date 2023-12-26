@@ -141,23 +141,13 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
-	const std::filesystem::path import_path = statement.path.value.as_str() + ".riv";
+	const std::string path = get_path_from_import_symbols(statement.symbols);
 
-	if (!path_exists(import_path.string()))
-		throw riv_e304(statement.path.pos); // invalid module path
+	if (std::filesystem::is_regular_file(path))
+		import_file(path);
 
-	const SystemState old = sys_state();
-
-	init_state_using_srcfile(import_path.string());
-
-	Interpreter interpreter;
-	interpreter.importing_ = true; // interpret with import mode
-
-	interpreter.interpret(parse(scan(sys_state().strsource)));
-
-	environment->import(interpreter.environment->data());
-
-	init_state_using_copy(old);
+	else if (std::filesystem::is_directory(path))
+		import_dir(path);
 }
 
 
@@ -429,6 +419,66 @@ Type Interpreter::evaluate(Expression* const expr)
 		return {};
 
 	return expr->process(*this);
+}
+
+
+
+
+
+
+// ************* Statement Utilities *************
+
+std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& symbols) const
+{
+	std::string path;
+
+	for (const auto& symbol : symbols)
+	{
+		switch (symbol.type)
+		{
+		case TokenType::Identifier:
+			path += symbol.lexeme;
+
+			// check if exists any directory or any riv file
+			if (!path_exists(path) && !path_exists(path + ".riv"))
+				throw riv_e304(symbol.pos); // invalid import symbol
+
+			// at end?
+			if (&symbol != &symbols.back())
+				path += "/";
+
+			break;
+		}
+	}
+
+	if (!std::filesystem::is_directory(path))
+		path += ".riv";
+
+	return path;
+}
+
+
+void Interpreter::import_file(const std::string& path) const noexcept
+{
+	const SystemState old = sys_state();
+
+	init_state_using_srcfile(path);
+
+	Interpreter interpreter;
+	interpreter.importing_ = true; // interpret with import mode
+
+	interpreter.interpret(parse(scan(sys_state().strsource)));
+
+	environment->import(interpreter.environment->data());
+
+	init_state_using_copy(old);
+}
+
+
+void Interpreter::import_dir(const std::string& path) const noexcept
+{
+	for (const auto& file : std::filesystem::directory_iterator(path))
+		import_file(file.path().string());
 }
 
 

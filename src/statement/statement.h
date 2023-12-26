@@ -243,11 +243,12 @@ public:
 
 
 
+// todo: change the syntax
 // "import" [path] ";"
 class ImportStatement : public Statement
 {
 public:
-	explicit ImportStatement(const Token& path);
+	explicit ImportStatement(const std::vector<Token>& symbols);
 
 
 	void process(StatementProcessor& processor) override {
@@ -255,7 +256,7 @@ public:
 	}
 
 
-	Token path;
+	std::vector<Token> symbols;
 };
 
 

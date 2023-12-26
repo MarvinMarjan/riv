@@ -22,15 +22,15 @@ PrintStatement::PrintStatement(Expression* const value)
 
 VarStatement::VarStatement(const Token& name, Expression* const value, const Type::Mutability mutability)
 {
-	this->name = name;
-	this->value = value;
+	this->name       = name;
+	this->value      = value;
 	this->mutability = mutability;
 }
 
 
 IfStatement::IfStatement(Expression* const condition, Statement* const then_statement, Statement* const else_statement)
 {
-	this->condition = condition;
+	this->condition      = condition;
 	this->then_statement = then_statement;
 	this->else_statement = else_statement;
 }
@@ -46,9 +46,9 @@ WhileStatement::WhileStatement(Expression* const condition, Statement* const bod
 FunctionStatement::FunctionStatement(const Token& name, const std::vector<Token>& params,
 									 const std::vector<Statement*>& body, const Type::Mutability mutability)
 {
-	this->name = name;
-	this->params = params;
-	this->body = body;
+	this->name       = name;
+	this->params     = params;
+	this->body       = body;
 	this->mutability = mutability;
 }
 
@@ -59,14 +59,14 @@ ReturnStatement::ReturnStatement(Expression* const value)
 }
 
 
-ImportStatement::ImportStatement(const Token& path)
+ImportStatement::ImportStatement(const std::vector<Token>& symbols)
 {
-	this->path = path;
+	this->symbols = symbols;
 }
 
 
 PackageStatement::PackageStatement(const Token &name, const std::vector<Statement*>& declarations)
 {
-	this->name = name;
+	this->name         = name;
 	this->declarations = declarations;
 }

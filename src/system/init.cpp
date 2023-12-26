@@ -1,5 +1,7 @@
 #include <system/init.h>
 
+#include <filesystem>
+
 #include <specter/output/ostream.h>
 
 #include <scanner/scanner.h>
@@ -130,6 +132,9 @@ void srcf_init(const int, const char** argv)
 	const SystemState& state = sys_state();
 
 	init_state_using_srcfile(argv[1]);
+
+	// set the working directory to the source directory
+	std::filesystem::current_path(std::filesystem::absolute(state.source_path).parent_path());
 
 	run(state.strsource);
 }

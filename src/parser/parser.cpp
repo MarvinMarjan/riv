@@ -331,9 +331,17 @@ Statement* Parser::return_statement()
 
 Statement* Parser::import_statement()
 {
-	const Token path = consume(TokenType::String, riv_e221(peek().pos)); // expect module path string after "import" statement
+	std::vector<Token> symbols;
+
+	if (check(TokenType::SemiColon))
+		throw riv_e221(peek().pos, "\"import\" statement"); // expect symbol to import after ...
+
+	do {
+		symbols.push_back(consume(TokenType::Identifier, riv_e221(peek().pos, "\".\"")));
+	} while (match({ TokenType::Dot }));
+
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
-	return new ImportStatement(path);
+	return new ImportStatement(symbols);
 }
 
 
