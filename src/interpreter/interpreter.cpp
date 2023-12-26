@@ -1,5 +1,7 @@
 #include <interpreter/interpreter.h>
 
+#include <dlfcn.h>
+
 #include <filesystem>
 
 #include <specter/output/ostream.h>
@@ -141,13 +143,16 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
-	const std::string path = get_path_from_import_symbols(statement.symbols);
+	const std::filesystem::path path = get_path_from_import_symbols(statement.symbols);
 
-	if (std::filesystem::is_regular_file(path))
+	if (std::filesystem::is_directory(path))
+		import_dir(path);
+
+	else if (path.extension() == ".riv")
 		import_file(path);
 
-	else if (std::filesystem::is_directory(path))
-		import_dir(path);
+	else if (path.extension() == ".so")
+		import_lib(path);
 }
 
 
@@ -440,7 +445,7 @@ std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& 
 			path += symbol.lexeme;
 
 			// check if exists any directory or any riv file
-			if (!path_exists(path) && !path_exists(path + ".riv"))
+			if (!path_exists(path) && !path_exists(path + ".riv") && !path_exists(path + ".so"))
 				throw riv_e304(symbol.pos); // invalid import symbol
 
 			// at end?
@@ -451,8 +456,14 @@ std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& 
 		}
 	}
 
-	if (!std::filesystem::is_directory(path))
-		path += ".riv";
+	if (std::filesystem::is_directory(path))
+		return path;
+
+	if (std::filesystem::is_regular_file(path + ".riv"))
+		return path + ".riv";
+
+	if (std::filesystem::is_regular_file(path + ".so"))
+		return path + ".so";
 
 	return path;
 }
@@ -479,6 +490,14 @@ void Interpreter::import_dir(const std::string& path) const noexcept
 {
 	for (const auto& file : std::filesystem::directory_iterator(path))
 		import_file(file.path().string());
+}
+
+
+void Interpreter::import_lib(const std::string& path) const noexcept
+{
+	void* lib = dlopen(path.c_str(), RTLD_LAZY);
+
+	// todo
 }
 
 

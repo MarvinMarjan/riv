@@ -1,8 +1,4 @@
-import inner;
-
 function main()
 {
-	foo();
-	bar();
-	baz();
+
 }
