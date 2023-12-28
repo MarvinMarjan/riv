@@ -42,6 +42,7 @@ INCLUDE_PATH = \
 
 
 STDLIB_INCLUDE_PATH = \
+	-I./src \
 	-I./src/stdlib
 
 
@@ -59,13 +60,14 @@ CPP_WARNINGS = -Wall -Wno-switch
 CPP_FLAGS = $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION) $(CPP_WARNINGS) $(DEBUG_FLAGS)
 LINK_FLAGS = $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
 
-CPP_STDLIB_FLAGS = -shared -O3 $(STDLIB_INCLUDE_PATH) $(CPP_VERSION)
+CPP_STDLIB_FLAGS = -shared -O3 $(STDLIB_INCLUDE_PATH) $(CPP_VERSION) -fPIC
 
 
 SOURCES = $(shell find src -name "*.cpp")
 OBJECTS = $(SOURCES:.cpp=.o)
 
-STDLIB_SOURCES = $(shell find src/stdlib/src -name "*.cpp")
+API_SOURCES = $(shell find src/language/api/ -name "*.cpp")
+STDLIB_SOURCES = $(shell find src/language/stdlib/src -name "*.cpp")
 STDLIB_SHARED = $(STDLIB_SOURCES:.cpp=.so)
 
 FULL_OBJECTS = $(addprefix $(OUT_PATH)/, $(notdir $(OBJECTS)))
@@ -109,7 +111,7 @@ build-stdlib: $(STDLIB_SHARED)
 
 $(STDLIB_SHARED): %.so: %.cpp
 	@ echo Compiling stdlib file $<
-	@ $(CC) $< $(CPP_STDLIB_FLAGS) -o $(addprefix $(STDLIB_OUTPATH)/, $(notdir $@))
+	@ $(CC) $< $(API_SOURCES) $(CPP_STDLIB_FLAGS) -o $(addprefix $(STDLIB_OUTPATH)/, $(notdir $@))
 
 
 
