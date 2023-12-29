@@ -24,6 +24,12 @@ void Environment::import(const std::map<std::string, IdentifierData>& other)
 }
 
 
+void Environment::import(const Library& library)
+{
+	libraries_.push_back(library);
+}
+
+
 
 
 void Environment::declare(const Token& name, const Type& value) {
@@ -33,7 +39,8 @@ void Environment::declare(const Token& name, const Type& value) {
 
 void Environment::declare(const std::string& name, const IdentifierData& data)
 {
-	if (data_.contains(name))
+	// is it already defined in this scope? (can't have variable redeclaration in the same scope)
+	if (defined_here(name))
 	{
 		const IdentifierData decldata = data_[name];
 	 	throw riv_e305(name, data.pos, decldata.pos, std::filesystem::path(decldata.filepath).filename().string());
@@ -44,21 +51,18 @@ void Environment::declare(const std::string& name, const IdentifierData& data)
 
 
 
-
 void Environment::assign(const Token& identifier, const Type& value)
 {
-	if (data_.contains(identifier.lexeme))
+	Type* val = nullptr;
+
+	// is it defined?
+	if ((val = defined(identifier.lexeme)))
 	{
-		if (data_[identifier.lexeme].value.mutability() != Type::Mutable)
+		// is it immutable?
+		if (val->mutability() == Type::Immutable)
 			throw riv_e310(identifier.pos); // cannot modify the value of an immutable variable
 
-		data_[identifier.lexeme].value = value;
-		return;
-	}
-
-	if (enclosing_)
-	{
-		enclosing_->assign(identifier, value);
+		*val = value;
 		return;
 	}
 
@@ -66,41 +70,72 @@ void Environment::assign(const Token& identifier, const Type& value)
 }
 
 
-Type Environment::get(const Token& identifier) const
-{
-	if (data_.contains(identifier.lexeme))
-		return data_.at(identifier.lexeme).value;
 
-	if (enclosing_)
-		return enclosing_->get(identifier);
+Type Environment::get(const Token& identifier)
+{
+	Type* value = nullptr;
+
+	// is it defined?
+	if ((value = defined(identifier.lexeme)))
+		return *value;
 
 	throw riv_e301(identifier.pos); // undefined identifier
 }
 
 
-Type Environment::get(const std::string &identifier) const noexcept
+Type Environment::get(const std::string& identifier) noexcept
 {
-	if (data_.contains(identifier))
-		return data_.at(identifier).value;
+	Type* value = nullptr;
 
-	if (enclosing_)
-		return enclosing_->get(identifier);
+	// is it defined?
+	if ((value = defined(identifier)))
+		return *value;
 
 	return {};
 }
 
 
 
-bool Environment::defined(const std::string& identifier) const noexcept
-{
-	if (data_.contains(identifier))
-		return true;
 
+bool Environment::is_symbol_in_libraries(const std::string& identifier) noexcept
+{
+	return is_symbol_in_libraries(identifier, false);
+}
+
+
+
+
+Type* Environment::defined(const std::string& identifier) noexcept
+{
+	// is it defined in the current scope?
+	if (data_.contains(identifier))
+		return &data_[identifier].value;
+
+	// is it defined in the enclosing scope?
 	if (enclosing_)
 		return enclosing_->defined(identifier);
 
-	return false;
+	// is it defined in the libraries loaded?
+	// (if it is, add it to "data_" to avoid symbol dynamic loading every time it's referenced)
+	if (is_symbol_in_libraries(identifier, true))
+		return &data_[identifier].value;
+
+	return nullptr;
 }
+
+
+Type* Environment::defined_here(const std::string& identifier) noexcept
+{
+	if (data_.contains(identifier))
+		return &data_[identifier].value;
+
+	// is global?
+	if (!enclosing_ && is_symbol_in_libraries(identifier, true))
+		return &data_[identifier].value;
+
+	return nullptr;
+}
+
 
 
 
@@ -112,4 +147,23 @@ Environment* Environment::top() noexcept
 		current = current->enclosing_;
 
 	return current;
+}
+
+
+
+
+bool Environment::is_symbol_in_libraries(const std::string& identifier, const bool add_to_data) noexcept
+{
+	LibSymbol symbol {};
+
+	for (const Library& library : libraries_)
+		if ((symbol = lib_load_riv_symbol(library.handler, identifier.c_str())).raw_symbol)
+		{
+			if (add_to_data)
+				data_.insert({ identifier, IdentifierData({}, symbol.symbol, library.path) });
+
+			return true;
+		}
+
+	return false;
 }

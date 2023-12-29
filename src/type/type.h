@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <type/non_assignable.h>
+#include <language/api/api.h>
 
 
 
@@ -16,7 +17,8 @@ enum class TypeIndex
 	Bool,
 	Array,
 	Function,
-	NonAssignable
+	NonAssignable,
+	Symbol
 };
 
 
@@ -33,7 +35,7 @@ class Type;
 
 
 using ArrayType = std::vector<Type>;
-using VariantType = std::variant<std::string, double, bool, ArrayType, RivFunction*, NonAssignable*>;
+using VariantType = std::variant<std::string, double, bool, ArrayType, RivFunction*, NonAssignable*, APISymbolFormat>;
 
 
 // returns a representation of a Type
@@ -76,26 +78,29 @@ public:
 	bool is_array()              const noexcept  { return is_typeof(TypeIndex::Array);         }
 	bool is_func()               const noexcept  { return is_typeof(TypeIndex::Function);      }
 	bool is_non_assignable()     const noexcept  { return is_typeof(TypeIndex::NonAssignable); }
+	bool is_symbol()             const noexcept  { return is_typeof(TypeIndex::Symbol); }
 
 
 	// const references
 
-	const std::string  & as_str()            const noexcept  { return std::get<std::string>(*this);           }
-	const double       & as_num()            const noexcept  { return std::get<double>(*this);                }
-	const bool         & as_bool()           const noexcept  { return std::get<bool>(*this);                  }
-	const ArrayType    & as_array()          const noexcept  { return std::get<ArrayType>(*this);             }
-	const RivFunction  * as_func()           const noexcept  { return std::get<RivFunction*>(*this);          }
-	const NonAssignable* as_non_assignable() const noexcept  { return std::get<NonAssignable*>(*this);        }
+	const std::string    & as_str()            const noexcept  { return std::get<std::string>(*this);           }
+	const double         & as_num()            const noexcept  { return std::get<double>(*this);                }
+	const bool           & as_bool()           const noexcept  { return std::get<bool>(*this);                  }
+	const ArrayType      & as_array()          const noexcept  { return std::get<ArrayType>(*this);             }
+	const RivFunction    * as_func()           const noexcept  { return std::get<RivFunction*>(*this);          }
+	const NonAssignable  * as_non_assignable() const noexcept  { return std::get<NonAssignable*>(*this);        }
+	const APISymbolFormat& as_symbol()         const noexcept  { return std::get<APISymbolFormat>(*this); }
 
 
 	// references
 
-	std::string  &       as_str()                  noexcept  { return std::get<std::string>(*this);           }
-	double       &       as_num()                  noexcept  { return std::get<double>(*this);                }
-	bool         &       as_bool()                 noexcept  { return std::get<bool>(*this);                  }
-	ArrayType    &       as_array()                noexcept  { return std::get<ArrayType>(*this);             }
-	RivFunction  *       as_func()                 noexcept  { return std::get<RivFunction*>(*this);          }
-	NonAssignable*       as_non_assignable()       noexcept  { return std::get<NonAssignable*>(*this);        }
+	std::string    &       as_str()                  noexcept  { return std::get<std::string>(*this);           }
+	double         &       as_num()                  noexcept  { return std::get<double>(*this);                }
+	bool           &       as_bool()                 noexcept  { return std::get<bool>(*this);                  }
+	ArrayType      &       as_array()                noexcept  { return std::get<ArrayType>(*this);             }
+	RivFunction    *       as_func()                 noexcept  { return std::get<RivFunction*>(*this);          }
+	NonAssignable  *       as_non_assignable()       noexcept  { return std::get<NonAssignable*>(*this);        }
+	APISymbolFormat&       as_symbol()               noexcept  { return std::get<APISymbolFormat>(*this); }
 
 
 

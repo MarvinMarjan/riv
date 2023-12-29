@@ -1,6 +1,8 @@
+#pragma once
+
 extern "C"
 {
-	enum TypeEnum
+	enum APITypeEnum
 	{
 		Null,
 		String,
@@ -8,7 +10,7 @@ extern "C"
 		Boolean
 	};
 
-	union TypeSet
+	union APITypeSet
 	{
 		bool        null_v;
 		const char* str_v;
@@ -16,16 +18,16 @@ extern "C"
 		bool        bool_v;
 	};
 
-	inline TypeSet new_type_set() {
-		return TypeSet{ true };
+	inline APITypeSet new_type_set() {
+		return APITypeSet{ true };
 	}
 
 
 
 	struct APIType
 	{
-		TypeSet  value;
-		TypeEnum current_type;
+		APITypeSet  value;
+		APITypeEnum current_type;
 	};
 
 	inline APIType new_type() {
@@ -45,7 +47,7 @@ extern "C"
 	void set_bool_value  (APIType* obj, bool boolean);
 
 
-	inline bool is_typeof(const APIType obj, const TypeEnum aPIType)
+	inline bool is_typeof(const APIType obj, const APITypeEnum aPIType)
 	{
 		return obj.current_type == aPIType;
 	}
@@ -65,11 +67,17 @@ extern "C"
 
 
 
-	struct CallData
+	struct APICallData
 	{
 		APIType* args;
 		APIType return_value;
 	};
 
-	inline CallData new_call_data() { return CallData{ nullptr, new_type() }; }
+	inline APICallData new_call_data() {
+		return APICallData{ nullptr, new_type() };
+	}
+
+
+
+	typedef void (*APISymbolFormat)(APICallData*);
 }

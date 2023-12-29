@@ -24,6 +24,7 @@ public:
 	Environment* global = nullptr;
 	Environment* environment = nullptr;
 
+
 private:
 	friend class RivFunction;
 
@@ -86,9 +87,9 @@ private:
 
 
 	std::string get_path_from_import_symbols(const std::vector<Token>& symbols) const;
-	void import_file(const std::string& path) const noexcept;
-	void import_dir (const std::string& path) const noexcept;
-	void import_lib (const std::string& path) const noexcept;
+	void import_file(const std::string& path) noexcept;
+	void import_dir (const std::string& path) noexcept;
+	void import_lib (const std::string& path) noexcept;
 
 
 

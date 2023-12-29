@@ -1,7 +1,5 @@
 #include <interpreter/interpreter.h>
 
-#include <dlfcn.h>
-
 #include <filesystem>
 
 #include <specter/output/ostream.h>
@@ -13,6 +11,7 @@
 #include <system/exception.h>
 #include <system/sysstate.h>
 #include <system/init.h>
+#include <system/lib.h>
 
 
 
@@ -380,7 +379,7 @@ Type Interpreter::process_call(CallExpression& expr)
 {
 	Type callee = evaluate(expr.callee);
 
-	if (!callee.is_func())
+	if (!callee.is_func() && !callee.is_symbol())
 		throw riv_e302(expr.paren.pos); // only functions can be called
 
 	std::vector<Type> arguments;
@@ -389,6 +388,8 @@ Type Interpreter::process_call(CallExpression& expr)
 		arguments.push_back(evaluate(arg));
 
 	RivFunction* func = callee.as_func();
+
+	// todo: finish symbol calling
 
 	const int arity = (int)func->arity();
 	const int argc = (int)arguments.size();
@@ -469,7 +470,7 @@ std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& 
 }
 
 
-void Interpreter::import_file(const std::string& path) const noexcept
+void Interpreter::import_file(const std::string& path) noexcept
 {
 	const SystemState old = sys_state();
 
@@ -486,18 +487,17 @@ void Interpreter::import_file(const std::string& path) const noexcept
 }
 
 
-void Interpreter::import_dir(const std::string& path) const noexcept
+void Interpreter::import_dir(const std::string& path) noexcept
 {
 	for (const auto& file : std::filesystem::directory_iterator(path))
 		import_file(file.path().string());
 }
 
 
-void Interpreter::import_lib(const std::string& path) const noexcept
+void Interpreter::import_lib(const std::string& path) noexcept
 {
-	void* lib = dlopen(path.c_str(), RTLD_LAZY);
-
-	// todo
+	// add the lib to the global scope
+	global->import(load_library(path.c_str()));
 }
 
 

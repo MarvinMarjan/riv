@@ -5,10 +5,12 @@
 #include <string>
 
 #include <scanner/token.h>
+#include <system/lib.h>
 
 
 
 struct Exception;
+struct APICallData;
 
 
 class Environment
@@ -32,6 +34,7 @@ public:
 
 
 	void import(const std::map<std::string, IdentifierData>& other);
+	void import(const Library& library);
 
 
 	void declare(const Token& name, const Type& value);
@@ -39,10 +42,21 @@ public:
 
 	void assign(const Token& identifier, const Type& value);
 
-	Type get(const Token& identifier)       const;
-	Type get(const std::string& identifier) const noexcept;
+	Type get(const Token& identifier);
+	Type get(const std::string& identifier) noexcept;
 
-	bool defined(const std::string& identifier) const noexcept;
+
+	// returns true if "identifier" is defined in the libraries of "libraries_"
+	bool is_symbol_in_libraries(const std::string& identifier) noexcept;
+
+
+	// check if "identifier" is defined. if it is, then a pointer to it is returned.
+	// "nullptr" is returned otherwise
+	Type* defined     (const std::string& identifier) noexcept;
+
+	// same as "Environment::defined", but the search is limited to the current scope.
+	// (enclosing scopes are not searched)
+	Type* defined_here(const std::string& identifier) noexcept;
 
 
 	Environment* top() noexcept;
@@ -58,7 +72,15 @@ public:
 private:
 	friend class Interpreter;
 
+
+	// searches for "identifier" in all libraries loaded. if it was found, add it
+	// to "data_". if it was not found, do nothing. the return value tells when the symbol
+	// was found or not (true or false).
+	bool is_symbol_in_libraries(const std::string& identifier, bool add_to_data) noexcept;
+
+
 	std::map<std::string, IdentifierData> data_;
+	std::vector<Library> libraries_; // loaded shared libraries
 
 
 	Environment* enclosing_ = nullptr;

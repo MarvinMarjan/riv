@@ -73,6 +73,7 @@ std::string type_index_to_string(const TypeIndex type) noexcept
 	case TypeIndex::Number:   return "Number";
 	case TypeIndex::Bool:     return "Bool";
 	case TypeIndex::Array:    return "Array";
+	case TypeIndex::Symbol:
 	case TypeIndex::Function: return "Function";
 
 	default: return "undefined";
@@ -90,6 +91,7 @@ std::string type_obj_to_string(const Type& type) noexcept
 	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
 	case TypeIndex::Bool:     return bool_to_string(type.as_bool());
 	case TypeIndex::Array:    return "Array" + surround(std::to_string(type.as_array().size()), "(", ")");
+	case TypeIndex::Symbol:
 	case TypeIndex::Function: return "Function " + qt(type.as_func()->declaration.name.lexeme) + "";
 	}
 
