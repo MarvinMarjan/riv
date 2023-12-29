@@ -6,7 +6,7 @@
 
 extern "C"
 {
-	void lib_println(CallData* data)
+	void rlib_println(CallData* data)
 	{
 		printf("%s", to_string(data->args[0]));
 	}
