@@ -10,4 +10,6 @@ extern "C"
 	{
 		printf("%s", to_string(data->args[0]));
 	}
+
+	size_t rlib_println_arity = 1;
 }

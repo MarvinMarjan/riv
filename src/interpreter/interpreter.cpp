@@ -19,6 +19,9 @@ Interpreter::Interpreter()
 {
 	environment = new Environment;
 	global = environment;
+
+	// test
+	import_lib("/home/marvin/Documentos/program/cpp/riv/lib/std/io.so");
 }
 
 
@@ -28,7 +31,10 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 	try
 	{
 		for (Statement* const statement : statements)
+		{
+			sp::println("ok");
 			execute(statement);
+		}
 
 		// do not execute the "main" function in import mode
 		if (importing_)
@@ -129,6 +135,7 @@ void Interpreter::process_function(FunctionStatement& statement)
 
 	object.set_mutability(statement.mutability);
 
+
 	environment->declare(statement.name, object);
 	environment->data_[statement.name.lexeme].value.as_func()->closure = environment;
 }
@@ -142,6 +149,8 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
+	// todo: try to improve this
+
 	const std::filesystem::path path = get_path_from_import_symbols(statement.symbols);
 
 	if (std::filesystem::is_directory(path))
@@ -387,17 +396,14 @@ Type Interpreter::process_call(CallExpression& expr)
 	for (Expression* const arg : expr.arguments)
 		arguments.push_back(evaluate(arg));
 
-	RivFunction* func = callee.as_func();
 
-	// todo: finish symbol calling
+	// calling
 
-	const int arity = (int)func->arity();
-	const int argc = (int)arguments.size();
+	if (callee.is_func())
+		return call_function(callee, arguments, expr.paren.pos);
 
-	if (arity != argc)
-		throw riv_e303(arity, argc, expr.paren.pos); // expect ... arguments, got ...
-
-	return func->call(*this, arguments);
+	else if (callee.is_symbol())
+		return call_symbol(callee, arguments, expr.paren.pos);
 }
 
 
@@ -434,6 +440,22 @@ Type Interpreter::evaluate(Expression* const expr)
 
 // ************* Statement Utilities *************
 
+bool Interpreter::is_import_path_valid(const std::string& path) const noexcept
+{
+	return path_exists(path) || path_exists(path + ".riv") || path_exists(path + ".so");
+}
+
+
+bool Interpreter::is_import_path_valid_for_each_import_path(const std::string& path) const noexcept
+{
+	for (const std::string& import_path : sys_state().import_paths)
+		if (is_import_path_valid(std::filesystem::path(import_path) / path ))
+			return true;
+
+	return false;
+}
+
+
 std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& symbols) const
 {
 	std::string path;
@@ -445,8 +467,10 @@ std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& 
 		case TokenType::Identifier:
 			path += symbol.lexeme;
 
+			// todo: try to improve this
+
 			// check if exists any directory or any riv file
-			if (!path_exists(path) && !path_exists(path + ".riv") && !path_exists(path + ".so"))
+			if (!is_import_path_valid(path) && !is_import_path_valid_for_each_import_path(path))
 				throw riv_e304(symbol.pos); // invalid import symbol
 
 			// at end?
@@ -570,6 +594,43 @@ Type Interpreter::get_package_object_from_expression(PackageResolutionExpression
 		throw riv_e307(package_expression.op.pos); // expect package at left of "::"
 
 	return type_object;
+}
+
+
+
+
+Type Interpreter::call_function(Type& callee, const std::vector<Type>& arguments, const TokenPosition& paren_pos)
+{
+	RivFunction* func = callee.as_func();
+
+	const int arity = (int)func->arity();
+	const int argc  = (int)arguments.size();
+
+	if (arity != argc)
+		throw riv_e303(arity, argc, paren_pos); // expect ... arguments, got ...
+
+	return func->call(*this, arguments);
+}
+
+
+Type Interpreter::call_symbol(Type& callee, const std::vector<Type>& arguments, const TokenPosition& paren_pos)
+{
+	LibSymbol symbol = callee.as_symbol();
+
+	const int arity = (int)lib_get_arity_from_symbol(symbol.lib, symbol.name);
+	const int argc  = (int)arguments.size();
+
+	if (arity != argc)
+		throw riv_e303(arity, argc, paren_pos);
+
+	APICallData data = new_call_data();
+
+	data.args = type_objs_to_api_type_array(arguments);
+
+	// call it
+	symbol.symbol(&data);
+
+	return api_type_to_type_obj(data.return_value);
 }
 
 

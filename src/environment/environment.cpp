@@ -157,10 +157,10 @@ bool Environment::is_symbol_in_libraries(const std::string& identifier, const bo
 	LibSymbol symbol {};
 
 	for (const Library& library : libraries_)
-		if ((symbol = lib_load_riv_symbol(library.handler, identifier.c_str())).raw_symbol)
+		if ((symbol = lib_load_riv_symbol(library.handler, identifier)).raw_symbol)
 		{
 			if (add_to_data)
-				data_.insert({ identifier, IdentifierData({}, symbol.symbol, library.path) });
+				data_.insert({ identifier, IdentifierData({}, symbol, library.path) });
 
 			return true;
 		}

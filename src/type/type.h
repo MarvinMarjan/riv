@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <type/non_assignable.h>
-#include <language/api/api.h>
+#include <system/lib.h>
 
 
 
@@ -28,18 +28,27 @@ class RivPackage;
 enum class TokenType;
 
 
-std::string type_index_to_string(TypeIndex type) noexcept;
+std::string type_index_to_string(TypeIndex value) noexcept;
 
 
 class Type;
 
 
 using ArrayType = std::vector<Type>;
-using VariantType = std::variant<std::string, double, bool, ArrayType, RivFunction*, NonAssignable*, APISymbolFormat>;
+using VariantType = std::variant<std::string, double, bool, ArrayType, RivFunction*, NonAssignable*, LibSymbol>;
+
+
+inline bool operator==(const LibSymbol& a, const LibSymbol& b) noexcept { return a.raw_symbol == b.raw_symbol; }
 
 
 // returns a representation of a Type
-std::string type_obj_to_string(const Type& type) noexcept;
+std::string type_obj_to_string(const Type& value) noexcept;
+
+APIType  type_obj_to_api_type(const Type& value) noexcept;
+APIType* type_objs_to_api_type_array(const std::vector<Type>& values);
+
+Type     api_type_to_type_obj(const APIType& value) noexcept;
+
 
 
 // language types
@@ -89,7 +98,7 @@ public:
 	const ArrayType      & as_array()          const noexcept  { return std::get<ArrayType>(*this);             }
 	const RivFunction    * as_func()           const noexcept  { return std::get<RivFunction*>(*this);          }
 	const NonAssignable  * as_non_assignable() const noexcept  { return std::get<NonAssignable*>(*this);        }
-	const APISymbolFormat& as_symbol()         const noexcept  { return std::get<APISymbolFormat>(*this); }
+	const LibSymbol      & as_symbol()         const noexcept  { return std::get<LibSymbol>(*this); }
 
 
 	// references
@@ -100,7 +109,7 @@ public:
 	ArrayType      &       as_array()                noexcept  { return std::get<ArrayType>(*this);             }
 	RivFunction    *       as_func()                 noexcept  { return std::get<RivFunction*>(*this);          }
 	NonAssignable  *       as_non_assignable()       noexcept  { return std::get<NonAssignable*>(*this);        }
-	APISymbolFormat&       as_symbol()               noexcept  { return std::get<APISymbolFormat>(*this); }
+	LibSymbol      &       as_symbol()               noexcept  { return std::get<LibSymbol>(*this); }
 
 
 

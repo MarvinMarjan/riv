@@ -86,6 +86,8 @@ private:
 	// Statement Utilities
 
 
+	bool is_import_path_valid(const std::string& path) const noexcept;
+	bool is_import_path_valid_for_each_import_path(const std::string& path) const noexcept;
 	std::string get_path_from_import_symbols(const std::vector<Token>& symbols) const;
 	void import_file(const std::string& path) noexcept;
 	void import_dir (const std::string& path) noexcept;
@@ -99,7 +101,11 @@ private:
 	Type assign_variable                   (const Token& identifier, const Type& value);
 	Type assign_package_member             (AssignmentExpression& assignment_expression, PackageResolutionExpression* package_expression);
 	Type assign_array_item                 (AssignmentExpression& assignment_expression, IndexingExpression* indexing);
+
 	Type get_package_object_from_expression(PackageResolutionExpression& package_expression);
+
+	Type call_function(Type& callee, const std::vector<Type>& arguments, const TokenPosition& paren_pos);
+	Type call_symbol  (Type& callee, const std::vector<Type>& arguments, const TokenPosition& paren_pos);
 
 
 

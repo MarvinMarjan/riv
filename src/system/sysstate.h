@@ -21,6 +21,8 @@ struct SystemState
 	bool has_error;
 
 	size_t recursion_limit = 1000;
+
+	std::vector<std::string> import_paths = { "" };
 };
 
 

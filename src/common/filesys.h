@@ -23,6 +23,5 @@ std::string read_file(const std::string& path);
 std::vector<std::string> read_file_as_vec(const std::string& path);
 
 
-
 // checks if a file or path exists
 bool path_exists(const std::string& path) noexcept;

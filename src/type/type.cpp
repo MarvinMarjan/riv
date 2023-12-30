@@ -64,9 +64,9 @@ static std::string trim_irrelevant_doublestr_zeros(const std::string& strdouble)
 }
 
 
-std::string type_index_to_string(const TypeIndex type) noexcept
+std::string type_index_to_string(const TypeIndex value) noexcept
 {
-	switch (type)
+	switch (value)
 	{
 	case TypeIndex::Null:     return "Null";
 	case TypeIndex::String:   return "String";
@@ -81,23 +81,64 @@ std::string type_index_to_string(const TypeIndex type) noexcept
 }
 
 
-std::string type_obj_to_string(const Type& type) noexcept
+std::string type_obj_to_string(const Type& value) noexcept
 {
-	switch (type.type())
+	switch (value.type())
 	{
 	case TypeIndex::Null:     return "null";
 
-	case TypeIndex::String:   return type.as_str();
-	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(type.as_num()));
-	case TypeIndex::Bool:     return bool_to_string(type.as_bool());
-	case TypeIndex::Array:    return "Array" + surround(std::to_string(type.as_array().size()), "(", ")");
+	case TypeIndex::String:   return value.as_str();
+	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(value.as_num()));
+	case TypeIndex::Bool:     return bool_to_string(value.as_bool());
+	case TypeIndex::Array:    return "Array" + surround(std::to_string(value.as_array().size()), "(", ")");
 	case TypeIndex::Symbol:
-	case TypeIndex::Function: return "Function " + qt(type.as_func()->declaration.name.lexeme) + "";
+	case TypeIndex::Function: return "Function " + qt(value.as_func()->declaration.name.lexeme) + "";
 	}
 
 
 	return "undefined";
 }
+
+
+APIType type_obj_to_api_type(const Type& value) noexcept
+{
+	switch (value.type())
+	{
+	case TypeIndex::Null:   return new_null   ();
+	case TypeIndex::String: return new_string (value.as_str().c_str());
+	case TypeIndex::Number: return new_number (value.as_num());
+	case TypeIndex::Bool:   return new_boolean(value.as_bool());
+	}
+
+	return new_string("undefined");
+}
+
+
+APIType* type_objs_to_api_type_array(const std::vector<Type>& values)
+{
+	APIType* array = new APIType[values.size()];
+
+	for (size_t i = 0; i < values.size(); i++)
+		array[i] = type_obj_to_api_type(values[i]);
+
+	return array;
+}
+
+
+
+Type api_type_to_type_obj(const APIType& value) noexcept
+{
+	switch (value.current_type)
+	{
+	case APITypeEnum::Null:    return {};
+	case APITypeEnum::String:  return as_string(value);
+	case APITypeEnum::Number:  return as_number(value);
+	case APITypeEnum::Boolean: return as_boolean(value);
+	}
+
+	return "undefined";
+}
+
 
 
 Type::Type()

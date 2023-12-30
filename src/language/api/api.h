@@ -47,9 +47,9 @@ extern "C"
 	void set_bool_value  (APIType* obj, bool boolean);
 
 
-	inline bool is_typeof(const APIType obj, const APITypeEnum aPIType)
+	inline bool is_typeof(const APIType obj, const APITypeEnum type)
 	{
-		return obj.current_type == aPIType;
+		return obj.current_type == type;
 	}
 
 
@@ -69,7 +69,7 @@ extern "C"
 
 	struct APICallData
 	{
-		APIType* args;
+		APIType* args; // array of arguments
 		APIType return_value;
 	};
 
