@@ -1,124 +1,143 @@
-BUILD_PATH = build
-DEBUG_PATH = $(BUILD_PATH)/debug
-RELEASE_PATH = $(BUILD_PATH)/release
-
-STDLIB_OUTPATH = lib/std
-
-
-
-# define RELEASE to build with release configuration, debug will be used otherwise
-
-ifdef RELEASE
-	LINKING_MODE = -static
-	OPTIMIZATION = -O3
-	OUT_PATH = $(RELEASE_PATH)
-else
-	OPTIMIZATION = -Og
-	OUT_PATH = $(DEBUG_PATH)
-	DEBUG_FLAGS = -g3 -fno-omit-frame-pointer
-endif
-
-
-
-CC = g++
-CPP_VERSION = --std=c++20
-
-OUT_NAME = riv
-OUT_APP = $(OUT_PATH)/$(OUT_NAME)
-
 DEP_PATH = dep
 
-# dependencies
 SPECTER_PATH = $(DEP_PATH)/specter
-
-SPECTER_INCLUDE = $(SPECTER_PATH)/include
+SPECTER_INCLUDE_PATH = $(SPECTER_PATH)/include
 SPECTER_LIB_PATH = $(SPECTER_PATH)/lib
 SPECTER_LIB_NAME = specter
 
 
-INCLUDE_PATH = \
-	-I./src \
-	-I$(SPECTER_INCLUDE)
+NAME = riv
+BUILD_PATH = build
+DEBUG_PATH = $(BUILD_PATH)/debug
+RELEASE_PATH = $(BUILD_PATH)/release
+
+LIB_PATH = lib
+
+STDLIB_SOURCE_PATH = src/language/stdlib/src
+STDLIB_PATH = $(LIB_PATH)/std
+STDLIB_SOURCES = $(shell find $(STDLIB_SOURCE_PATH) -name "*.cpp")
+STDLIB_SHARED_LIBS = $(STDLIB_SOURCES:.cpp=.so)
 
 
-STDLIB_INCLUDE_PATH = \
-	-I./src \
-	-I./src/stdlib
+# release building by default
+
+ifdef DEBUG
+	OUTPUT_PATH = $(DEBUG_PATH)
+	CPP_OPTIMIZATION = -Og -fno-omit-frame-pointer -g
+	CPP_WARNINGS = -Wall -Wno-switch
+else
+	OUTPUT_PATH = $(RELEASE_PATH)
+	CPP_OPTIMIZATION = -O3
+	CPP_WARNINGS = -w
+endif
 
 
-LIBRARIES_PATH = \
-	-L$(SPECTER_LIB_PATH)
+APP_PATH = $(OUTPUT_PATH)/$(NAME)
 
 
-LIBRARIES = \
-	-l$(SPECTER_LIB_NAME)
+CC = g++
+CPP_VERSION = --std=c++20
+CPP_INCLUDE = -Isrc -I$(SPECTER_INCLUDE_PATH)
+CPP_LIBRARIES = -L$(SPECTER_LIB_PATH) -l$(SPECTER_LIB_NAME)
+CPP_COMPILER_FLAGS = $(CPP_VERSION) $(CPP_INCLUDE) $(CPP_OPTIMIZATION) $(CPP_WARNINGS)
+CPP_LINKING_FLAGS = $(CPP_LIBRARIES)
 
 
-CPP_WARNINGS = -Wall -Wno-switch
+# finds for every file with ".cpp" extension (ignores "stdlib" folder)
+SOURCES = $(shell find src -type d -name "stdlib" -prune -o -type f -name "*.cpp" -print)
 
-
-CPP_FLAGS = $(OPTIMIZATION) $(INCLUDE_PATH) $(CPP_VERSION) $(CPP_WARNINGS) $(DEBUG_FLAGS)
-LINK_FLAGS = $(LINKING_MODE) $(LIBRARIES_PATH) $(LIBRARIES)
-
-CPP_STDLIB_FLAGS = -shared -O3 $(STDLIB_INCLUDE_PATH) $(CPP_VERSION) -fPIC
-
-
-SOURCES = $(shell find src -name "*.cpp")
+# allows make to print the current file being compiled
 OBJECTS = $(SOURCES:.cpp=.o)
-
-API_SOURCES = $(shell find src/language/api/ -name "*.cpp")
-STDLIB_SOURCES = $(shell find src/language/stdlib/src -name "*.cpp")
-STDLIB_SHARED = $(STDLIB_SOURCES:.cpp=.so)
-
-FULL_OBJECTS = $(addprefix $(OUT_PATH)/, $(notdir $(OBJECTS)))
+FINAL_OBJECTS = $(addprefix $(OUTPUT_PATH)/, $(notdir $(OBJECTS)))
 
 
+.PHONY: all
+.PHONY: run
+.PHONY: runc
+.PHONY: build
+.PHONY: build-riv
+.PHONY: build-stdlib
+.PHONY: clean
+.PHONY: clean-build
+.PHONY: clean-stdlib
 
-runc: $(OUT_APP)
-	@ echo Running...
-	@ $(OUT_APP) $(SOURCE_FILE)
 
 
-run:
-	@ echo Running...
-	@ $(OUT_APP) $(SOURCE_FILE)
-
-
-# links object files into a executable
-.PHONY:
-$(OUT_APP) build: $(OBJECTS)
-	@ echo Linking objects: $(FULL_OBJECTS)
-	@ $(CC) $(FULL_OBJECTS) -o $(OUT_APP) $(LINK_FLAGS)
-	@ echo Application created at $(OUT_APP)
+all: build
 
 
 
 
-# compiles source files into objects
+
+# runs the application
+# define "RIV_SOURCE_FILE" to use a ".riv" file as source instead of using the REPL
+run: $(APP_PATH)
+	@ echo "Running..."
+	@ $(APP_PATH) $(RIV_SOURCE_FILE)
+
+
+runc: build-riv run
+
+
+
+
+
+build: build-riv build-stdlib
+
+$(APP_PATH):
+	@ $(MAKE) build-riv -s
+
+
+# links object files
+build-riv: $(OUTPUT_PATH) $(OBJECTS)
+	@ echo "Linking objects..."
+	@ $(CC) $(FINAL_OBJECTS) -o $(APP_PATH) $(CPP_LINKING_FLAGS)
+	@ echo "Output created at $(OUTPUT_PATH) as $(NAME)"
+
+
+# compiles source files
 $(OBJECTS): %.o: %.cpp
-	@ echo Compiling $<
-	@ $(CC) -c $< -o $(addprefix $(OUT_PATH)/, $(notdir $@)) $(CPP_FLAGS)
+	@ echo "Compiling source file ($<)..."
+	@ $(CC) -c $< -o $(OUTPUT_PATH)/$(notdir $@) $(CPP_COMPILER_FLAGS)
 
 
-.PHONY:
-analize:
-	@ make build -j 10 CC="include-what-you-use -Xiwyu --verbose=1"
-
-
-
-build-stdlib: $(STDLIB_SHARED)
-
-
-$(STDLIB_SHARED): %.so: %.cpp
-	@ echo Compiling stdlib file $<
-	@ $(CC) $< $(API_SOURCES) $(CPP_STDLIB_FLAGS) -o $(addprefix $(STDLIB_OUTPATH)/, $(notdir $@))
+# creates output build path
+$(OUTPUT_PATH):
+	@ echo "Creating output path ($@)..."
+	@ mkdir -p $@
 
 
 
 
 
-# cleans up build folder
-.PHONY:
-clean:
-	@ rm -r $(DEBUG_PATH)/*
-	@ rm -r $(RELEASE_PATH)/*
+build-stdlib: $(STDLIB_PATH) $(STDLIB_SHARED_LIBS)
+
+# compiles source files
+$(STDLIB_SHARED_LIBS): %.so: %.cpp
+	@ echo "Compiling stdlib source file ($<)..."
+	@ $(CC) $< -o $(STDLIB_PATH)/$(notdir $@) $(CPP_COMPILER_FLAGS) -shared
+
+
+# creates stdlib path
+$(STDLIB_PATH):
+	@ echo "Creating stdlib path ($@)..."
+	@ mkdir -p $@
+
+
+
+
+
+# removes all
+clean: clean-build clean-stdlib
+
+
+# only removes riv build files
+clean-build:
+	@ echo "Removing build directory ($(BUILD_PATH))..."
+	@ rm -r -f $(BUILD_PATH)
+
+
+# only removes riv's stdlib build files
+clean-stdlib:
+	@ echo "Removing stdlib directory ($(STDLIB_PATH))..."
+	@ rm -r -f $(STDLIB_PATH)
