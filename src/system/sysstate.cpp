@@ -6,8 +6,6 @@
 #include <common/string.h>
 #include <common/filesys.h>
 
-#include <specter/output/ostream.h>
-
 
 
 static SystemState s_sys_state;
@@ -34,7 +32,10 @@ void init_state_using_srcfile(const std::string& path) noexcept
 
 	s_sys_state = SystemState();
 
+//	s_sys_state.app_folder = std::filesystem::path(app_path).parent_path();
+
 	s_sys_state.source_path = fpath.string();
+//	s_sys_state.absolute_source_path_parent = std::filesystem::absolute(s_sys_state.source_path).parent_path();
 	s_sys_state.source_name = fpath.filename().string();
 
 	s_sys_state.strsource = content;
@@ -49,6 +50,8 @@ void init_state_using_srcfile(const std::string& path) noexcept
 void init_state_using_repl(const std::string& content) noexcept
 {
 	s_sys_state = SystemState();
+
+//	s_sys_state.app_folder = std::filesystem::current_path();
 
 	s_sys_state.source_name = "REPL";
 

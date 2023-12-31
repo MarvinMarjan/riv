@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <filesystem>
 
 #include <statement/statement.h>
 #include <expression/expression.h>
@@ -86,9 +87,7 @@ private:
 	// Statement Utilities
 
 
-	bool is_import_path_valid(const std::string& path) const noexcept;
-	bool is_import_path_valid_for_each_import_path(const std::string& path) const noexcept;
-	std::string get_path_from_import_symbols(const std::vector<Token>& symbols) const;
+	std::filesystem::path get_path_from_import_symbols(const std::vector<Token>& symbols) const;
 	void import_file(const std::string& path) noexcept;
 	void import_dir (const std::string& path) noexcept;
 	void import_lib (const std::string& path) noexcept;

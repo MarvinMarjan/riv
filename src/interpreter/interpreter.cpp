@@ -1,17 +1,14 @@
 #include <interpreter/interpreter.h>
 
-#include <filesystem>
-
 #include <specter/output/ostream.h>
 
 #include <language/error_codes.h>
 #include <type/function.h>
 #include <type/package.h>
-#include <common/filesys.h>
 #include <system/exception.h>
 #include <system/sysstate.h>
 #include <system/init.h>
-#include <system/lib.h>
+#include <common/filesys.h>
 
 
 
@@ -19,9 +16,6 @@ Interpreter::Interpreter()
 {
 	environment = new Environment;
 	global = environment;
-
-	// test
-	import_lib("/home/marvin/Documentos/program/cpp/riv/lib/std/io.so");
 }
 
 
@@ -31,10 +25,7 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 	try
 	{
 		for (Statement* const statement : statements)
-		{
-			sp::println("ok");
 			execute(statement);
-		}
 
 		// do not execute the "main" function in import mode
 		if (importing_)
@@ -149,7 +140,7 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
-	// todo: try to improve this
+//	std::filesystem::current_path(sys_state().app_folder);
 
 	const std::filesystem::path path = get_path_from_import_symbols(statement.symbols);
 
@@ -161,6 +152,8 @@ void Interpreter::process_import(ImportStatement& statement)
 
 	else if (path.extension() == ".so")
 		import_lib(path);
+
+//	std::filesystem::current_path(sys_state().absolute_source_path_parent);
 }
 
 
@@ -440,55 +433,42 @@ Type Interpreter::evaluate(Expression* const expr)
 
 // ************* Statement Utilities *************
 
-bool Interpreter::is_import_path_valid(const std::string& path) const noexcept
+
+std::filesystem::path Interpreter::get_path_from_import_symbols(const std::vector<Token>& symbols) const
 {
-	return path_exists(path) || path_exists(path + ".riv") || path_exists(path + ".so");
-}
+	std::filesystem::path path;
+	const std::vector<std::string> import_paths = sys_state().import_paths;
 
+	// only append the import path once
+	bool import_path_has_used = false;
 
-bool Interpreter::is_import_path_valid_for_each_import_path(const std::string& path) const noexcept
-{
-	for (const std::string& import_path : sys_state().import_paths)
-		if (is_import_path_valid(std::filesystem::path(import_path) / path ))
-			return true;
-
-	return false;
-}
-
-
-std::string Interpreter::get_path_from_import_symbols(const std::vector<Token>& symbols) const
-{
-	std::string path;
-
-	for (const auto& symbol : symbols)
+	for (const Token& token : symbols)
 	{
-		switch (symbol.type)
+		path /= token.lexeme;
+
+		if (path_exists(path))
+			continue;
+
+		// is there any import path?
+		if (!import_paths.empty() && !import_path_has_used)
 		{
-		case TokenType::Identifier:
-			path += symbol.lexeme;
+			for (const std::string& import_path : import_paths)
+			{
+				// todo: make this work
+				sp::println("path: ", (import_path / path).string());
+				sp::println("current: ", std::filesystem::current_path().string());
 
-			// todo: try to improve this
-
-			// check if exists any directory or any riv file
-			if (!is_import_path_valid(path) && !is_import_path_valid_for_each_import_path(path))
-				throw riv_e304(symbol.pos); // invalid import symbol
-
-			// at end?
-			if (&symbol != &symbols.back())
-				path += "/";
-
-			break;
+				if (path_exists(import_path / path))
+				{
+					import_path_has_used = true;
+					break;
+				}
+			}
 		}
+
+		else
+			throw riv_e304(token.pos); // invalid import symbol
 	}
-
-	if (std::filesystem::is_directory(path))
-		return path;
-
-	if (std::filesystem::is_regular_file(path + ".riv"))
-		return path + ".riv";
-
-	if (std::filesystem::is_regular_file(path + ".so"))
-		return path + ".so";
 
 	return path;
 }

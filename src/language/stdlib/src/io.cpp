@@ -8,7 +8,7 @@ extern "C"
 {
 	void rlib_println(APICallData* data)
 	{
-		printf("%s", to_string(data->args[0]));
+		printf("%s\n", to_string(data->args[0]));
 	}
 
 	size_t rlib_println_arity = 1;
