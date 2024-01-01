@@ -16,7 +16,7 @@ int main(const int argc, const char** argv)
 	{
 		// interactive mode
 		if (mode == InitMode::REPL)
-			repl_init();
+			repl_init(argc, argv);
 
 		// source file mode
 		else if (mode == InitMode::SourceFile)

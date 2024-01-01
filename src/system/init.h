@@ -31,7 +31,7 @@ void run(const std::string& source);
 
 
 // interactive init
-void repl_init();
+void repl_init(int argc, const char** argv);
 
 // source file init
 void srcf_init(int argc, const char** argv);

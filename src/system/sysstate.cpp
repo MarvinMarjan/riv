@@ -25,18 +25,21 @@ void init_state_using_copy(const SystemState& copy) noexcept
 }
 
 
-void init_state_using_srcfile(const std::string& path) noexcept
+void init_state_using_srcfile(const std::string& path, const int argc, const char** const argv) noexcept
 {
-	const std::filesystem::path fpath = path;
-	const std::string content = read_file(path);
+	const std::filesystem::path fs_path = path;
+	const std::string           content = read_file(path);
 
 	s_sys_state = SystemState();
 
-//	s_sys_state.app_folder = std::filesystem::path(app_path).parent_path();
+	s_sys_state.argv = argv;
+	s_sys_state.argc = argc;
 
-	s_sys_state.source_path = fpath.string();
-//	s_sys_state.absolute_source_path_parent = std::filesystem::absolute(s_sys_state.source_path).parent_path();
-	s_sys_state.source_name = fpath.filename().string();
+	s_sys_state.app_path = argv[0];
+
+	// make canonical path to improve readability
+	s_sys_state.source_path = std::filesystem::canonical(fs_path);
+	s_sys_state.source_name = fs_path.filename().string();
 
 	s_sys_state.strsource = content;
 	s_sys_state.vecsource = split(content, '\n');
@@ -47,11 +50,14 @@ void init_state_using_srcfile(const std::string& path) noexcept
 }
 
 
-void init_state_using_repl(const std::string& content) noexcept
+void init_state_using_repl(const std::string& content, const int argc, const char** const argv) noexcept
 {
 	s_sys_state = SystemState();
 
-//	s_sys_state.app_folder = std::filesystem::current_path();
+	s_sys_state.argv = argv;
+	s_sys_state.argc = argc;
+
+	s_sys_state.app_path = argv[0];
 
 	s_sys_state.source_name = "REPL";
 

@@ -76,7 +76,7 @@ void run(const std::string& source)
 
 
 
-void repl_init()
+void repl_init(const int argc, const char** argv)
 {
 	const SystemState& state = sys_state();
 
@@ -99,7 +99,7 @@ void repl_init()
 
 
 		// reload system state on every iteration
-		init_state_using_repl(source);
+		init_state_using_repl(source, argc, argv);
 
 
 		// processing
@@ -123,7 +123,7 @@ void repl_init()
 
 
 
-void srcf_init(const int, const char** argv)
+void srcf_init(const int argc, const char** argv)
 {
 	// checks if file exists
 	if (!path_exists(argv[1]))
@@ -131,10 +131,10 @@ void srcf_init(const int, const char** argv)
 
 	const SystemState& state = sys_state();
 
-	init_state_using_srcfile(argv[1]);
+	init_state_using_srcfile(argv[1], argc, argv);
 
 	// set the working directory to the source directory
-	std::filesystem::current_path(std::filesystem::absolute(state.source_path).parent_path());
+	std::filesystem::current_path(std::filesystem::canonical(state.source_path).parent_path());
 
 	run(state.strsource);
 }

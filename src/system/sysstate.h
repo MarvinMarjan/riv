@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 
 
@@ -10,11 +11,13 @@ enum class InitMode;
 
 struct SystemState
 {
-//	std::string app_folder;
+	const char** argv;
+	int          argc;
 
-	std::string source_path;                 // path of the ".riv" file
-//	std::string absolute_source_path_parent; // absolute parent path of the ".riv" file
-	std::string source_name;                 // ".riv" file name
+	std::filesystem::path app_path; // path to the executable
+
+	std::filesystem::path source_path; // path of the ".riv" file
+	std::string           source_name; // ".riv" file name
 
 	std::string              strsource; // source as a whole string
 	std::vector<std::string> vecsource; // source as a list of lines
@@ -34,7 +37,7 @@ void set_error_flag() noexcept;
 
 
 void init_state_using_copy   (const SystemState& copy)    noexcept;
-void init_state_using_srcfile(const std::string& path)    noexcept;
-void init_state_using_repl   (const std::string& content) noexcept;
+void init_state_using_srcfile(const std::string& path   , int argc, const char** argv) noexcept;
+void init_state_using_repl   (const std::string& content, int argc, const char** argv) noexcept;
 
 const SystemState& sys_state() noexcept;

@@ -140,7 +140,6 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
-//	std::filesystem::current_path(sys_state().app_folder);
 
 	const std::filesystem::path path = get_path_from_import_symbols(statement.symbols);
 
@@ -478,7 +477,7 @@ void Interpreter::import_file(const std::string& path) noexcept
 {
 	const SystemState old = sys_state();
 
-	init_state_using_srcfile(path);
+	init_state_using_srcfile(path, old.argc, old.argv);
 
 	Interpreter interpreter;
 	interpreter.importing_ = true; // interpret with import mode
