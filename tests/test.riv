@@ -2,6 +2,5 @@ import std.io;
 
 function main()
 {
-	println("hello, world");
-	println("it's working!!!");
+	println(2 == 3 ? "verdade" else "falso");
 }

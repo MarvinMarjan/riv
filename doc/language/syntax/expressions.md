@@ -21,6 +21,9 @@
 	- [Operator /=](#operator--6)
 - [Calling](#calling)
 - [Package Resolution](#package-resolution)
+- [Ternary](#ternary)
+- [Indexing](#indexing)
+- [Argument Simplification](#argument-simplification)
 
 
 **Expressions** are literal values (like `false` `"hello"` and `8`) or operations that returns a value.
@@ -167,3 +170,29 @@ See [Function Calling](/doc/language/features/functions.md#calling).
 `<package> "::" <package_member>`
 
 Searches for a identifier inside a package. [See More](/doc/language/features/packages.md).
+
+
+
+# Ternary
+
+`[condition] "?" [if_true_value] "else" [if_false_value]`
+
+A ternary expression is a compact way to execute conditions that returns a value.
+If the condition is true, `if_true_value` is returned, otherwise `if_false_value` is returned.
+
+
+# Indexing
+
+`[array:Array] "[" [index:Number] "]"`
+
+[See More](/doc/language/features/arrays.md).
+
+
+
+# Argument Simplification
+
+`[first_argument] ":" [function_call:Function]`
+
+Sends `first_argument` as the first argument to `function_call`.
+
+e.g. `5:negate()` is the same as `negate(5)`.
