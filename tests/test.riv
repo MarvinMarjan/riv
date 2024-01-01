@@ -3,4 +3,5 @@ import std.io;
 function main()
 {
 	println("hello, world");
+	println("it's working!!!");
 }

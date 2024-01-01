@@ -87,7 +87,9 @@ private:
 	// Statement Utilities
 
 
-	std::filesystem::path get_path_from_import_symbols(const std::vector<Token>& symbols) const;
+	static bool check_import_file_without_extension(std::filesystem::path& path) noexcept;
+	static std::filesystem::path get_path_from_import_symbols(const std::vector<Token>& symbols);
+
 	void import_file(const std::string& path) noexcept;
 	void import_dir (const std::string& path) noexcept;
 	void import_lib (const std::string& path) noexcept;

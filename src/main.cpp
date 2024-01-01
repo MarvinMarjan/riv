@@ -2,9 +2,6 @@
 
 #include <system/exception.h>
 
-#include <dlfcn.h>
-#include <language/api/api.h>
-
 
 
 int main(const int argc, const char** argv)

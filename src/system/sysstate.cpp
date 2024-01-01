@@ -35,9 +35,10 @@ void init_state_using_srcfile(const std::string& path, const int argc, const cha
 	s_sys_state.argv = argv;
 	s_sys_state.argc = argc;
 
-	s_sys_state.app_path = argv[0];
+	// make canonical paths to make sure it will work
 
-	// make canonical path to improve readability
+	s_sys_state.app_path = std::filesystem::canonical(argv[0]);
+
 	s_sys_state.source_path = std::filesystem::canonical(fs_path);
 	s_sys_state.source_name = fs_path.filename().string();
 
@@ -57,7 +58,7 @@ void init_state_using_repl(const std::string& content, const int argc, const cha
 	s_sys_state.argv = argv;
 	s_sys_state.argc = argc;
 
-	s_sys_state.app_path = argv[0];
+	s_sys_state.app_path = std::filesystem::canonical(argv[0]);
 
 	s_sys_state.source_name = "REPL";
 

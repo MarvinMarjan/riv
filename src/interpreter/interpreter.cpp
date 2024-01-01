@@ -140,6 +140,9 @@ void Interpreter::process_return(ReturnStatement& statement)
 
 void Interpreter::process_import(ImportStatement& statement)
 {
+	// restore current path to the app path.
+	// (current path is set to the ".riv" file folder on initialization)
+	std::filesystem::current_path(sys_state().app_path.parent_path());
 
 	const std::filesystem::path path = get_path_from_import_symbols(statement.symbols);
 
@@ -152,7 +155,7 @@ void Interpreter::process_import(ImportStatement& statement)
 	else if (path.extension() == ".so")
 		import_lib(path);
 
-//	std::filesystem::current_path(sys_state().absolute_source_path_parent);
+	std::filesystem::current_path(sys_state().source_path.parent_path());
 }
 
 
@@ -433,7 +436,21 @@ Type Interpreter::evaluate(Expression* const expr)
 // ************* Statement Utilities *************
 
 
-std::filesystem::path Interpreter::get_path_from_import_symbols(const std::vector<Token>& symbols) const
+bool Interpreter::check_import_file_without_extension(std::filesystem::path& path) noexcept
+{
+	std::string extension;
+
+	if (path_exists(path.string() + (extension = ".riv")) || path_exists(path.string() + (extension = ".so")))
+	{
+		path += extension;
+		return true;
+	}
+
+	return false;
+}
+
+
+std::filesystem::path Interpreter::get_path_from_import_symbols(const std::vector<Token>& symbols)
 {
 	std::filesystem::path path;
 	const std::vector<std::string> import_paths = sys_state().import_paths;
@@ -443,25 +460,35 @@ std::filesystem::path Interpreter::get_path_from_import_symbols(const std::vecto
 
 	for (const Token& token : symbols)
 	{
+		bool extension_added = false;
+
 		path /= token.lexeme;
 
-		if (path_exists(path))
+		// does the path exists? || is it a valid import file?
+		if (path_exists(path) || (extension_added = check_import_file_without_extension(path)))
+		{
+			// is it file? && is "token" the last token in "symbols"?
+			if (extension_added && &token == &symbols.back())
+				break;
+
+			else if (&token != &symbols.back())
+				throw riv_e304((&token + 1)->pos);
+
 			continue;
+		}
 
 		// is there any import path?
 		if (!import_paths.empty() && !import_path_has_used)
 		{
 			for (const std::string& import_path : import_paths)
 			{
-				// todo: make this work
-				sp::println("path: ", (import_path / path).string());
-				sp::println("current: ", std::filesystem::current_path().string());
+				if (!path_exists(import_path / path))
+					continue;
 
-				if (path_exists(import_path / path))
-				{
-					import_path_has_used = true;
-					break;
-				}
+				path = std::filesystem::canonical(import_path / path);
+				import_path_has_used = true;
+				break;
+
 			}
 		}
 

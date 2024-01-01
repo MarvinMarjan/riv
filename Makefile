@@ -18,6 +18,8 @@ STDLIB_PATH = $(LIB_PATH)/std
 STDLIB_SOURCES = $(shell find $(STDLIB_SOURCE_PATH) -name "*.cpp")
 STDLIB_SHARED_LIBS = $(STDLIB_SOURCES:.cpp=.so)
 
+API_SOURCES = $(shell find src/language/api -name "*.cpp")
+
 
 # release building by default
 
@@ -76,9 +78,6 @@ run: $(APP_PATH)
 	@ $(APP_PATH) $(RIV_SOURCE_FILE)
 
 
-runc: build-riv run
-
-
 
 
 
@@ -115,7 +114,7 @@ build-stdlib: $(STDLIB_PATH) $(STDLIB_SHARED_LIBS)
 # compiles source files
 $(STDLIB_SHARED_LIBS): %.so: %.cpp
 	@ echo "Compiling stdlib source file ($<)..."
-	@ $(CC) $< -o $(STDLIB_PATH)/$(notdir $@) $(CPP_COMPILER_FLAGS) -shared
+	@ $(CC) $< $(API_SOURCES) -o $(STDLIB_PATH)/$(notdir $@) $(CPP_COMPILER_FLAGS) -shared
 
 
 # creates stdlib path
