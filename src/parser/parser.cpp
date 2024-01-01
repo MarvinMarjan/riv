@@ -6,6 +6,7 @@
 #include <expression/expression.h>
 #include <common/vector.h>
 #include <language/riv.h>
+#include "specter/output/ostream.h"
 
 
 
@@ -26,10 +27,7 @@ std::vector<Statement*> Parser::parse()
 
 		// if it's not valid, jump
 		if (!statement)
-		{
-			advance();
 			continue;
-		}
 
 		statements.push_back(statement);
 	}
@@ -66,6 +64,9 @@ Statement* Parser::declaration(const bool force_declaration)
 
 		else if (!exists(lang_modifiers(), peek().type))
 			throw riv_e222(peek().pos); // expect declaration statement
+
+		else
+			advance();
 	}
 	catch (const Exception& e)
 	{
@@ -108,7 +109,10 @@ Statement* Parser::statement()
 
 	// is it modifier? (then ignore)
 	if (exists(lang_modifiers(), peek().type))
+	{
+		advance();
 		return nullptr;
+	}
 
 	return expression_statement();
 }
@@ -301,6 +305,7 @@ Statement* Parser::function_statement()
 
 
 	// body
+
 
 	consume(TokenType::LeftCurlyBrace, riv_e218(peek().pos)); // expect function body
 
