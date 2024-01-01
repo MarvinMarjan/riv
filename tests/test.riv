@@ -1,6 +1,0 @@
-import std.io;
-
-function main()
-{
-	println(2 == 3 ? "verdade" else "falso");
-}
