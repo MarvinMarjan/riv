@@ -243,8 +243,7 @@ public:
 
 
 
-// todo: change the syntax
-// "import" [path] ";"
+// "import" <symbol> ("." <symbol>)* ";"
 class ImportStatement : public Statement
 {
 public:
