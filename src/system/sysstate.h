@@ -13,7 +13,7 @@ enum class InitMode;
 struct SystemState
 {
 	const char** argv;
-	int    argc;
+	int          argc;
 
 	std::filesystem::path app_path; // path to the executable
 
@@ -23,13 +23,12 @@ struct SystemState
 	std::string              source_string; // source as a whole string
 	std::vector<std::string> source_lines;  // source as a list of lines
 
-	InitMode init_mode;
+	std::vector<std::string> import_paths = { "../../lib" };
 
-	bool has_error;
+	InitMode init_mode;
+	bool     has_error;
 
 	static constexpr size_t recursion_limit = 1000;
-
-	std::vector<std::string> import_paths = { "../../lib" };
 };
 
 
