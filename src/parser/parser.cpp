@@ -23,6 +23,7 @@ std::vector<Statement*> Parser::parse()
 
 	while (!at_end())
 	{
+		// only declarations on file/global scope
 		Statement* const statement = declaration(true);
 
 		// if it's not valid, jump
@@ -42,7 +43,7 @@ std::vector<Statement*> Parser::parse()
 
 // ************* Statements *************
 
-Statement* Parser::declaration(const bool force_declaration)
+Statement* Parser::declaration(const bool only_declarations)
 {
 	try
 	{
@@ -59,12 +60,13 @@ Statement* Parser::declaration(const bool force_declaration)
 			return import_statement();
 
 
-		if (!force_declaration)
+		if (!only_declarations)
 			return statement();
 
 		else if (!exists(lang_modifiers(), peek().type))
 			throw riv_e222(peek().pos); // expect declaration statement
 
+		// ignore if it's a modifier
 		else
 			advance();
 	}
@@ -142,8 +144,10 @@ Statement* Parser::print_statement()
 
 Statement* Parser::var_statement()
 {
+	const Token mutability_modifier = previous(2);
+
 	// mutable by default
-	const Type::Mutability mutability = Type::get_mutability_from_modifier(previous(2).type, Type::Mutable);
+	const Type::Mutability mutability = Type::get_mutability_from_modifier(mutability_modifier.type, Type::Mutable);
 
 	const Token name = consume(TokenType::Identifier, riv_e203(peek().pos)); // expect variable name after "var"
 	Expression* value = nullptr;
@@ -226,7 +230,7 @@ Statement* Parser::for_statement()
 	consume(TokenType::RightParen, riv_e211(peek().pos)); // expect ")" after "for" increment
 
 
-	// statement
+	// body
 
 	loop_depth_++;
 	Statement* body = this->statement();
@@ -265,7 +269,7 @@ Statement* Parser::loop_statement()
 Statement* Parser::break_statement()
 {
 	if (!loop_depth_)
-		throw riv_e212(previous().pos);
+		throw riv_e212(previous().pos); // cannot use "break" statement outside a loop
 
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new BreakStatement;
@@ -275,7 +279,7 @@ Statement* Parser::break_statement()
 Statement* Parser::continue_statement()
 {
 	if (!loop_depth_)
-		throw riv_e213(peek().pos);
+		throw riv_e213(peek().pos); // cannot use "continue" statement outside a loop
 
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
 	return new ContinueStatement;
@@ -284,8 +288,10 @@ Statement* Parser::continue_statement()
 
 Statement* Parser::function_statement()
 {
+	const Token mutability_modifier = previous(2);
+
 	// immutable by default
-	const Type::Mutability mutability = Type::get_mutability_from_modifier(previous(2).type, Type::Immutable);
+	const Type::Mutability mutability = Type::get_mutability_from_modifier(mutability_modifier.type, Type::Immutable);
 
 	const Token name = consume(TokenType::Identifier, riv_e214(peek().pos)); // expect function name after "function" statement
 
@@ -305,7 +311,6 @@ Statement* Parser::function_statement()
 
 
 	// body
-
 
 	consume(TokenType::LeftCurlyBrace, riv_e218(peek().pos)); // expect function body
 
@@ -342,7 +347,7 @@ Statement* Parser::import_statement()
 		throw riv_e221(peek().pos, "\"import\" statement"); // expect symbol to import after ...
 
 	do {
-		symbols.push_back(consume(TokenType::Identifier, riv_e221(peek().pos, "\".\"")));
+		symbols.push_back(consume(TokenType::Identifier, riv_e221(peek().pos, "\".\""))); // // expect symbol to import after ...
 	} while (match({ TokenType::Dot }));
 
 	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
@@ -355,7 +360,7 @@ Statement* Parser::package_statement()
 	const Token name = consume(TokenType::Identifier, riv_e223(peek().pos)); // expect package name
 
 	consume(TokenType::LeftCurlyBrace, riv_e224(peek().pos)); // expect package body
-	const std::vector<Statement*> declarations = block(true);
+	const std::vector<Statement*> declarations = block(true); // only declarations in a package
 
 	return new PackageStatement(name, declarations);
 }
@@ -379,12 +384,12 @@ Expression* Parser::ternary()
 
 	if (match({ TokenType::QuestionMark }))
 	{
-		Expression* left = ternary();
+		Expression* const left = ternary();
 
 		if (!match({ TokenType::Else }))
-			throw riv_e226(peek().pos);
+			throw riv_e226(peek().pos); // expect "else" after left expression of ternary expression
 
-		Expression* right = ternary();
+		Expression* const right = ternary();
 
 		return new TernaryExpression(expr, left, right);
 	}
@@ -407,7 +412,7 @@ Expression* Parser::assignment()
 		if (equal.type != TokenType::Equal)
 			value = desugarize_assignment(expr, equal, value);
 
-		return new AssignmentExpression(expr, equal, value);
+		expr = new AssignmentExpression(expr, equal, value);
 	}
 
 	return expr;
@@ -526,7 +531,7 @@ Expression* Parser::primary()
 
 	if (match({ TokenType::LeftParen }))
 	{
-		Expression* expr = expression();
+		Expression* const expr = expression();
 		consume(TokenType::RightParen, riv_e201(peek().pos)); // expect ")" to close grouping expression
 		return new GroupingExpression(expr);
 	}
@@ -541,7 +546,7 @@ Expression* Parser::primary()
 
 // ************* Statement Utilities *************
 
-std::vector<Statement*> Parser::block(const bool force_declaration)
+std::vector<Statement*> Parser::block(const bool only_declarations)
 {
 	std::vector<Statement*> statements;
 
@@ -550,7 +555,7 @@ std::vector<Statement*> Parser::block(const bool force_declaration)
 
 	while (!check(TokenType::RightCurlyBrace) && !at_end())
 	{
-		Statement* const statement = declaration(force_declaration);
+		Statement* const statement = declaration(only_declarations);
 
 		// if invalid, skip
 		if (!statement)
@@ -645,7 +650,7 @@ Expression* Parser::desugarize_argument_simplification(Expression* const left)
 	CallExpression* call_expression;
 
 	if (!(call_expression = dynamic_cast<CallExpression*>(right)))
-		throw riv_e229(op.pos);
+		throw riv_e229(op.pos); // expect call expression after ":"
 
 	call_expression->arguments.insert(call_expression->arguments.cbegin(), left);
 

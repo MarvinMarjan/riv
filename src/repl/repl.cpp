@@ -3,6 +3,7 @@
 #include <specter/output/color/painter/paint_rules.h>
 #include <specter/output/color/painter/match_data.h>
 
+#include <common/map.h>
 #include <language/riv.h>
 
 

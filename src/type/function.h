@@ -2,16 +2,21 @@
 
 #include <type/callable.h>
 #include <statement/statement.h>
-#include <environment/environment.h>
 
 
 
+class Environment;
+
+
+// implements the functionality of functions
 class RivFunction : public RivCallable
 {
 public:
+
+	// struct thrown when a ReturnStatement is reached
 	struct ReturnSignal
 	{
-		ReturnSignal(const Type& value)
+		explicit ReturnSignal(const Type& value)
 			: value(value) {}
 
 		Type value;
@@ -28,7 +33,7 @@ public:
 
 
 	FunctionStatement declaration;
-	Environment*      closure;
+	Environment*      closure = nullptr;
 
 private:
 	size_t recursion_depth_ = 0;

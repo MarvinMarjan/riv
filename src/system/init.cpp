@@ -123,7 +123,7 @@ void repl_init(const int argc, const char** argv)
 
 
 
-void srcf_init(const int argc, const char** argv)
+void src_file_init(const int argc, const char** argv)
 {
 	// checks if file exists
 	if (!path_exists(argv[1]))
@@ -136,5 +136,5 @@ void srcf_init(const int argc, const char** argv)
 	// set the working directory to the source directory
 	std::filesystem::current_path(std::filesystem::canonical(state.source_path).parent_path());
 
-	run(state.strsource);
+	run(state.source_string);
 }

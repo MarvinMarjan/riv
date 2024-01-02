@@ -28,7 +28,7 @@ private:
 
 	// Statements
 
-	Statement* declaration(bool force_declaration = false);
+	Statement* declaration(bool only_declarations = false);
 	Statement* statement();
 	Statement* expression_statement();
 	Statement* block_statement();
@@ -65,16 +65,16 @@ private:
 	// Statement Utilities
 
 	// parses a block statement
-	std::vector<Statement*> block(bool force_declaration = false);
+	std::vector<Statement*> block(bool only_declarations = false);
 
 
 
 	// Expression Utilities
 
-	Expression             * desugarize_assignment(Expression* identifier, const Token& assignment_operator, Expression* value);
-	Expression             * finish_function_call(Expression* left);
-	Expression             * finish_package_resolution(Expression* left);
-	Expression             * finish_indexing(Expression* left);
+	Expression             * desugarize_assignment             (Expression* identifier, const Token& assignment_operator, Expression* value);
+	Expression             * finish_function_call              (Expression* left);
+	Expression             * finish_package_resolution         (Expression* left);
+	Expression             * finish_indexing                   (Expression* left);
 	Expression             * desugarize_argument_simplification(Expression* left);
 	std::vector<Expression*> array();
 

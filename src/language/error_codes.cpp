@@ -7,7 +7,7 @@
 
 
 
-extern std::string format_token_position(const TokenPosition& pos) noexcept;
+extern std::string token_position_to_string(const TokenPosition& pos) noexcept;
 
 
 
@@ -192,7 +192,7 @@ Exception riv_e304(const TokenPosition& pos) noexcept {
 
 Exception riv_e305(const std::string& identifier, const TokenPosition& pos, const TokenPosition& already_declared, const std::string& file_path) noexcept
 {
-	const std::string already_declared_location = qt(file_path) + surround(format_token_position(already_declared), " (", ")");
+	const std::string already_declared_location = qt(file_path) + surround(token_position_to_string(already_declared), " (", ")");
 	const std::string message = "Identifier " + qt(identifier) + " already declared at " + already_declared_location + ".";
 
 	return { message, pos, 305 };

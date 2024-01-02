@@ -34,17 +34,6 @@ std::string generate_error_indicator(const std::string& line, const TokenPositio
 }
 
 
-std::string format_token_position(const TokenPosition& pos) noexcept
-{
-	std::stringstream stream;
-
-	stream << "line " << pos.line + 1 << ", ";
-	stream << "col " << pos.begin << ":" << pos.end;
-
-	return stream.str();
-}
-
-
 std::string get_error_line(std::string& line, const TokenPosition& pos) noexcept
 {
 	std::stringstream stream;
@@ -109,7 +98,7 @@ std::string exception_to_string(const Exception& exception) noexcept
 	
 	// only initialize when the position is valid
 	if (pos_valid)
-		line = state.vecsource[pos.line];
+		line = state.source_lines[pos.line];
 	
 	std::stringstream stream;
 
@@ -123,7 +112,7 @@ std::string exception_to_string(const Exception& exception) noexcept
 
 	// error position
 	if (pos_valid)
-		stream << sp::clr(sp::bold) << "(" << format_token_position(pos) << ")" << sp::RESET_ALL;
+		stream << sp::clr(sp::bold) << "(" << token_position_to_string(pos) << ")" << sp::RESET_ALL;
 
 	stream << ": ";
 

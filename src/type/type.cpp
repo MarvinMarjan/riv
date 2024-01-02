@@ -7,58 +7,42 @@
 
 
 // searches the '.' index in a double value string representation
-static size_t get_doublestr_decimal_dot_index(const std::string& strdouble) noexcept
+static size_t get_double_string_decimal_dot_index(const std::string& double_string) noexcept
 {
-	size_t decimal_begin = 0;
-
-	for (size_t i = 0; i < strdouble.size(); i++)
-		if (strdouble[i] == '.')
-		{
-			decimal_begin = i;
-			break;
-		}
-
-	return decimal_begin;
+	return double_string.find_first_of('.');
 }
 
 
-static size_t get_last_relevant_decimal_index(const std::string& strdouble, const size_t decimal_begin) noexcept
+// searches for the last relevant decimal index (the last number that isn't a zero)
+static size_t get_last_relevant_decimal_index(const std::string& double_string) noexcept
 {
-	size_t last_relevant_decimal = decimal_begin;
-
-	// search for the last relevant decimal index
-	for (size_t i = last_relevant_decimal; i < strdouble.size(); i++)
-		if (strdouble[i] != '0')
-			last_relevant_decimal = i;
-
-	return last_relevant_decimal;
+	return double_string.find_last_not_of('0');
 }
 
 
 // erase irrelevant zeros
-static void erase_doublestr_decimal(std::string& strdouble, const size_t decimal_begin, const size_t last_relevant_decimal) noexcept
+static void erase_double_string_decimal(std::string& double_string, const size_t last_relevant_decimal_index, const size_t dot_index) noexcept
 {
-	// is last relevant decimal index the same as the '.' index?
-	if (last_relevant_decimal == decimal_begin)
-		strdouble.erase(last_relevant_decimal); // erase everything starting from '.'
-	else
-		strdouble.erase(last_relevant_decimal + 1); // erase everything after the last relevant decimal index
+	const size_t offset = last_relevant_decimal_index == dot_index ? 0 : 1;
+
+	// erase everything after the last relevant decimal index
+	double_string.erase(last_relevant_decimal_index + offset);
 }
 
 
 // remove irrelevant zeros from a double converted to string.
 // if "3.14000" is passed, the return will be "3.14"
-static std::string trim_irrelevant_doublestr_zeros(const std::string& strdouble) noexcept
+static std::string remove_double_string_irrelevant_zeros(const std::string& double_string) noexcept
 {
-	std::string trimmed = strdouble;
+	std::string trimmed = double_string;
 
 	// index of '.'
-	size_t decimal_begin = get_doublestr_decimal_dot_index(strdouble);
+	const size_t dot_index = get_double_string_decimal_dot_index(double_string);
 
 	// last decimal number different from zero
-	size_t last_relevant_decimal = get_last_relevant_decimal_index(strdouble, decimal_begin);
+	const size_t last_relevant_decimal_index = get_last_relevant_decimal_index(double_string);
 
-	erase_doublestr_decimal(trimmed, decimal_begin, last_relevant_decimal);
+	erase_double_string_decimal(trimmed, last_relevant_decimal_index, dot_index);
 
 	return trimmed;
 }
@@ -88,7 +72,7 @@ std::string type_obj_to_string(const Type& value) noexcept
 	case TypeIndex::Null:     return "null";
 
 	case TypeIndex::String:   return value.as_str();
-	case TypeIndex::Number:   return trim_irrelevant_doublestr_zeros(std::to_string(value.as_num()));
+	case TypeIndex::Number:   return remove_double_string_irrelevant_zeros(std::to_string(value.as_num()));
 	case TypeIndex::Bool:     return bool_to_string(value.as_bool());
 	case TypeIndex::Array:    return "Array" + surround(std::to_string(value.as_array().size()), "(", ")");
 	case TypeIndex::Symbol:
@@ -180,7 +164,7 @@ bool Type::truthy(const Type& value) noexcept
 		return false;
 
 	if (value.is_num())
-		return (bool) value.as_num();
+		return (bool)value.as_num();
 
 	if (value.is_bool())
 		return value.as_bool();

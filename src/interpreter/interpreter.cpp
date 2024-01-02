@@ -161,8 +161,8 @@ void Interpreter::process_import(ImportStatement& statement)
 
 void Interpreter::process_package(PackageStatement& statement)
 {
-	Environment* old_env = environment;
-	Environment* new_env = new Environment(old_env);
+	Environment* const old_env = environment;
+	Environment* const new_env = new Environment(old_env);
 
 	environment = new_env;
 
@@ -292,7 +292,8 @@ Type Interpreter::process_unary(UnaryExpression& expr)
 		return -right.as_num();
 
 		// !x
-	case TokenType::Bang: return !Type::truthy(right);
+	case TokenType::Bang:
+		return !Type::truthy(right);
 	}
 
 	return {};
@@ -359,9 +360,9 @@ Type Interpreter::process_identifier(IdentifierExpression& expr)
 
 Type Interpreter::process_assignment(AssignmentExpression& expr)
 {
-	IdentifierExpression       * identifier_expression = nullptr;
-	PackageResolutionExpression* package_expression    = nullptr;
-	IndexingExpression         * indexing_expression   = nullptr;
+	IdentifierExpression       * identifier_expression;
+	PackageResolutionExpression* package_expression   ;
+	IndexingExpression         * indexing_expression  ;
 
 
 	// variable assignment
@@ -413,7 +414,7 @@ Type Interpreter::process_package_resolution(PackageResolutionExpression& expr)
 
 Type Interpreter::process_ternary(TernaryExpression& expr)
 {
-	if (evaluate(expr.condition).as_bool())
+	if (Type::truthy(evaluate(expr.condition)))
 		return evaluate(expr.left);
 	else
 		return evaluate(expr.right);
@@ -472,7 +473,7 @@ std::filesystem::path Interpreter::get_path_from_import_symbols(const std::vecto
 				break;
 
 			else if (&token != &symbols.back())
-				throw riv_e304((&token + 1)->pos);
+				throw riv_e304((&token + 1)->pos); // invalid import symbol
 
 			continue;
 		}
@@ -509,7 +510,7 @@ void Interpreter::import_file(const std::string& path) noexcept
 	Interpreter interpreter;
 	interpreter.importing_ = true; // interpret with import mode
 
-	interpreter.interpret(parse(scan(sys_state().strsource)));
+	interpreter.interpret(parse(scan(sys_state().source_string)));
 
 	environment->import(interpreter.environment->data());
 
@@ -560,7 +561,7 @@ Type Interpreter::assign_array_item(AssignmentExpression& assignment_expression,
 	IdentifierExpression* identifier = nullptr;
 
 	if (!(identifier = dynamic_cast<IdentifierExpression*>(indexing->expression)))
-		throw riv_e309(assignment_expression.op.pos);
+		throw riv_e309(assignment_expression.op.pos); // only variables can be assigned
 
 	const Type array = evaluate(identifier);
 
@@ -572,7 +573,7 @@ Type Interpreter::assign_array_item(AssignmentExpression& assignment_expression,
 	if (!index.is_num())
 		throw riv_e313(indexing->brace.pos); // expect number as array index
 
-	const ArrayType array_type = array.as_array();
+	const ArrayType& array_type = array.as_array();
 	const int int_index = (int)index.as_num();
 
 	if (int_index < 0 || int_index >= (int)array_type.size())
@@ -607,7 +608,7 @@ Type Interpreter::get_package_object_from_expression(PackageResolutionExpression
 
 Type Interpreter::call_function(Type& callee, const std::vector<Type>& arguments, const TokenPosition& paren_pos)
 {
-	RivFunction* func = callee.as_func();
+	RivFunction* const func = callee.as_func();
 
 	const int arity = (int)func->arity();
 	const int argc  = (int)arguments.size();
@@ -623,11 +624,11 @@ Type Interpreter::call_symbol(Type& callee, const std::vector<Type>& arguments, 
 {
 	LibSymbol symbol = callee.as_symbol();
 
-	const int arity = (int)lib_get_arity_from_symbol(symbol.lib, symbol.name);
+	const int arity = (int) get_riv_symbol_arity(symbol.lib, symbol.name);
 	const int argc  = (int)arguments.size();
 
 	if (arity != argc)
-		throw riv_e303(arity, argc, paren_pos);
+		throw riv_e303(arity, argc, paren_pos); // expect ... arguments, got ...
 
 	APICallData data = new_call_data();
 

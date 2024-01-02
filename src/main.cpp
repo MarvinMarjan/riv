@@ -17,7 +17,7 @@ int main(const int argc, const char** argv)
 
 		// source file mode
 		else if (mode == InitMode::SourceFile)
-			srcf_init(argc, argv);
+			src_file_init(argc, argv);
 	}
 
 	catch (const Exception& e)

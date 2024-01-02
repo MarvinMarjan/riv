@@ -42,8 +42,8 @@ void Environment::declare(const std::string& name, const IdentifierData& data)
 	// is it already defined in this scope? (can't have variable redeclaration in the same scope)
 	if (defined_here(name))
 	{
-		const IdentifierData decldata = data_[name];
-	 	throw riv_e305(name, data.pos, decldata.pos, std::filesystem::path(decldata.filepath).filename().string());
+		const IdentifierData declaration_data = data_[name];
+	 	throw riv_e305(name, data.pos, declaration_data.pos, std::filesystem::path(declaration_data.filepath).filename().string());
 	}
 
 	data_.insert({ name, data });
@@ -53,7 +53,7 @@ void Environment::declare(const std::string& name, const IdentifierData& data)
 
 void Environment::assign(const Token& identifier, const Type& value)
 {
-	Type* val = nullptr;
+	Type* val;
 
 	// is it defined?
 	if ((val = defined(identifier.lexeme)))
@@ -73,7 +73,7 @@ void Environment::assign(const Token& identifier, const Type& value)
 
 Type Environment::get(const Token& identifier)
 {
-	Type* value = nullptr;
+	Type* value;
 
 	// is it defined?
 	if ((value = defined(identifier.lexeme)))
@@ -85,7 +85,7 @@ Type Environment::get(const Token& identifier)
 
 Type Environment::get(const std::string& identifier) noexcept
 {
-	Type* value = nullptr;
+	Type* value;
 
 	// is it defined?
 	if ((value = defined(identifier)))
@@ -157,7 +157,7 @@ bool Environment::is_symbol_in_libraries(const std::string& identifier, const bo
 	LibSymbol symbol {};
 
 	for (const Library& library : libraries_)
-		if ((symbol = lib_load_riv_symbol(library.handler, identifier)).raw_symbol)
+		if ((symbol = load_riv_symbol(library.handler, identifier)).raw_symbol)
 		{
 			if (add_to_data)
 				data_.insert({ identifier, IdentifierData({}, symbol, library.path) });

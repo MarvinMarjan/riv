@@ -67,8 +67,8 @@ public:
 	}
 
 
-	Expression* left = nullptr;
-	Token       op;
+	Expression* left  = nullptr;
+	Token       op             ;
 	Expression* right = nullptr;
 };
 
@@ -158,9 +158,9 @@ public:
 	}
 
 
-	Expression* expression;
-	Expression* index;
-	Token       brace;
+	Expression* expression = nullptr;
+	Expression* index      = nullptr;
+	Token       brace               ;
 };
 
 
@@ -197,8 +197,8 @@ public:
 
 
 	Expression*	identifier = nullptr;
-	Token       op;
-	Expression* value = nullptr;
+	Token       op                  ;
+	Expression* value      = nullptr;
 };
 
 
@@ -215,9 +215,9 @@ public:
 	}
 
 
-	Expression*              callee;
-	Token                    paren;
-	std::vector<Expression*> arguments;
+	Expression*              callee = nullptr;
+	Token                    paren           ;
+	std::vector<Expression*> arguments       ;
 };
 
 
@@ -234,9 +234,9 @@ public:
 	}
 
 
-	Expression* object;
-	Token       identifier;
-	Token       op;
+	Expression* object = nullptr;
+	Token       identifier      ;
+	Token       op              ;
 };
 
 

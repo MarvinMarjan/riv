@@ -8,6 +8,7 @@
 
 
 
+// enumeration representing every type in riv
 enum class TypeIndex
 {
 	Null = -1,
@@ -18,7 +19,7 @@ enum class TypeIndex
 	Array,
 	Function,
 	NonAssignable,
-	Symbol
+	Symbol // symbols loaded from a shared library. the same as "Function"
 };
 
 
@@ -41,9 +42,10 @@ using VariantType = std::variant<std::string, double, bool, ArrayType, RivFuncti
 inline bool operator==(const LibSymbol& a, const LibSymbol& b) noexcept { return a.raw_symbol == b.raw_symbol; }
 
 
-// returns a representation of a Type
+// returns a string representation of a Type
 std::string type_obj_to_string(const Type& value) noexcept;
 
+// converts a Type object to an APIType
 APIType  type_obj_to_api_type(const Type& value) noexcept;
 APIType* type_objs_to_api_type_array(const std::vector<Type>& values);
 
@@ -51,7 +53,7 @@ Type     api_type_to_type_obj(const APIType& value) noexcept;
 
 
 
-// language types
+// object that implements type functionality in riv
 class Type : public VariantType
 {
 public:

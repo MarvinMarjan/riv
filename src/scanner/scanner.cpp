@@ -110,19 +110,19 @@ void Scanner::scan_token()
 
 
 
-void Scanner::string(const char encloser)
+void Scanner::string(const char enclosing)
 {
-	add_token(TokenType::String, advance_string(encloser));
+	add_token(TokenType::String, advance_string(enclosing));
 }
 
 
-std::string Scanner::advance_string(const char encloser)
+std::string Scanner::advance_string(const char enclosing)
 {
 	std::string str_value;
 	char        current;
 
 	// while not reached at the end of the string
-	while ((current = peek()) != encloser)
+	while ((current = peek()) != enclosing)
 	{
 		// end reached and string was not closed
 		if (at_end())

@@ -42,8 +42,8 @@ void init_state_using_srcfile(const std::string& path, const int argc, const cha
 	s_sys_state.source_path = std::filesystem::canonical(fs_path);
 	s_sys_state.source_name = fs_path.filename().string();
 
-	s_sys_state.strsource = content;
-	s_sys_state.vecsource = split(content, '\n');
+	s_sys_state.source_string = content;
+	s_sys_state.source_lines  = split(content, '\n');
 
 	s_sys_state.init_mode = InitMode::SourceFile;
 
@@ -62,8 +62,8 @@ void init_state_using_repl(const std::string& content, const int argc, const cha
 
 	s_sys_state.source_name = "REPL";
 
-	s_sys_state.strsource = content;
-	s_sys_state.vecsource = split(content, '\n');
+	s_sys_state.source_string = content;
+	s_sys_state.source_lines  = split(content, '\n');
 
 	s_sys_state.init_mode = InitMode::REPL;
 

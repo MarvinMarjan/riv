@@ -1,8 +1,10 @@
 #pragma once
 
-#include <environment/environment.h>
 #include <type/non_assignable.h>
 
+
+
+class Environment;
 
 
 class RivPackage : public NonAssignable

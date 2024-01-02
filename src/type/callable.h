@@ -8,6 +8,7 @@ class Interpreter;
 class Type;
 
 
+// interface for callable objects
 class RivCallable
 {
 public:

@@ -1,6 +1,5 @@
 #include <system/lib.h>
 
-#include <cstring>
 #include <dlfcn.h>
 
 
@@ -34,14 +33,17 @@ LibSymbol new_lib_symbol(void* const lib, const std::string& name, void* const s
 
 Library load_library(const std::string& path)
 {
-	void* lib = dlopen(path.c_str(), RTLD_LAZY);
+	void* const lib = dlopen(path.c_str(), RTLD_LAZY);
 
-	return { .path = path, .handler = lib };
+	return {
+		.path = path,
+		.handler = lib
+	};
 }
 
 
 
-LibSymbol lib_load_riv_symbol(void* const handler, const std::string& name) noexcept
+LibSymbol load_riv_symbol(void* const handler, const std::string& name) noexcept
 {
 	if (!handler)
 		return new_lib_symbol(handler, name, nullptr);
@@ -54,7 +56,7 @@ LibSymbol lib_load_riv_symbol(void* const handler, const std::string& name) noex
 }
 
 
-size_t lib_get_arity_from_symbol(void* const handler, const std::string& name) noexcept
+size_t get_riv_symbol_arity(void* const handler, const std::string& name) noexcept
 {
 	// invalid handler
 	if (!handler)

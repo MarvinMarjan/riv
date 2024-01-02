@@ -39,8 +39,8 @@ private:
 	// scans the token
 	void scan_token();
 
-	void        string        (char encloser); // processes a string token
-	std::string advance_string(char encloser);
+	void        string        (char enclosing); // processes a string token
+	std::string advance_string(char enclosing);
 	char        string_escape (char escape);   // processes a string token escape characters
 
 	void number()         noexcept; // processes a number token

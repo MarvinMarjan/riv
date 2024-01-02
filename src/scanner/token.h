@@ -1,9 +1,12 @@
 #pragma once
 
+#include <sstream>
+
 #include <type/type.h>
 
 
 
+// index of all tokens in riv
 enum class TokenType
 {
 	// operators
@@ -31,8 +34,7 @@ class TokenPosition
 {
 public:
 	TokenPosition() = default;
-	TokenPosition(const size_t line, const size_t begin, const size_t end)
-		: line(line), begin(begin), end(end), valid_(true) {}
+	TokenPosition(size_t line, size_t begin, size_t end);
 
 
 	bool valid() const noexcept { return valid_; }
@@ -43,19 +45,21 @@ public:
 	size_t end   = 0;
 
 private:
+
+	// is this position valid?
 	bool valid_ = false;
 };
+
+
+std::string token_position_to_string(const TokenPosition& pos) noexcept;
 
 
 
 struct Token
 {
 	Token() = default;
-	Token(const TokenType type, const std::string& lexeme, const Type& value, const TokenPosition& pos)
-		: type(type), lexeme(lexeme), value(value), pos(pos) {}
-
-	Token(const TokenType type, const std::string& lexeme, const Type& value, const size_t line, const size_t begin, const size_t end)
-		: Token(type, lexeme, value, { line, begin, end }) {}
+	Token(TokenType type, const std::string& lexeme, const Type& value, const TokenPosition& pos);
+	Token(TokenType type, const std::string& lexeme, const Type& value, size_t line, size_t begin, size_t end);
 
 	TokenType     type;
 	std::string   lexeme;
