@@ -64,6 +64,7 @@ extern "C"
 
 
 	const char* to_string(APIType obj);
+	const char* type_to_string(APIType obj);
 
 
 

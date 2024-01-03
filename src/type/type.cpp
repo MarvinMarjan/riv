@@ -3,6 +3,7 @@
 #include <common/string.h>
 #include <type/function.h>
 #include <type/package.h>
+#include "specter/output/ostream.h"
 
 
 
