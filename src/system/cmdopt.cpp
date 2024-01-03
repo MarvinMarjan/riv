@@ -17,7 +17,7 @@ static bool check_options(std::vector<CmdOption>& valid_options, std::vector<Cmd
 		if (option.flag)
 			*option.flag = true;
 
-		valid_options.push_back(option);
+		analyzed_options.push_back(option);
 
 		return true;
 	}

@@ -75,7 +75,7 @@ all: build
 # define "RIV_SOURCE_FILE" to use a ".riv" file as source instead of using the REPL
 run: $(APP_PATH)
 	@ echo "Running..."
-	@ $(APP_PATH) $(RIV_SOURCE_FILE)
+	@ $(APP_PATH) $(RIV_SOURCE_FILE) $(OPTS)
 
 
 
