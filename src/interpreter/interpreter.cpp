@@ -28,7 +28,7 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 			execute(statement);
 
 		// do not execute the "main" function in import mode
-		if (importing_)
+		if (importing_ || repl_mode_)
 			return;
 
 		Type main_func = environment->get("main");

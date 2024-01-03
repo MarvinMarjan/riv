@@ -21,7 +21,7 @@ class Statement;
 
 
 std::vector<Token>      scan (const std::string       & source);
-std::vector<Statement*> parse(const std::vector<Token>& source);
+std::vector<Statement*> parse(const std::vector<Token>& source, bool repl_mode = false);
 
 
 // runs the language from a source

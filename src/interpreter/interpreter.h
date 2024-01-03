@@ -22,6 +22,11 @@ public:
 	void interpret(const std::vector<Statement*>& statements);
 
 
+	void set_repl_mode(const bool enable) noexcept { repl_mode_ = enable; }
+
+	bool repl_mode() const noexcept { return repl_mode_; }
+
+
 	Environment* global = nullptr;
 	Environment* environment = nullptr;
 
@@ -117,4 +122,5 @@ private:
 
 
 	bool importing_ = false;
+	bool repl_mode_ = false;
 };

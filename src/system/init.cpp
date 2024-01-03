@@ -34,9 +34,10 @@ std::vector<Token> scan(const std::string& source)
 
 
 
-std::vector<Statement*> parse(const std::vector<Token>& source)
+std::vector<Statement*> parse(const std::vector<Token>& source, const bool repl_mode)
 {
 	Parser parser(source);
+	parser.set_repl_mode(repl_mode);
 
 	// parse the tokens
 	std::vector<Statement*> statements = parser.parse();
@@ -85,8 +86,11 @@ void repl_init(const int argc, const char** argv)
 
 	// interpreter should have program-time lifetime
 	Interpreter interpreter;
+	interpreter.set_repl_mode(true);
 
 	std::string source;
+
+	sp::println("Riv on REPL mode. Enter '.exit' to quit.");
 
 	while (true)
 	{
@@ -111,7 +115,7 @@ void repl_init(const int argc, const char** argv)
 			continue;
 
 		// parsing
-		std::vector<Statement*> statements = parse(tokens);
+		std::vector<Statement*> statements = parse(tokens, true);
 		
 		if (state.has_error)
 			continue;

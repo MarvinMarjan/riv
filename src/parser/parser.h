@@ -24,6 +24,11 @@ public:
 	std::vector<Statement*> parse();
 
 
+	void set_repl_mode(const bool enable) noexcept { repl_mode_ = enable; }
+
+	bool repl_mode() const noexcept { return repl_mode_; }
+
+
 private:
 
 	// Statements
@@ -106,6 +111,7 @@ private:
 
 
 	std::vector<Token> tokens_;
-
 	size_t current_;
+
+	bool repl_mode_ = false;
 };

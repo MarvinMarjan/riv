@@ -23,8 +23,8 @@ std::vector<Statement*> Parser::parse()
 
 	while (!at_end())
 	{
-		// only declarations on file/global scope
-		Statement* const statement = declaration(true);
+		// only declarations on file/global scope if "repl_mode_" is false
+		Statement* const statement = declaration(!repl_mode_);
 
 		// if it's not valid, jump
 		if (!statement)
