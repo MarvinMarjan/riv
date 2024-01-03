@@ -17,6 +17,7 @@ std::vector<CmdOption> g_sys_cmd_option_list = {
 
 void process_options(const std::vector<CmdOption>& options)
 {
+
 	for (const CmdOption& option : options)
 	{
 		if (option.name == "import")
