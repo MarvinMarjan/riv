@@ -2,12 +2,13 @@
 
 
 
-static void check_options(std::vector<CmdOption>& options, const std::string& option_name, const size_t index,
-						  const char** const argv, const int argc, const bool full_name) noexcept
+static bool check_options(std::vector<CmdOption>& valid_options, std::vector<CmdOption>& analyzed_options,
+							   const std::string& option_name, const size_t index,
+							   const char** const argv, const int argc, const bool full_name) noexcept
 {
-	for (CmdOption& option : options)
+	for (CmdOption& option : valid_options)
 	{
-		if (((full_name) ? option.name : std::string(1, option.ch_name)) != option_name)
+		if ((full_name ? option.name : option.abbrev) != option_name)
 			continue;
 
 		if (option.has_argument && index + 1 < argc)
@@ -15,13 +16,21 @@ static void check_options(std::vector<CmdOption>& options, const std::string& op
 
 		if (option.flag)
 			*option.flag = true;
+
+		valid_options.push_back(option);
+
+		return true;
 	}
+
+	return false;
 }
 
 
 
-void process_options(const int argc, const char** const argv, std::vector<CmdOption>& options) noexcept
+std::vector<CmdOption> get_cmd_options(int argc, const char** argv, std::vector<CmdOption>& valid_options) noexcept
 {
+	std::vector<CmdOption> analyzed_options;
+
 	for (size_t i = 0; i < argc; i++)
 	{
 		const std::string string_option = argv[i];
@@ -35,31 +44,12 @@ void process_options(const int argc, const char** const argv, std::vector<CmdOpt
 		const bool condition = string_option[1] == '-';
 
 		const size_t substr_index = condition ? 2 : 1;
-		const bool&   full_name    = condition;
+		const bool& full_name = condition;
 
 		const std::string option_name = string_option.substr(substr_index);
 
-		check_options(options, option_name, i, argv, argc, full_name);
+		check_options(valid_options, analyzed_options, option_name, i, argv, argc, full_name);
 	}
-}
 
-
-
-CmdOption& CmdOptionList::get_by_name(const std::string& name) noexcept
-{
-	for (CmdOption& option : *this)
-		if (option.name == name)
-			return option;
-
-	return back();
-}
-
-
-const CmdOption& CmdOptionList::get_by_name(const std::string& name) const noexcept
-{
-	for (const CmdOption& option : *this)
-		if (option.name == name)
-			return option;
-
-	return back();
+	return analyzed_options;
 }

@@ -5,7 +5,7 @@
 
 
 
-extern CmdOptionList g_sys_cmd_option_list;
+extern std::vector<CmdOption> g_sys_cmd_option_list;
 
 
 int main(const int argc, const char** argv)
@@ -13,7 +13,8 @@ int main(const int argc, const char** argv)
 	// mode in which system will be initialized
 	InitMode mode = get_init_mode(argc, argv);
 
-	process_options(argc, argv, g_sys_cmd_option_list);
+	// process command line arguments
+	process_options(get_cmd_options(argc, argv, g_sys_cmd_option_list));
 
 	try
 	{

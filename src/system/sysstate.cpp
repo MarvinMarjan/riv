@@ -1,8 +1,7 @@
 #include <system/sysstate.h>
 
-#include <filesystem>
-
 #include <system/init.h>
+#include <system/sysopt.h>
 #include <common/string.h>
 #include <common/filesys.h>
 
@@ -30,6 +29,8 @@ void init_state_using_srcfile(const std::string& path, const int argc, const cha
 	const std::filesystem::path fs_path = path;
 	const std::string           content = read_file(path);
 
+	const SystemOptions& options = sys_options();
+
 	s_sys_state = SystemState();
 
 	s_sys_state.argv = argv;
@@ -45,14 +46,20 @@ void init_state_using_srcfile(const std::string& path, const int argc, const cha
 	s_sys_state.source_string = content;
 	s_sys_state.source_lines  = split(content, '\n');
 
+	s_sys_state.import_paths.insert(s_sys_state.import_paths.end(), options.import_paths.cbegin(), options.import_paths.cend());
+
 	s_sys_state.init_mode = InitMode::SourceFile;
 
 	s_sys_state.has_error = false;
+
+	s_sys_state.recursion_limit = options.recursion_limit;
 }
 
 
 void init_state_using_repl(const std::string& content, const int argc, const char** const argv) noexcept
 {
+	const SystemOptions& options = sys_options();
+
 	s_sys_state = SystemState();
 
 	s_sys_state.argv = argv;
@@ -65,9 +72,13 @@ void init_state_using_repl(const std::string& content, const int argc, const cha
 	s_sys_state.source_string = content;
 	s_sys_state.source_lines  = split(content, '\n');
 
+	s_sys_state.import_paths.insert(s_sys_state.import_paths.end(), options.import_paths.cbegin(), options.import_paths.cend());
+
 	s_sys_state.init_mode = InitMode::REPL;
 
 	s_sys_state.has_error = false;
+
+	s_sys_state.recursion_limit = options.recursion_limit;
 }
 
 

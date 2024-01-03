@@ -8,7 +8,7 @@
 struct CmdOption
 {
 	std::string name        ;
-	char        ch_name     ;
+	std::string abbrev      ;
 	bool        has_argument;
 	bool*       flag        ;
 
@@ -16,15 +16,5 @@ struct CmdOption
 };
 
 
-void process_options(int argc, const char** argv, std::vector<CmdOption>& options) noexcept;
-
-
-
-class CmdOptionList : public std::vector<CmdOption>
-{
-public:
-	using std::vector<CmdOption>::vector;
-
-	      CmdOption& get_by_name(const std::string& name)       noexcept;
-	const CmdOption& get_by_name(const std::string& name) const noexcept;
-};
+// gets all valid_options passed by the command line. "valid_options" is a list of valid valid_options to get
+std::vector<CmdOption> get_cmd_options(int argc, const char** argv, std::vector<CmdOption>& valid_options) noexcept;
