@@ -51,7 +51,6 @@ private:
 
 	void process_expression (ExpressionStatement&) override;
 	void process_block      (BlockStatement     &) override;
-	void process_print      (PrintStatement     &) override;
 	void process_var        (VarStatement       &) override;
 	void process_if         (IfStatement        &) override;
 	void process_while      (WhileStatement     &) override;

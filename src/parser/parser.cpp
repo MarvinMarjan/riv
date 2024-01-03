@@ -85,9 +85,6 @@ Statement* Parser::statement()
 	if (match({ TokenType::LeftCurlyBrace }))
 		return block_statement();
 
-	if (match({ TokenType::Print }))
-		return print_statement();
-
 	if (match({ TokenType::If }))
 		return if_statement();
 
@@ -131,14 +128,6 @@ Statement* Parser::expression_statement()
 Statement* Parser::block_statement()
 {
 	return new BlockStatement(block());
-}
-
-
-Statement* Parser::print_statement()
-{
-	Expression* const value = expression();
-	consume(TokenType::SemiColon, riv_e202(peek().pos)); // expect ";" after statement
-	return new PrintStatement(value);
 }
 
 
@@ -690,7 +679,6 @@ void Parser::synchronize() noexcept
 
 		switch (peek().type)
 		{
-		case TokenType::Print:
 		case TokenType::Var:
 		case TokenType::Mut:
 		case TokenType::Imut:

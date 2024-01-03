@@ -11,7 +11,6 @@ class Expression;
 
 class ExpressionStatement;
 class BlockStatement;
-class PrintStatement;
 class VarStatement;
 class IfStatement;
 class WhileStatement;
@@ -31,7 +30,6 @@ public:
 
 	virtual void process_expression (ExpressionStatement&) = 0;
 	virtual void process_block      (BlockStatement     &) = 0;
-	virtual void process_print      (PrintStatement     &) = 0;
 	virtual void process_var        (VarStatement       &) = 0;
 	virtual void process_if         (IfStatement        &) = 0;
 	virtual void process_while      (WhileStatement     &) = 0;
@@ -90,24 +88,6 @@ public:
 
 
 	std::vector<Statement*> statements;
-};
-
-
-
-
-// "print" [expression] ";"
-class PrintStatement : public Statement
-{
-public:
-	explicit PrintStatement(Expression* value);
-
-
-	void process(StatementProcessor& processor) override {
-		processor.process_print(*this);
-	}
-
-
-	Expression* value = nullptr;
 };
 
 

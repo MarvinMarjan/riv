@@ -63,12 +63,6 @@ void Interpreter::process_block(BlockStatement& statement)
 }
 
 
-void Interpreter::process_print(PrintStatement& statement)
-{
-	sp::println(evaluate(statement.value).to_string());
-}
-
-
 void Interpreter::process_var(VarStatement& statement)
 {
 	Type value = evaluate(statement.value);

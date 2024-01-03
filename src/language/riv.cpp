@@ -32,7 +32,6 @@ static std::map<std::string, TokenType> s_operators =
 // all language keywords
 static std::map<std::string, TokenType> s_keywords =
 {
-	{"print"   , TokenType::Print    },
 	{"var"     , TokenType::Var      },
 	{"mut"     , TokenType::Mut      },
 	{"imut"    , TokenType::Imut     },

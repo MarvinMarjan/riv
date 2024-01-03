@@ -37,7 +37,6 @@ private:
 	Statement* statement();
 	Statement* expression_statement();
 	Statement* block_statement();
-	Statement* print_statement();
 	Statement* var_statement();
 	Statement* if_statement();
 	Statement* while_statement();

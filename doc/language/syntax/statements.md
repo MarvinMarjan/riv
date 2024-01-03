@@ -6,10 +6,6 @@
 	- [Expansion](#expansion-1)
 	- [About](#about-1)
 	- [Example](#example-1)
-- [`print` Statement](#print-statement)
-	- [Expansion](#expansion-2)
-	- [About](#about-2)
-	- [Example](#example-2)
 - [`var` Statement](#var-statement)
 	- [Expansion](#expansion-3)
 	- [About](#about-3)
@@ -122,29 +118,6 @@ var outer = "outer the block";
 
 print inner; // error
 ```
-
-
-
-
-
-# `print` Statement
-
-`"print" expression ";"`
-
-
-## Expansion
-
-`print expression;`
-
-
-## About
-
-Prints a value to the terminal.
-
-
-## Example
-
-`print "hello, world";`
 
 
 

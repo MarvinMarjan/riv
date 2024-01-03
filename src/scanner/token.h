@@ -24,7 +24,7 @@ enum class TokenType
 
 	// keywords
 
-	Print, Var, Mut, Imut, If, Else, While, For, Loop, Break, Continue,
+	Var, Mut, Imut, If, Else, While, For, Loop, Break, Continue,
 	Function, Return, Import, Package
 };
 

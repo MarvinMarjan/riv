@@ -14,12 +14,6 @@ BlockStatement::BlockStatement(const std::vector<Statement*>& statements)
 }
 
 
-PrintStatement::PrintStatement(Expression* const value)
-{
-	this->value = value;
-}
-
-
 VarStatement::VarStatement(const Token& name, Expression* const value, const Type::Mutability mutability)
 {
 	this->name       = name;
