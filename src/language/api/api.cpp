@@ -1,13 +1,12 @@
 #include <cstdio>
 #include <cstring>
-#include <cstdint>
 #include <cstdlib>
 
 #include <language/api/api.h>
 
 
 
-int get_last_relevant_decimal_index(const char* text)
+static int get_last_relevant_decimal_index(const char* text)
 {
 	const int size = (int)strlen(text);
 
@@ -19,7 +18,7 @@ int get_last_relevant_decimal_index(const char* text)
 }
 
 
-int get_decimal_dot_index(const char* text)
+static int get_decimal_dot_index(const char* text)
 {
 	const int size = (int)strlen(text);
 
@@ -28,6 +27,44 @@ int get_decimal_dot_index(const char* text)
 			return i;
 
 	return -1;
+}
+
+
+
+void add_array_item(APITypeArray* const array, const APIType item)
+{
+	const size_t new_size_bytes = sizeof(APIType) * (array->size + 1);
+
+	array->array = (APIType*)realloc(array->array, new_size_bytes);
+
+	array->size++;
+
+	array->array[array->size - 1] = item;
+}
+
+
+void rmv_array_item(APITypeArray* const array, const size_t index)
+{
+	const size_t new_size_bytes = sizeof(APIType) * (array->size - 1);
+
+	APIType* new_array = (APIType*)malloc(new_size_bytes);
+
+	for (size_t old_array_i = 0, new_array_i = 0; old_array_i < array->size; old_array_i++, new_array_i++)
+	{
+		if (old_array_i == index)
+		{
+			new_array_i--;
+			continue;
+		}
+
+		new_array[new_array_i] = array->array[old_array_i];
+	}
+
+	free(array->array);
+
+	array->size--;
+
+	array->array = new_array;
 }
 
 
@@ -64,6 +101,14 @@ APIType new_boolean(const bool init)
 }
 
 
+APIType new_array(const APITypeArray init)
+{
+	APIType value = new_type();
+	set_array_value(&value, init);
+	return value;
+}
+
+
 
 
 void set_null(APIType* const obj)
@@ -94,6 +139,13 @@ void set_bool_value(APIType* const obj, const bool boolean)
 }
 
 
+void set_array_value(APIType* const obj, const APITypeArray array)
+{
+	obj->value.array_v = array;
+	obj->current_type = Array;
+}
+
+
 
 
 const char* to_string(const APIType obj)
@@ -106,10 +158,11 @@ const char* to_string(const APIType obj)
 	case String:
 		return obj.value.str_v;
 
-	case Number: {
+	case Number:
+	{
 		// get the size needed to store
 		const int size = snprintf(nullptr, 0, "%f", obj.value.num_v);
-		char* strnum = new char[size];
+		char* strnum = (char*)malloc(size);
 
 		// stores the value on "strnum"
 		sprintf(strnum, "%f", obj.value.num_v);
@@ -129,7 +182,7 @@ const char* to_string(const APIType obj)
 		strncpy(r_strnum, strnum, index + offset);
 		free(strnum);
 
-		r_strnum[index + 1] = '\0';
+		r_strnum[index] = '\0';
 
 		return r_strnum;
 	}

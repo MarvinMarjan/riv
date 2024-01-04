@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 
 #include <language/api/api.h>
 
@@ -8,7 +9,7 @@ extern "C"
 {
 	void rlib_println(APICallData* data)
 	{
-		const APIType text = data->args[0];
+		const APIType text = data->args.array[0];
 
 		printf("%s\n", to_string(text));
 	}
@@ -20,7 +21,7 @@ extern "C"
 
 	void rlib_print(APICallData* data)
 	{
-		const APIType text = data->args[0];
+		const APIType text = data->args.array[0];
 
 		printf("%s", to_string(text));
 	}
@@ -33,8 +34,12 @@ extern "C"
 	void rlib_input(APICallData* data)
 	{
 		char* input;
+		size_t size = 0;
 
-		scanf("%m[^\n]", &input);
+		getline(&input, &size, stdin);
+
+		// remove the '\n' character read by "getline"
+		input[strlen(input) - 1] = '\0';
 
 		data->return_value = new_string(input);
 	}

@@ -114,7 +114,7 @@ build-stdlib: $(STDLIB_PATH) $(STDLIB_SHARED_LIBS)
 # compiles source files
 $(STDLIB_SHARED_LIBS): %.so: %.cpp
 	@ echo "Compiling stdlib source file ($<)..."
-	@ $(CC) $< $(API_SOURCES) -o $(STDLIB_PATH)/$(notdir $@) $(CPP_COMPILER_FLAGS) -shared
+	@ $(CC) $< $(API_SOURCES) -o $(STDLIB_PATH)/$(notdir $@) $(CPP_COMPILER_FLAGS) -shared -fPIC
 
 
 # creates stdlib path

@@ -93,18 +93,22 @@ APIType type_obj_to_api_type(const Type& value) noexcept
 	case TypeIndex::String: return new_string (value.as_str().c_str());
 	case TypeIndex::Number: return new_number (value.as_num());
 	case TypeIndex::Bool:   return new_boolean(value.as_bool());
+	case TypeIndex::Array:  return new_array(type_objs_to_api_type_array(value.as_array()));
 	}
 
 	return new_string("undefined");
 }
 
 
-APIType* type_objs_to_api_type_array(const std::vector<Type>& values)
+APITypeArray type_objs_to_api_type_array(const std::vector<Type>& values) noexcept
 {
-	APIType* array = new APIType[values.size()];
+	APITypeArray array = new_type_array();
 
-	for (size_t i = 0; i < values.size(); i++)
-		array[i] = type_obj_to_api_type(values[i]);
+	array.size = values.size();
+	array.array = new APIType[array.size];
+
+	for (size_t i = 0; i < array.size; i++)
+		array.array[i] = type_obj_to_api_type(values[i]);
 
 	return array;
 }
@@ -119,9 +123,22 @@ Type api_type_to_type_obj(const APIType& value) noexcept
 	case APITypeEnum::String:  return as_string(value);
 	case APITypeEnum::Number:  return as_number(value);
 	case APITypeEnum::Boolean: return as_boolean(value);
+	case APITypeEnum::Array:   return api_type_array_to_type_obj(as_array(value));
 	}
 
 	return "undefined";
+}
+
+
+
+Type api_type_array_to_type_obj(const APITypeArray& array) noexcept
+{
+	ArrayType type_obj;
+
+	for (size_t i = 0; i < array.size; i++)
+		type_obj.push_back(api_type_to_type_obj(array.array[i]));
+
+	return type_obj;
 }
 
 

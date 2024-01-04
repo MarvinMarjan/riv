@@ -46,10 +46,11 @@ inline bool operator==(const LibSymbol& a, const LibSymbol& b) noexcept { return
 std::string type_obj_to_string(const Type& value) noexcept;
 
 // converts a Type object to an APIType
-APIType  type_obj_to_api_type(const Type& value) noexcept;
-APIType* type_objs_to_api_type_array(const std::vector<Type>& values);
+APIType      type_obj_to_api_type(const Type& value) noexcept;
+APITypeArray type_objs_to_api_type_array(const std::vector<Type>& values) noexcept;
 
-Type     api_type_to_type_obj(const APIType& value) noexcept;
+Type api_type_to_type_obj      (const APIType& value) noexcept;
+Type api_type_array_to_type_obj(const APITypeArray& array) noexcept;
 
 
 

@@ -9,7 +9,7 @@ extern "C"
 {
 	void rlib_typeof(APICallData* data)
 	{
-		const APIType value = data->args[0];
+		const APIType value = data->args.array[0];
 
 		data->return_value = new_string(type_to_string(value));
 	}
@@ -21,7 +21,7 @@ extern "C"
 
 	void rlib_to_string(APICallData* data)
 	{
-		const APIType value = data->args[0];
+		const APIType value = data->args.array[0];
 
 		data->return_value = new_string(to_string(value));
 	}

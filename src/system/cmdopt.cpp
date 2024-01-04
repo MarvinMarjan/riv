@@ -11,7 +11,7 @@ static bool check_options(std::vector<CmdOption>& valid_options, std::vector<Cmd
 		if ((full_name ? option.name : option.abbrev) != option_name)
 			continue;
 
-		if (option.has_argument && index + 1 < argc)
+		if (option.has_argument && index + 1 < (size_t)argc)
 			option.argument = argv[index + 1];
 
 		if (option.flag)
@@ -31,7 +31,7 @@ std::vector<CmdOption> get_cmd_options(int argc, const char** argv, std::vector<
 {
 	std::vector<CmdOption> analyzed_options;
 
-	for (size_t i = 0; i < argc; i++)
+	for (size_t i = 0; i < (size_t)argc; i++)
 	{
 		const std::string string_option = argv[i];
 
