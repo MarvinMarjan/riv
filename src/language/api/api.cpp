@@ -12,7 +12,19 @@ int get_last_relevant_decimal_index(const char* text)
 	const int size = (int)strlen(text);
 
 	for (int i = size - 1; i >= 0; i--)
-		if (text[i] != '0' && text[i] != '.')
+		if (text[i] != '0')
+			return i;
+
+	return -1;
+}
+
+
+int get_decimal_dot_index(const char* text)
+{
+	const int size = (int)strlen(text);
+
+	for (int i = size - 1; i >= 0; i--)
+		if (text[i] == '.')
 			return i;
 
 	return -1;
@@ -105,11 +117,16 @@ const char* to_string(const APIType obj)
 		// gets the last relevant decimal index
 		const int index = get_last_relevant_decimal_index(strnum);
 
+		int offset = 1;
+
+		if (index == get_decimal_dot_index(strnum))
+			offset = 0;
+
 		// allocates the new string
 		char* r_strnum = (char*)malloc(index + 2);
 
 		// copies only the needed part of the string and discards the other part (the irrelevant part)
-		strncpy(r_strnum, strnum, index + 1);
+		strncpy(r_strnum, strnum, index + offset);
 		free(strnum);
 
 		r_strnum[index + 1] = '\0';
