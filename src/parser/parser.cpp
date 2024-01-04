@@ -234,7 +234,7 @@ Statement* Parser::for_statement()
 	if (!condition)
 		condition = new LiteralExpression(true);
 
-	body = new WhileStatement(condition, body);
+	body = new WhileStatement(condition, body, true);
 
 	if (initializer)
 		body = new BlockStatement({ initializer, body });

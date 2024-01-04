@@ -137,7 +137,7 @@ public:
 class WhileStatement : public Statement
 {
 public:
-	WhileStatement(Expression* condition, Statement* body);
+	WhileStatement(Expression* condition, Statement* body, bool is_for_loop = false);
 
 
 	void process(StatementProcessor& processor) override {
@@ -147,6 +147,8 @@ public:
 
 	Expression* condition = nullptr;
 	Statement * body      = nullptr;
+
+	bool is_for_loop;
 };
 
 

@@ -30,10 +30,11 @@ IfStatement::IfStatement(Expression* const condition, Statement* const then_stat
 }
 
 
-WhileStatement::WhileStatement(Expression* const condition, Statement* const body)
+WhileStatement::WhileStatement(Expression* const condition, Statement* const body, const bool is_for_loop)
 {
 	this->condition = condition;
 	this->body = body;
+	this->is_for_loop = is_for_loop;
 }
 
 

@@ -96,6 +96,14 @@ void Interpreter::process_while(WhileStatement& statement)
 		}
 		catch (const ContinueStatement::Signal&)
 		{
+			if (statement.is_for_loop)
+			{
+				BlockStatement* block_statement = dynamic_cast<BlockStatement*>(statement.body);
+
+				// execute the increment
+				execute(block_statement->statements.back());
+			}
+
 			continue;
 		}
 	}
@@ -394,6 +402,8 @@ Type Interpreter::process_call(CallExpression& expr)
 
 	else if (callee.is_symbol())
 		return call_symbol(callee, arguments, expr.paren.pos);
+
+	return {};
 }
 
 
