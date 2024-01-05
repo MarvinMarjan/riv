@@ -23,7 +23,7 @@ function div(x, y) {
 
 ***fileB.riv***
 ```
-import "fileA.riv";
+import fileA;
 
 print sum(5, 10); // 15
 print mult(3.14159, mult(5, 5)); // ??
@@ -31,3 +31,5 @@ print mult(3.14159, mult(5, 5)); // ??
 
 
 In the code above, we have two files: ***fileA.riv*** and ***fileB.riv***, where ***fileB.riv*** imports ***fileA.riv***'s functions.
+
+The code above imports a `.riv` file. When importing `.riv` files, you don't need to specify the extension. You also can import entire folders. In this case, all `.riv` files inside it would be imported. For supporting easy language expansion, you also can import shared libraries ([See More](/doc/api/)).

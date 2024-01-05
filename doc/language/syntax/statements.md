@@ -7,49 +7,49 @@
 	- [About](#about-1)
 	- [Example](#example-1)
 - [`var` Statement](#var-statement)
+	- [Expansion](#expansion-2)
+	- [About](#about-2)
+	- [Example](#example-2)
+- [`if` / `else` Statement](#if--else-statement)
 	- [Expansion](#expansion-3)
 	- [About](#about-3)
 	- [Example](#example-3)
-- [`if` / `else` Statement](#if--else-statement)
+- [`while` Statement](#while-statement)
 	- [Expansion](#expansion-4)
 	- [About](#about-4)
 	- [Example](#example-4)
-- [`while` Statement](#while-statement)
+- [`loop` Statement](#loop-statement)
 	- [Expansion](#expansion-5)
 	- [About](#about-5)
 	- [Example](#example-5)
-- [`loop` Statement](#loop-statement)
+- [`for` Statement](#for-statement)
 	- [Expansion](#expansion-6)
 	- [About](#about-6)
 	- [Example](#example-6)
-- [`for` Statement](#for-statement)
+- [`break` Statement](#break-statement)
 	- [Expansion](#expansion-7)
 	- [About](#about-7)
 	- [Example](#example-7)
-- [`break` Statement](#break-statement)
+- [`continue` Statement](#continue-statement)
 	- [Expansion](#expansion-8)
 	- [About](#about-8)
 	- [Example](#example-8)
-- [`continue` Statement](#continue-statement)
+- [`function` Statement](#function-statement)
 	- [Expansion](#expansion-9)
 	- [About](#about-9)
 	- [Example](#example-9)
-- [`function` Statement](#function-statement)
+- [`return` Statement](#return-statement)
 	- [Expansion](#expansion-10)
 	- [About](#about-10)
 	- [Example](#example-10)
-- [`return` Statement](#return-statement)
+- [`import` Statement](#import-statement)
 	- [Expansion](#expansion-11)
 	- [About](#about-11)
 	- [Example](#example-11)
-- [`import` Statement](#import-statement)
+- [`package` Statement](#package-statement)
 	- [Expansion](#expansion-12)
 	- [About](#about-12)
 	- [Example](#example-12)
-- [`package` Statement](#package-statement)
-	- [Expansion](#expansion-13)
-	- [About](#about-13)
-	- [Example](#example-13)
 
 
 
@@ -442,12 +442,12 @@ print sum(5, -2);
 
 # `import` Statement
 
-`"import" [path] ";"`
+`"import" <symbol> ("." <symbol>)* ";"`
 
 
 ## Expansion
 
-`import path;`
+`import path.to.file;`
 
 
 ## About
@@ -457,7 +457,7 @@ Imports data from other source file. [See More](/doc/language/features/importing
 
 ## Example
 
-`import "path/to/my/file"`
+`import std.io`
 
 
 

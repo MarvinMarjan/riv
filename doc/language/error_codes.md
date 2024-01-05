@@ -1,22 +1,56 @@
-- [*227*: Expect "\]" to close array](#227-expect--to-close-array)
-- [*228*: Expect "\]" to close indexing](#228-expect--to-close-indexing)
-- [*229*: Expect call expression after ":"](#229-expect-call-expression-after-)
-	- [Runtime errors](#runtime-errors)
-		- [*300*: Operator "..." doesn't support operands of type: type1, type2, ...](#300-operator--doesnt-support-operands-of-type-type1-type2-)
-		- [*301*: Undefined indentifier "..."](#301-undefined-indentifier-)
-		- [*302*: Only functions can be called](#302-only-functions-can-be-called)
-		- [*303*: Expect ... arguments, got ...](#303-expect--arguments-got-)
-		- [*304*: Invalid module path](#304-invalid-module-path)
-		- [*305*: Identifier ... already declared at ...](#305-identifier--already-declared-at-)
-		- [*306*: Function "main" not declared](#306-function-main-not-declared)
-		- [*307*: Expect package at left of "::"](#307-expect-package-at-left-of-)
-		- [*308*: Invalid non-assignable type "..."](#308-invalid-non-assignable-type-)
-		- [*309*: Only variables can be assigned](#309-only-variables-can-be-assigned)
-		- [*310*: Cannot modify the value of an immutable variable](#310-cannot-modify-the-value-of-an-immutable-variable)
-		- [*311*: Recursion limit of ... exceeded](#311-recursion-limit-of--exceeded)
-		- [*312*: Only arrays can be indexed](#312-only-arrays-can-be-indexed)
-		- [*313*: Expect number as array index](#313-expect-number-as-array-index)
-		- [*314*: Index out of range](#314-index-out-of-range)
+- [Interpreter errors](#interpreter-errors)
+	- [*001*: Invalid source file](#001-invalid-source-file)
+- [Scanner errors](#scanner-errors)
+	- [*100*: Invalid token](#100-invalid-token)
+	- [*101*: Unterminated string](#101-unterminated-string)
+	- [*102*: Multi-line string not supported](#102-multi-line-string-not-supported)
+- [Parser errors](#parser-errors)
+	- [*200*: Expression expected](#200-expression-expected)
+	- [*201*: Expect ")" to close grouping expression](#201-expect--to-close-grouping-expression)
+	- [*202*: Expect ";" after statement](#202-expect--after-statement)
+	- [*203*: Expect variable name after "var" keyword](#203-expect-variable-name-after-var-keyword)
+	- [*204*: Expect "}" to close block statement](#204-expect--to-close-block-statement)
+	- [*205*: Expect "(" after "if" statement](#205-expect--after-if-statement)
+	- [*206*: Expect ")" after "if" condition](#206-expect--after-if-condition)
+	- [*207*: Expect "(" after "while" statement](#207-expect--after-while-statement)
+	- [*208*: Expect ")" after "while" condition](#208-expect--after-while-condition)
+	- [*209*: Expect "(" after "for" statement](#209-expect--after-for-statement)
+	- [*210*: Expect ";" after "for" condition](#210-expect--after-for-condition)
+	- [*211*: Expect ")" after "for" increment](#211-expect--after-for-increment)
+	- [*212*: Cannot use "break" statement outside a loop](#212-cannot-use-break-statement-outside-a-loop)
+	- [*213*: Cannot use "continue" statement outside a loop](#213-cannot-use-continue-statement-outside-a-loop)
+	- [*214*: Expect function name after "function" statement](#214-expect-function-name-after-function-statement)
+	- [*215*: Expect "(" after function name](#215-expect--after-function-name)
+	- [*216*: Expect ")" after function parameter list](#216-expect--after-function-parameter-list)
+	- [*217*: Expect parameter after ","](#217-expect-parameter-after-)
+	- [*218*: Expect function body](#218-expect-function-body)
+	- [*219*: Expect ")" after function arguments](#219-expect--after-function-arguments)
+	- [*220*: Cannot use "return" statement outside a function](#220-cannot-use-return-statement-outside-a-function)
+	- [*221*: Expect module path string after "import" statement](#221-expect-module-path-string-after-import-statement)
+	- [*222*: Expect declaration statement](#222-expect-declaration-statement)
+	- [*223*: Expect package name](#223-expect-package-name)
+	- [*224*: Expect package body](#224-expect-package-body)
+	- [*225*: Expect package member identifier](#225-expect-package-member-identifier)
+	- [*226*: Expect "else" after left expression of ternary expression](#226-expect-else-after-left-expression-of-ternary-expression)
+	- [*227*: Expect "\]" to close array](#227-expect--to-close-array)
+	- [*228*: Expect "\]" to close indexing](#228-expect--to-close-indexing)
+	- [*229*: Expect call expression after ":"](#229-expect-call-expression-after-)
+- [Runtime errors](#runtime-errors)
+	- [*300*: Operator "..." doesn't support operands of type: type1, type2, ...](#300-operator--doesnt-support-operands-of-type-type1-type2-)
+	- [*301*: Undefined indentifier "..."](#301-undefined-indentifier-)
+	- [*302*: Only functions can be called](#302-only-functions-can-be-called)
+	- [*303*: Expect ... arguments, got ...](#303-expect--arguments-got-)
+	- [*304*: Invalid module path](#304-invalid-module-path)
+	- [*305*: Identifier ... already declared at ...](#305-identifier--already-declared-at-)
+	- [*306*: Function "main" not declared](#306-function-main-not-declared)
+	- [*307*: Expect package at left of "::"](#307-expect-package-at-left-of-)
+	- [*308*: Invalid non-assignable type "..."](#308-invalid-non-assignable-type-)
+	- [*309*: Only variables can be assigned](#309-only-variables-can-be-assigned)
+	- [*310*: Cannot modify the value of an immutable variable](#310-cannot-modify-the-value-of-an-immutable-variable)
+	- [*311*: Recursion limit of ... exceeded](#311-recursion-limit-of--exceeded)
+	- [*312*: Only arrays can be indexed](#312-only-arrays-can-be-indexed)
+	- [*313*: Expect number as array index](#313-expect-number-as-array-index)
+	- [*314*: Index out of range](#314-index-out-of-range)
 
 
 
@@ -371,7 +405,7 @@ Error caused when the token after the left expression of a [Ternary Expression](
 
 
 
-# *227*: Expect "]" to close array
+### *227*: Expect "]" to close array
 
 Error caused when an [Array](/doc/language/features/arrays.md) isn't closed with `]`.
 
@@ -383,7 +417,7 @@ var my_array = [0, 1, 1, 2, 3, 5, 8, 13;
 
 
 
-# *228*: Expect "]" to close indexing
+### *228*: Expect "]" to close indexing
 
 Error caused when an [Indexing Expression](/doc/language/syntax/expressions.md#indexing) isn't closed with `]`.
 
@@ -393,7 +427,7 @@ Error caused when an [Indexing Expression](/doc/language/syntax/expressions.md#i
 
 
 
-# *229*: Expect call expression after ":"
+### *229*: Expect call expression after ":"
 
 Error caused when there is not an expression after `:` ([Argument Simplification](/doc/language/syntax/expressions.md#argument-simplification)).
 

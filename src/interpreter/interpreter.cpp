@@ -524,6 +524,7 @@ void Interpreter::import_file(const std::string& path) noexcept
 
 void Interpreter::import_dir(const std::string& path) noexcept
 {
+	// todo: this doesn't seems right
 	for (const auto& file : std::filesystem::directory_iterator(path))
 		import_file(file.path().string());
 }

@@ -6,6 +6,7 @@
 
 
 
+// walks through a string from right to left and returns the index of the first character that isn't a "0"
 static int get_last_relevant_decimal_index(const char* text)
 {
 	const int size = (int)strlen(text);
@@ -18,6 +19,7 @@ static int get_last_relevant_decimal_index(const char* text)
 }
 
 
+// walks through a string from right to left and returns the index of the first "." found
 static int get_decimal_dot_index(const char* text)
 {
 	const int size = (int)strlen(text);
@@ -33,19 +35,31 @@ static int get_decimal_dot_index(const char* text)
 
 void add_array_item(APITypeArray* const array, const APIType item)
 {
+	// we are adding a new item to an array, so we need to increase its memory size
 	const size_t new_size_bytes = sizeof(APIType) * (array->size + 1);
 
+	// realloc the array with the new size
 	array->array = (APIType*)realloc(array->array, new_size_bytes);
 
+	// increase the size member
 	array->size++;
 
+	// adds the item to the last position of the array (like std::vector::push_back)
 	array->array[array->size - 1] = item;
 }
 
 
 void rmv_array_item(APITypeArray* const array, const size_t index)
 {
+	APIType* const old_array = array->array;
+
+	// we are removing an item from the array, so we need to decrease its memory size
 	const size_t new_size_bytes = sizeof(APIType) * (array->size - 1);
+
+	// unlike "add_array_item", we will not be able to use "realloc", since the index of the item to delete
+	// may not be the last position of the array. Instead, we need to allocate a new array with the new size
+	// and copy the items from the old array to it. While walking through the old array to copy the items,
+	// we just need to ignore the index of the item to delete, this way it's just bypassed.
 
 	APIType* new_array = (APIType*)malloc(new_size_bytes);
 
@@ -57,10 +71,12 @@ void rmv_array_item(APITypeArray* const array, const size_t index)
 			continue;
 		}
 
-		new_array[new_array_i] = array->array[old_array_i];
+		// copy the item from the old to the new
+		new_array[new_array_i] = old_array[old_array_i];
 	}
 
-	free(array->array);
+	// free the old array memory
+	free(old_array);
 
 	array->size--;
 
@@ -162,6 +178,8 @@ const char* to_string(const APIType obj)
 	{
 		// get the size needed to store
 		const int size = snprintf(nullptr, 0, "%f", obj.value.num_v);
+
+		// allocate the string
 		char* strnum = (char*)malloc(size);
 
 		// stores the value on "strnum"
