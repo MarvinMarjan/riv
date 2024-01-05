@@ -146,16 +146,7 @@ void Interpreter::process_import(ImportStatement& statement)
 	// (current path is set to the ".riv" file folder on initialization)
 	std::filesystem::current_path(sys_state().app_path.parent_path());
 
-	const std::filesystem::path path = get_path_from_import_symbols(statement.symbols);
-
-	if (std::filesystem::is_directory(path))
-		import_dir(path);
-
-	else if (path.extension() == ".riv")
-		import_file(path);
-
-	else if (path.extension() == ".so")
-		import_lib(path);
+	import(get_path_from_import_symbols(statement.symbols));
 
 	std::filesystem::current_path(sys_state().source_path.parent_path());
 }
@@ -505,6 +496,23 @@ std::filesystem::path Interpreter::get_path_from_import_symbols(const std::vecto
 }
 
 
+void Interpreter::import(const std::string& path_to_import) noexcept
+{
+
+
+	const std::filesystem::path path = path_to_import;
+
+	if (std::filesystem::is_directory(path))
+		import_dir(path);
+
+	else if (path.extension() == ".riv")
+		import_file(path);
+
+	else if (path.extension() == ".so")
+		import_lib(path);
+}
+
+
 void Interpreter::import_file(const std::string& path) noexcept
 {
 	const SystemState old = sys_state();
@@ -524,9 +532,8 @@ void Interpreter::import_file(const std::string& path) noexcept
 
 void Interpreter::import_dir(const std::string& path) noexcept
 {
-	// todo: this doesn't seems right
 	for (const auto& file : std::filesystem::directory_iterator(path))
-		import_file(file.path().string());
+		import(file.path().string());
 }
 
 
